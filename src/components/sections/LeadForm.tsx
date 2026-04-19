@@ -15,12 +15,31 @@ import { CheckCircle, CheckCircle2, Send } from "lucide-react";
 
 const FORM_ID = "landing_lead_form";
 const SECTION_ID = "contato";
+const MIN_SUBMIT_DELAY_MS = 3000;
 
 const trustPoints = [
   "Retorno comercial em até 1 dia útil",
   "Demonstração orientada ao seu cenário",
   "Teste grátis de 14 dias",
 ] as const;
+
+function getSuspiciousSubmissionReason({
+  botField,
+  elapsedMs,
+}: {
+  botField: string;
+  elapsedMs: number;
+}) {
+  if (botField) {
+    return "honeypot";
+  }
+
+  if (elapsedMs < MIN_SUBMIT_DELAY_MS) {
+    return "fast_submit";
+  }
+
+  return null;
+}
 
 const LeadForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   const { ref, isVisible } = useScrollAnimation();
@@ -59,11 +78,12 @@ const LeadForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const elapsedMs = getElapsedMs();
 
     void trackLeadFormSubmitAttempt({
       form_id: FORM_ID,
       section_id: SECTION_ID,
-      elapsed_ms: getElapsedMs(),
+      elapsed_ms: elapsedMs,
       filled_fields_count: getFilledFieldsCount(),
       has_email: Boolean(form.email.trim()),
       has_company: Boolean(form.empresa.trim()),
@@ -89,27 +109,31 @@ const LeadForm = ({ onSuccess }: { onSuccess?: () => void }) => {
         section_id: SECTION_ID,
         error_type: "validation",
         error_fields: Object.keys(fieldErrors),
-        elapsed_ms: getElapsedMs(),
+        elapsed_ms: elapsedMs,
       });
 
       return;
     }
 
-    if (form.bot_field || getElapsedMs() < 3000) {
+    const suspiciousReason = getSuspiciousSubmissionReason({
+      botField: form.bot_field,
+      elapsedMs,
+    });
+
+    if (suspiciousReason) {
       void trackLeadFormSubmitError({
         form_id: FORM_ID,
         section_id: SECTION_ID,
         error_type: "anti_spam",
-        blocked_reason: form.bot_field ? "honeypot" : "fast_submit",
-        elapsed_ms: getElapsedMs(),
+        blocked_reason: suspiciousReason,
+        elapsed_ms: elapsedMs,
       });
 
-      toast({ title: "Sua solicitação foi recebida." });
-
-      if (onSuccess) {
-        onSuccess();
-      } else {
-        setSubmitted(true);
+      if (suspiciousReason === "fast_submit") {
+        toast({
+          title: "Não foi possível concluir sua solicitação agora.",
+          description: "Aguarde alguns segundos e tente novamente.",
+        });
       }
 
       return;
@@ -130,7 +154,7 @@ const LeadForm = ({ onSuccess }: { onSuccess?: () => void }) => {
       void trackLeadFormSubmitSuccess({
         form_id: FORM_ID,
         section_id: SECTION_ID,
-        elapsed_ms: getElapsedMs(),
+        elapsed_ms: elapsedMs,
         source: "landing_page",
       });
 
@@ -150,7 +174,7 @@ const LeadForm = ({ onSuccess }: { onSuccess?: () => void }) => {
         section_id: SECTION_ID,
         error_type: "transport",
         error_message: error instanceof Error ? error.message : "unknown_error",
-        elapsed_ms: getElapsedMs(),
+        elapsed_ms: elapsedMs,
       });
 
       toast({
