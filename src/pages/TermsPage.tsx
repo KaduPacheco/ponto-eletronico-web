@@ -5,9 +5,9 @@ import { trackPageView } from "@/services/analyticsService";
 
 const TermsPage = () => {
   usePageMeta({
-    title: "Termos de Uso | Ponto Eletrônico",
+    title: "Termos de Uso | Jornada",
     description:
-      "Consulte os termos gerais de uso da landing pública da Ponto Eletrônico, incluindo finalidade do conteúdo, contato comercial e uso responsável das informações.",
+      "Consulte os termos gerais de uso da landing pública da Jornada, incluindo finalidade do conteúdo, contato comercial e uso responsável das informações.",
     path: "/termos-de-uso",
   });
 
@@ -28,7 +28,7 @@ const TermsPage = () => {
       <section className="space-y-4 rounded-3xl border bg-card p-8 shadow-sm">
         <h2 className="text-2xl font-bold text-foreground">1. Finalidade da landing</h2>
         <p className="leading-7 text-muted-foreground">
-          A landing da Ponto Eletrônico apresenta informações comerciais sobre a plataforma e oferece um canal para solicitação
+          A landing da Jornada apresenta informações comerciais sobre a plataforma e oferece um canal para solicitação
           de demonstração, teste e contato inicial com o time responsável pelo atendimento.
         </p>
       </section>
