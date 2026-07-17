@@ -39,9 +39,9 @@ const HomePage = () => {
   };
 
   usePageMeta({
-    title: "Controle de Ponto Eletrônico para Empresas | Teste Grátis",
+    title: "Jornada | Controle de ponto simples, seguro e inteligente",
     description:
-      "Software de controle de ponto eletrônico para RH, DP e gestores. Reduza retrabalho no fechamento da folha, acompanhe jornadas em tempo real e experimente grátis.",
+      "Controle de jornada robusto e seguro para RH, DP e gestores. Reduza retrabalho, acompanhe sua equipe em tempo real e teste grátis.",
     path: "/",
   });
 

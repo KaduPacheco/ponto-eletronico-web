@@ -5,9 +5,9 @@ import { trackPageView } from "@/services/analyticsService";
 
 const PrivacyPage = () => {
   usePageMeta({
-    title: "Política de Privacidade | Ponto Eletrônico",
+    title: "Política de Privacidade | Jornada",
     description:
-      "Entenda como os dados enviados na landing da Ponto Eletrônico são coletados, usados e protegidos durante o contato comercial e a demonstração da plataforma.",
+      "Entenda como os dados enviados na landing da Jornada são coletados, usados e protegidos durante o contato comercial e a demonstração da plataforma.",
     path: "/politica-de-privacidade",
   });
 

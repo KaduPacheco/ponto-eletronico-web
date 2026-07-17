@@ -1,43 +1,26 @@
-import { Clock } from "lucide-react";
+import brandSymbol from "@/assets/images/jornada-simbolo.png";
 
-const Footer = () => {
-  return (
-    <footer className="border-t bg-card py-10">
-      <div className="container">
-        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-md">
-            <a href="/" className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-hero-gradient">
-                <Clock className="h-4 w-4 text-primary-foreground" />
-              </div>
-              <span className="font-bold text-foreground">Ponto Eletrônico</span>
-            </a>
-            <p className="mt-3 text-sm leading-6 text-muted-foreground">
-              Software de controle de ponto eletrônico para empresas que precisam de mais previsibilidade no fechamento da
-              folha, visibilidade da jornada e menos retrabalho operacional.
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-4 md:items-end">
-            <nav className="flex flex-wrap gap-4 text-sm text-muted-foreground" aria-label="Links institucionais">
-              <a href="/politica-de-privacidade" className="transition-colors hover:text-foreground">
-                Política de Privacidade
-              </a>
-              <a href="/termos-de-uso" className="transition-colors hover:text-foreground">
-                Termos de Uso
-              </a>
-              <a href="/#contato" className="transition-colors hover:text-foreground">
-                Solicitar demonstração
-              </a>
-            </nav>
-            <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Ponto Eletrônico. Todos os direitos reservados.
-            </p>
-          </div>
+const Footer = () => (
+  <footer className="border-t border-white/10 bg-[#071c1b] py-12 text-white">
+    <div className="container">
+      <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+        <div className="max-w-md">
+          <a href="/" className="flex items-center gap-3" aria-label="Página inicial da Jornada">
+            <span className="relative h-10 w-10 overflow-hidden rounded-xl bg-[#13cfa7]"><img src={brandSymbol} alt="" className="h-full w-full scale-[2.1] object-cover" /></span>
+            <span className="text-xl font-extrabold tracking-[-0.04em]">Jornada</span>
+          </a>
+          <p className="mt-4 text-sm leading-6 text-white/60">Gestão inteligente de jornada para empresas que querem uma folha mais previsível, decisões mais rápidas e uma rotina de RH muito mais segura.</p>
+        </div>
+        <div className="flex flex-col gap-4 md:items-end">
+          <nav className="flex flex-wrap gap-5 text-sm text-white/60" aria-label="Links institucionais">
+            <a href="/politica-de-privacidade" className="transition hover:text-[#49e3c3]">Política de Privacidade</a>
+            <a href="/termos-de-uso" className="transition hover:text-[#49e3c3]">Termos de Uso</a>
+            <a href="/#contato" className="transition hover:text-[#49e3c3]">Falar com especialista</a>
+          </nav>
+          <p className="text-sm text-white/40">© {new Date().getFullYear()} Jornada. Todos os direitos reservados.</p>
         </div>
       </div>
-    </footer>
-  );
-};
-
+    </div>
+  </footer>
+);
 export default Footer;
