@@ -28,12 +28,12 @@ const HomePage = () => {
 
         if (solutionSection) {
           window.history.replaceState(null, "", "#solucao");
-          solutionSection.scrollIntoView({ behávior: "smooth", block: "start" });
+          solutionSection.scrollIntoView({ behavior: "smooth", block: "start" });
           return;
         }
 
         window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
-        window.scrollTo({ top: 0, behávior: "smooth" });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
     });
   };
@@ -55,7 +55,7 @@ const HomePage = () => {
   return (
     <>
       <Header hideCTA={isSubmitted} />
-      <main id="conteúdo-principal">
+      <main id="conteudo-principal">
         {isSubmitted ? (
           <SuccessView onReviewSolution={handleReviewSolution} />
         ) : (

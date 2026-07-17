@@ -1,4 +1,4 @@
-import brandSymbol from "@/assets/images/jornada-simbolo.png";
+import brandLogo from "@/assets/images/jornada-logo-horizontal-dark.png";
 
 const Footer = () => (
   <footer className="border-t border-white/10 bg-[#06211f] py-12 text-white">
@@ -6,8 +6,7 @@ const Footer = () => (
       <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div className="max-w-md">
           <a href="/" className="flex items-center gap-3" aria-label="Página inicial da Jornada">
-            <span className="relative h-10 w-10 overflow-hidden rounded-lg bg-[#13cfa7]"><img src={brandSymbol} alt="" className="h-full w-full scale-[2.1] object-cover" /></span>
-            <span className="text-xl font-extrabold tracking-normal">Jornada</span>
+            <img src={brandLogo} alt="Jornada" className="h-auto w-[9rem] object-contain" />
           </a>
           <p className="mt-4 text-sm leading-6 text-white/60">Gestão inteligente de jornada para empresas que querem uma folha mais previsível, decisões mais rápidas e uma rotina de RH mais segura.</p>
         </div>

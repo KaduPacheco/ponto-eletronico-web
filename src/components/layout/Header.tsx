@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/Button";
-import brandSymbol from "@/assets/images/jornada-simbolo.png";
+import brandLogo from "@/assets/images/jornada-logo-horizontal-dark.png";
 import { trackCtaClick } from "@/services/analyticsService";
 import { ArrowUpRight } from "lucide-react";
 import { useLocation } from "react-router-dom";
@@ -23,9 +23,9 @@ const Header = ({ hideCTA = false }: HeaderProps) => {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#06211f]/82 text-white backdrop-blur-2xl">
       <a href="#conteudo-principal" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-[60] focus:rounded-md focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:text-slate-900">Pular para o conteúdo</a>
       <div className="container flex h-[4.75rem] items-center justify-between gap-6">
-        <a href="/" className="group flex items-center gap-3" aria-label="Página inicial da Jornada">
-          <span className="relative h-10 w-10 overflow-hidden rounded-lg bg-[#19b99f] shadow-[0_0_30px_rgba(66,216,191,.22)]"><img src={brandSymbol} alt="" className="absolute inset-0 h-full w-full scale-[2.15] object-cover" /></span>
-          <span className="text-xl font-extrabold tracking-normal">Jornada</span>
+        <a href="/" className="group flex items-center" aria-label="Página inicial da Jornada">
+          <img src={brandLogo} alt="Jornada" className="h-auto w-[8.8rem] object-contain" />
+
         </a>
         <nav className="hidden items-center gap-8 text-sm font-semibold text-white/70 md:flex" aria-label="Navegação principal">
           {navItems.map((item) => { const target = resolveTarget(item.hash); return <a key={item.id} href={target} className="transition hover:text-[#73ead6]" onClick={() => track(item.id, item.label, target)}>{item.label}</a>; })}

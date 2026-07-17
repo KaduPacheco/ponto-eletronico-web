@@ -1,5 +1,5 @@
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import productMockup from "@/assets/images/hero-mockup.png";
+import productMockup from "@/assets/images/jornada-product-mockup-v2.png";
 import { AlertTriangle, BarChart3, CheckCircle2, ClipboardList } from "lucide-react";
 
 const productFlows = [
@@ -82,8 +82,8 @@ const Solution = () => {
             <img
               src={productMockup}
               alt="Captura do painel Jornada com indicadores e acompanhamento operacional"
-              width={1280}
-              height={800}
+              width={1536}
+              height={1024}
               className="w-full"
             />
           </figure>
