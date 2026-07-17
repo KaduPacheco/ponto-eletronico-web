@@ -1,6 +1,6 @@
 # CRM Auth
 
-Camada coesa de autenticacao e autorizacao do frontend do CRM.
+Camada coesa de autenticação e autorização do frontend do CRM.
 
 Escopo atual:
 
@@ -19,4 +19,4 @@ Compatibilidade temporaria:
 - `src/components/auth/ProtectedRoute.tsx`
 - `src/lib/authAccess.ts`
 
-Esses caminhos legados seguem disponiveis por re-export para reduzir risco durante a migracao por feature.
+Esses caminhos legados seguem disponíveis por re-export para reduzir risco durante a migração por feature.

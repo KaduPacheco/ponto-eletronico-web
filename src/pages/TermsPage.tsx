@@ -53,7 +53,7 @@ const TermsPage = () => {
       <section className="space-y-4 rounded-3xl border bg-card p-8 shadow-sm">
         <h2 className="text-2xl font-bold text-foreground">4. Propriedade intelectual</h2>
         <p className="leading-7 text-muted-foreground">
-          Textos, elementos visuais, identidade da marca e materiais publicados nesta landing pertencem aos seus respectivos
+          Textos, elementos visuais, identidade da marca e matériais públicados nesta landing pertencem aos seus respectivos
           titulares e não podem ser reproduzidos de forma indevida sem autorização.
         </p>
       </section>

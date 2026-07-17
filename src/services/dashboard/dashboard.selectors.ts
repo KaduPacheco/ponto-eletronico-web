@@ -44,7 +44,7 @@ export function buildLeadKpis(leads: DashboardLeadRecord[]): DashboardKpi[] {
       id: "total_leads",
       label: "Total de leads",
       value: leads.length,
-      description: "Base total visivel pela sua sessao autenticada.",
+      description: "Base total visível pela sua sessão autenticada.",
       helperText: "Volume consolidado do funil atual.",
       tone: "neutral",
     },
@@ -52,7 +52,7 @@ export function buildLeadKpis(leads: DashboardLeadRecord[]): DashboardKpi[] {
       id: "new_leads",
       label: "Novos em 7 dias",
       value: newLeads,
-      description: "Entradas recentes vindas da operacao comercial.",
+      description: "Entradas recentes vindas da operação comercial.",
       helperText: "Janela movel dos ultimos 7 dias.",
       tone: newLeads > 0 ? "positive" : "neutral",
     },
@@ -71,7 +71,7 @@ export function buildTaskKpis(tasks: DashboardTaskRecord[]): DashboardKpi[] {
       id: "open_tasks",
       label: "Tarefas abertas",
       value: openTasks,
-      description: "Follow-ups ainda pendentes de execucao.",
+      description: "Follow-ups ainda pendentes de execução.",
       helperText: "Inclui toda a agenda em aberto.",
       tone: openTasks > 0 ? "warning" : "neutral",
     },
@@ -79,7 +79,7 @@ export function buildTaskKpis(tasks: DashboardTaskRecord[]): DashboardKpi[] {
       id: "overdue_tasks",
       label: "Tarefas atrasadas",
       value: overdueTasks,
-      description: "Itens vencidos que precisam de atencao imediata.",
+      description: "Itens vencidos que precisam de atenção imediata.",
       helperText: overdueTasks > 0 ? "Prioridade operacional alta." : "Agenda dentro do prazo.",
       tone: overdueTasks > 0 ? "danger" : "positive",
     },
@@ -97,9 +97,9 @@ export function buildAnalyticsKpis(events: DashboardAnalyticsEventRecord[]): Das
   return [
     {
       id: "landing_visitors",
-      label: "Visitors unicos",
+      label: "Visitors únicos",
       value: pageViewVisitors,
-      description: "Visitors unicos que realmente geraram page_view na landing no periodo analisado.",
+      description: "Visitors únicos que realmente geraram page_view na landing no período analisado.",
       helperText: "Base de page_view autenticada.",
       tone: pageViewVisitors > 0 ? "positive" : "neutral",
     },
@@ -107,23 +107,23 @@ export function buildAnalyticsKpis(events: DashboardAnalyticsEventRecord[]): Das
       id: "landing_cta_clicks",
       label: "Cliques em CTA",
       value: ctaClicks,
-      description: "Interacoes registradas nos principais gatilhos comerciais da landing.",
+      description: "Interações registradas nos principais gatilhos comerciais da landing.",
       helperText: "Eventos cta_click.",
       tone: ctaClicks > 0 ? "positive" : "neutral",
     },
     {
       id: "landing_submit_success",
-      label: "Conversoes",
+      label: "Conversões",
       value: submitSuccess,
-      description: "Envios concluidos com sucesso pelo formulario da landing.",
-      helperText: submitErrors > 0 ? `${submitErrors} erros capturados no periodo.` : "Sem erros de submit no periodo.",
+      description: "Envios concluídos com sucesso pelo formulário da landing.",
+      helperText: submitErrors > 0 ? `${submitErrors} erros capturados no período.` : "Sem erros de submit no período.",
       tone: submitSuccess > 0 ? "positive" : submitErrors > 0 ? "warning" : "neutral",
     },
     {
       id: "landing_conversion_rate",
-      label: "Taxa de conversao",
+      label: "Taxa de conversão",
       value: conversionRate,
-      description: "Conversoes reais sobre visitors unicos que chegaram a pagina.",
+      description: "Conversões reais sobre visitors únicos que chegaram a página.",
       helperText: "lead_form_submit_success / visitors com page_view.",
       tone: conversionRate > 0 ? "positive" : "neutral",
     },
@@ -390,12 +390,12 @@ export function buildUpcomingTasks(
       return {
         id: task.id,
         leadId: task.lead_id,
-        leadName: lead?.nome || "Lead sem identificacao",
+        leadName: lead?.nome || "Lead sem identificação",
         company: lead?.empresa ?? null,
         title: task.title,
         dueDate: task.due_date,
         overdue: isTaskOverdue(task),
-        stageLabel: lead ? getLeadStageLabel(lead) : "Sem estagio",
+        stageLabel: lead ? getLeadStageLabel(lead) : "Sem estágio",
       };
     });
 }
@@ -412,7 +412,7 @@ export function buildActivityFeed(
     return {
       id: event.id,
       leadId: event.lead_id,
-      leadName: lead?.nome || "Lead sem identificacao",
+      leadName: lead?.nome || "Lead sem identificação",
       company: lead?.empresa ?? null,
       eventType: event.event_type,
       title: getEventTitle(event.event_type),
@@ -436,21 +436,21 @@ export function buildAttentionPanel(
         id: "without_owner",
         label: "Leads sem owner",
         count: withoutOwner,
-        description: "Registros aguardando responsavel comercial.",
+        description: "Registros aguardando responsável comercial.",
         tone: withoutOwner > 0 ? "warning" : "positive",
       },
       {
         id: "without_stage",
-        label: "Leads sem estagio",
+        label: "Leads sem estágio",
         count: withoutStage,
-        description: "Itens que ainda nao entraram claramente no funil.",
+        description: "Itens que ainda não entraram claramente no funil.",
         tone: withoutStage > 0 ? "warning" : "positive",
       },
       {
         id: "overdue_tasks",
         label: "Tarefas vencidas",
         count: overdueTasks.length,
-        description: "Acoes pendentes que ja passaram do prazo.",
+        description: "Ações pendentes que já passaram do prazo.",
         tone: overdueTasks.length > 0 ? "danger" : "positive",
       },
     ],
@@ -510,5 +510,5 @@ function createAnalyticsSeriesBuckets(days: number) {
 }
 
 function createChartId(value: string) {
-  return value.toLowerCase().replace(/\s+/g, "_");
+  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, "_");
 }

@@ -16,7 +16,7 @@ Escopo atual:
 - `components/LeadQuickNoteCard.tsx`
 - `components/LeadOperationalSummaryAside.tsx`
 
-Dependencias preservadas:
+Dependências preservadas:
 
 - `src/hooks/useLeadWorkspace.ts`
 - `src/services/crmService.ts`
@@ -25,4 +25,4 @@ Compatibilidade temporaria:
 
 - `src/pages/crm/LeadDetailPage.tsx`
 
-O caminho legado da pagina segue ativo por re-export para reduzir risco durante a migracao da feature.
+O caminho legado da página segue ativo por re-export para reduzir risco durante a migração da feature.

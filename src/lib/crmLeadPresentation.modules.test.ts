@@ -22,8 +22,8 @@ describe("crmLeadPresentation modules", () => {
     expect(ownerOptions).toEqual([
       {
         id: "user-1",
-        displayLabel: "Voce",
-        selectLabel: "Voce (Ana Souza)",
+        displayLabel: "Você",
+        selectLabel: "Você (Ana Souza)",
       },
       {
         id: "owner-a-87654321",
@@ -44,19 +44,19 @@ describe("crmLeadPresentation modules", () => {
   it("preserves source normalization, labels and source filter compatibility", () => {
     const sourceOptions = buildSourceOptions([
       { origem: " Meta_Ads " },
-      { origem: "indicacao" },
+      { origem: "indicação" },
       { origem: "meta_ads" },
       { origem: "" },
       { origem: null },
     ]);
 
     expect(sourceOptions).toEqual([
-      { value: "indicacao", label: "Indicacao" },
+      { value: "indicação", label: "Indicação" },
       { value: "meta_ads", label: "Meta Ads" },
     ]);
 
     expect(matchesSourceFilter(" Meta_Ads ", getLeadSourceFilterValue("meta_ads"))).toBe(true);
     expect(matchesSourceFilter("", "without_source")).toBe(true);
-    expect(matchesSourceFilter("indicacao", getLeadSourceFilterValue("meta_ads"))).toBe(false);
+    expect(matchesSourceFilter("indicação", getLeadSourceFilterValue("meta_ads"))).toBe(false);
   });
 });

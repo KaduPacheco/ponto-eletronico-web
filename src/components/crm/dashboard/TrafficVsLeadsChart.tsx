@@ -22,8 +22,8 @@ interface TrafficVsLeadsChartProps {
 const TrafficVsLeadsChart = ({ data, isLoading, errorMessage }: TrafficVsLeadsChartProps) => {
   return (
     <DashboardSection
-      title="Canais de aquisicao"
-      subtitle="Visitors e conversoes por canal."
+      title="Canais de aquisição"
+      subtitle="Visitors e conversões por canal."
     >
       {isLoading ? (
         <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr),240px]">
@@ -38,13 +38,13 @@ const TrafficVsLeadsChart = ({ data, isLoading, errorMessage }: TrafficVsLeadsCh
         </div>
       ) : errorMessage ? (
         <SectionErrorState
-          title="Nao foi possivel comparar trafego e leads"
+          title="Não foi possível comparar tráfego e leads"
           description={errorMessage}
         />
       ) : !data || data.length === 0 ? (
         <SectionEmptyState
-          title="Sem canais suficientes para comparacao"
-          description="Assim que houver trafego e conversoes reais por origem, este comparativo sera habilitado."
+          title="Sem canais suficientes para comparação"
+          description="Assim que houver tráfego e conversões reais por origem, este comparativo sera habilitado."
           icon={<GitCompareArrows className="h-5 w-5" />}
         />
       ) : (
@@ -110,7 +110,7 @@ function ChannelRow({ entry }: { entry: DashboardTrafficComparisonDatum }) {
             <p className="truncate text-sm font-medium text-foreground">{entry.label}</p>
           </div>
           <p className="mt-1 text-[10px] leading-4 text-muted-foreground">
-            {entry.visitorsShare}% do trafego e {entry.leadsShare}% dos leads
+            {entry.visitorsShare}% do tráfego e {entry.leadsShare}% dos leads
           </p>
         </div>
         <span className="shrink-0 rounded-full border border-border/60 bg-muted/25 px-2 py-1 text-[11px] font-semibold text-foreground">

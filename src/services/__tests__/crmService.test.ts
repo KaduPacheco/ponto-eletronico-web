@@ -55,7 +55,7 @@ describe("crmService - audit log", () => {
     expect(fromMock).toHaveBeenCalledWith("lead_events");
   });
 
-  it("nao quebra o fluxo quando o audit log falha", async () => {
+  it("não quebra o fluxo quando o audit log falha", async () => {
     singleMock.mockResolvedValueOnce({
       data: null,
       error: {

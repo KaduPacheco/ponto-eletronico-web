@@ -20,4 +20,4 @@ Compatibilidade temporaria:
 - `src/components/crm/leads/LeadsKanbanBoard.tsx`
 - `src/components/crm/leads/LeadsPaginationControls.tsx`
 
-Os caminhos legados seguem ativos por re-export para reduzir risco durante a migracao da feature.
+Os caminhos legados seguem ativos por re-export para reduzir risco durante a migração da feature.

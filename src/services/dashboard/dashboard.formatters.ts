@@ -23,13 +23,13 @@ export function getStageLabelFromKey(stageKey: string) {
     case "perdido":
       return "Perdido";
     default:
-      return stageKey === "sem_estagio" ? "Sem estagio" : toTitleCase(stageKey);
+      return stageKey === "sem_estagio" ? "Sem estágio" : toTitleCase(stageKey);
   }
 }
 
 export function getSourceLabel(source: string | null | undefined) {
   const normalized = (source || "").trim();
-  return normalized || "Nao informado";
+  return normalized || "Não informado";
 }
 
 export function getEventTitle(eventType: string) {
@@ -41,7 +41,7 @@ export function getEventTitle(eventType: string) {
     case "task_added":
       return "Follow-up agendado";
     case "task_completed":
-      return "Tarefa concluida";
+      return "Tarefa concluída";
     case "task_reopened":
       return "Tarefa reaberta";
     case "status_change":
@@ -67,17 +67,17 @@ export function getEventDescription(event: DashboardEventRecord) {
 
   switch (event.event_type) {
     case "lead_created":
-      return "Novo lead entrou no CRM e ja esta disponivel para acompanhamento.";
+      return "Novo lead entrou no CRM e já está disponível para acompanhamento.";
     case "note_added":
-      return contentPreview ? `Resumo da nota: ${contentPreview}` : "Uma anotacao interna foi adicionada ao lead.";
+      return contentPreview ? `Resumo da nota: ${contentPreview}` : "Uma anotação interna foi adicionada ao lead.";
     case "task_added":
       return taskTitle ? `Nova tarefa criada: ${taskTitle}` : "Uma nova tarefa foi criada para este lead.";
     case "task_completed":
-      return taskTitle ? `Tarefa concluida: ${taskTitle}` : "Uma tarefa foi concluida.";
+      return taskTitle ? `Tarefa concluída: ${taskTitle}` : "Uma tarefa foi concluída.";
     case "task_reopened":
-      return taskTitle ? `Tarefa reaberta: ${taskTitle}` : "Uma tarefa voltou para a fila de execucao.";
+      return taskTitle ? `Tarefa reaberta: ${taskTitle}` : "Uma tarefa voltou para a fila de execução.";
     case "status_change":
-      return nextStatus ? `Novo estado registrado: ${toTitleCase(nextStatus)}` : "Houve atualizacao no status comercial.";
+      return nextStatus ? `Novo estado registrado: ${toTitleCase(nextStatus)}` : "Houve atualização no status comercial.";
     case "pipeline_change":
       if (previousStage && nextStage) {
         return `${toTitleCase(previousStage)} -> ${toTitleCase(nextStage)}`;
@@ -87,21 +87,21 @@ export function getEventDescription(event: DashboardEventRecord) {
         return `Lead classificado em ${toTitleCase(nextStage)}.`;
       }
 
-      return "Houve atualizacao no pipeline comercial.";
+      return "Houve atualização no pipeline comercial.";
     case "owner_changed":
       if (previousOwnerLabel && nextOwnerLabel) {
         return `${previousOwnerLabel} -> ${nextOwnerLabel}`;
       }
 
       if (nextOwnerLabel) {
-        return `Lead atribuido para ${nextOwnerLabel}.`;
+        return `Lead atribuído para ${nextOwnerLabel}.`;
       }
 
       if (nextOwnerId) {
-        return `Lead atribuido para responsavel ${nextOwnerId.slice(0, 8)}.`;
+        return `Lead atribuído para responsável ${nextOwnerId.slice(0, 8)}.`;
       }
 
-      return "Ownership atualizado para fila sem responsavel.";
+      return "Ownership atualizado para fila sem responsável.";
     default:
       return "Atividade registrada automaticamente pelo CRM.";
   }
@@ -114,7 +114,7 @@ export function getAnalyticsEventLabel(eventType: string) {
     case "cta_click":
       return "CTA click";
     case "lead_form_start":
-      return "Inicio do formulario";
+      return "Início do formulário";
     case "lead_form_submit_attempt":
       return "Tentativa de envio";
     case "lead_form_submit_success":

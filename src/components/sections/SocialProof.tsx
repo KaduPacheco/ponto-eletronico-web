@@ -50,7 +50,7 @@ const SocialProof = () => {
             Pronto para a realidade de <span className="text-primary">operações complexas</span>
           </h2>
           <p className="mt-4 text-xl text-muted-foreground">
-            Desenvolvido para atender aos setores mais exigentes com estabilidade e segurança jurídica.
+            Desenvolvido para aténder aos setores mais exigentes com estabilidade e segurança jurídica.
           </p>
         </div>
 

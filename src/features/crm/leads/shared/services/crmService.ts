@@ -71,7 +71,7 @@ export async function getCrmLeadById(id: string): Promise<CrmLead> {
   }
 
   if (!data) {
-    throw new Error("Lead nao encontrado");
+    throw new Error("Lead não encontrado");
   }
 
   return data as CrmLead;
@@ -183,7 +183,7 @@ export async function getLeadTasksOverview(): Promise<CrmLeadTaskOverview[]> {
     .order("due_date", { ascending: true });
 
   if (error) {
-    throw new Error(`Falha ao buscar visao operacional de tarefas: ${error.message}`);
+    throw new Error(`Falha ao buscar visão operacional de tarefas: ${error.message}`);
   }
 
   return (data ?? []) as CrmLeadTaskOverview[];
@@ -280,7 +280,7 @@ export async function updateLeadOwner(
     .single();
 
   if (error) {
-    throw new Error(`Falha ao atualizar responsavel do lead: ${error.message}`);
+    throw new Error(`Falha ao atualizar responsável do lead: ${error.message}`);
   }
 
   if (currentLead.owner_id !== nextOwnerId) {
@@ -353,7 +353,7 @@ function warnWhenLeadAuditFails(
     return;
   }
 
-  logAppEvent("crm.audit", "warn", "Operacao concluida sem persistir trilha de auditoria", {
+  logAppEvent("crm.audit", "warn", "Operação concluída sem persistir trilha de auditoria", {
     leadId,
     eventType,
     error: auditResult.errorMessage,

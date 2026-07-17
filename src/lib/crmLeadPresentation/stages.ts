@@ -13,11 +13,11 @@ export const PIPELINE_STAGE_OPTIONS: Array<{
   label: string;
   description: string;
 }> = [
-  { value: "novo", label: "Novo", description: "Lead recem-capturado aguardando primeiro contato." },
+  { value: "novo", label: "Novo", description: "Lead recém-capturado aguardando primeiro contato." },
   { value: "em_contato", label: "Em contato", description: "Lead em abordagem ou follow-up ativo." },
-  { value: "qualificado", label: "Qualificado", description: "Lead com fit validado e proxima etapa comercial definida." },
-  { value: "ganho", label: "Ganho", description: "Oportunidade convertida em negocio." },
-  { value: "perdido", label: "Perdido", description: "Lead encerrado sem avancar no funil." },
+  { value: "qualificado", label: "Qualificado", description: "Lead com fit validado e próxima etapa comercial definida." },
+  { value: "ganho", label: "Ganho", description: "Oportunidade convertida em negócio." },
+  { value: "perdido", label: "Perdido", description: "Lead encerrado sem avançar no funil." },
 ];
 
 export type LeadStageFilter = "all" | PipelineStage | "without_stage";

@@ -20,17 +20,17 @@ const Header = ({ hideCTA = false }: HeaderProps) => {
   const primaryTarget = resolveTarget("#contato");
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#071c1b]/88 text-white backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#06211f]/82 text-white backdrop-blur-2xl">
       <a href="#conteudo-principal" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-[60] focus:rounded-md focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:text-slate-900">Pular para o conteúdo</a>
       <div className="container flex h-[4.75rem] items-center justify-between gap-6">
         <a href="/" className="group flex items-center gap-3" aria-label="Página inicial da Jornada">
-          <span className="relative h-10 w-10 overflow-hidden rounded-xl bg-[#13cfa7] shadow-[0_0_30px_rgba(19,207,167,.22)]"><img src={brandSymbol} alt="" className="absolute inset-0 h-full w-full scale-[2.15] object-cover" /></span>
-          <span className="text-xl font-extrabold tracking-[-0.04em]">Jornada</span>
+          <span className="relative h-10 w-10 overflow-hidden rounded-lg bg-[#19b99f] shadow-[0_0_30px_rgba(66,216,191,.22)]"><img src={brandSymbol} alt="" className="absolute inset-0 h-full w-full scale-[2.15] object-cover" /></span>
+          <span className="text-xl font-extrabold tracking-normal">Jornada</span>
         </a>
-        <nav className="hidden items-center gap-8 text-sm font-medium text-white/70 md:flex" aria-label="Navegação principal">
-          {navItems.map((item) => { const target = resolveTarget(item.hash); return <a key={item.id} href={target} className="transition hover:text-[#49e3c3]" onClick={() => track(item.id, item.label, target)}>{item.label}</a>; })}
+        <nav className="hidden items-center gap-8 text-sm font-semibold text-white/70 md:flex" aria-label="Navegação principal">
+          {navItems.map((item) => { const target = resolveTarget(item.hash); return <a key={item.id} href={target} className="transition hover:text-[#73ead6]" onClick={() => track(item.id, item.label, target)}>{item.label}</a>; })}
         </nav>
-        {!hideCTA ? <Button variant="cta" size="sm" className="h-10 rounded-full px-5 text-sm" asChild><a href={primaryTarget} onClick={() => track("header_cta_solicitar_demonstracao", "Quero conhecer", primaryTarget)}>Quero conhecer <ArrowUpRight /></a></Button> : null}
+        {!hideCTA ? <Button variant="cta" size="sm" className="h-10 rounded-lg px-5 text-sm shadow-none" asChild><a href={primaryTarget} onClick={() => track("header_cta_solicitar_demonstração", "Quero conhecer", primaryTarget)}>Quero conhecer <ArrowUpRight /></a></Button> : null}
       </div>
     </header>
   );

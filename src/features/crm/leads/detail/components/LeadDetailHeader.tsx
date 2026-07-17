@@ -17,7 +17,7 @@ const LeadDetailHeader = ({ lead, currentOwnerLabel }: LeadDetailHeaderProps) =>
         <div>
           <h1 className="text-3xl font-semibold tracking-tight text-foreground">Dossie do lead</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Ownership, pendencias e historico comercial do lead em um unico contexto.
+            Ownership, pendências e histórico comercial do lead em um único contexto.
           </p>
         </div>
       </div>

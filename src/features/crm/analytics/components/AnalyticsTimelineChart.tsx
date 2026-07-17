@@ -28,8 +28,8 @@ const AnalyticsTimelineChart = ({ data, isLoading, errorMessage }: AnalyticsTime
 
   return (
     <DashboardSection
-      title="Conversao por periodo"
-      subtitle="Visitors, conversoes e taxa no periodo."
+      title="Conversão por período"
+      subtitle="Visitors, conversões e taxa no período."
     >
       {isLoading ? (
         <div className="space-y-4">
@@ -42,13 +42,13 @@ const AnalyticsTimelineChart = ({ data, isLoading, errorMessage }: AnalyticsTime
         </div>
       ) : errorMessage ? (
         <SectionErrorState
-          title="Nao foi possivel montar a serie de performance"
+          title="Não foi possível montar a série de performance"
           description={errorMessage}
         />
       ) : !data || !hasData ? (
         <SectionEmptyState
-          title="Sem volume suficiente no periodo"
-          description="Quando a landing acumular visitors e conversoes reais, a serie executiva aparecera aqui."
+          title="Sem volume suficiente no período"
+          description="Quando a landing acumular visitors e conversões reais, a série executiva aparecera aqui."
           icon={<ActivitySquare className="h-5 w-5" />}
         />
       ) : (
@@ -85,7 +85,7 @@ const AnalyticsTimelineChart = ({ data, isLoading, errorMessage }: AnalyticsTime
                     backgroundColor: "hsl(var(--card))",
                   }}
                   formatter={(value: number, name: string) => {
-                    if (name === "Taxa de conversao") {
+                    if (name === "Taxa de conversão") {
                       return [`${value}%`, name];
                     }
 
@@ -113,7 +113,7 @@ const AnalyticsTimelineChart = ({ data, isLoading, errorMessage }: AnalyticsTime
                   yAxisId="rate"
                   type="monotone"
                   dataKey="conversionRate"
-                  name="Taxa de conversao"
+                  name="Taxa de conversão"
                   stroke="#ea580c"
                   strokeWidth={3}
                   dot={{ r: 3 }}
@@ -127,17 +127,17 @@ const AnalyticsTimelineChart = ({ data, isLoading, errorMessage }: AnalyticsTime
             <SummaryCard
               label="Visitors"
               value={data.reduce((sum, entry) => sum + entry.visitors, 0)}
-              helper="Unicos no periodo."
+              helper="Unicos no período."
             />
             <SummaryCard
-              label="Conversoes"
+              label="Conversões"
               value={data.reduce((sum, entry) => sum + entry.leads, 0)}
-              helper="Envios concluidos."
+              helper="Envios concluídos."
             />
             <SummaryCard
               label="Melhor dia"
               value={`${getBestConversionRate(data)}%`}
-              helper="Pico de conversao."
+              helper="Pico de conversão."
             />
           </div>
         </div>

@@ -18,24 +18,23 @@ const Pricing = () => {
     <section id="precos" className="bg-section-alt py-24" aria-labelledby="pricing-title">
       <div className="container" ref={ref}>
         <div className="mx-auto mb-14 max-w-3xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-wider text-primary">Plano de entrada</span>
-          <h2 id="pricing-title" className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">
-            Um ponto de partida claro para empresas que estão digitalizando o controle de jornada.
+          <span className="section-kicker">Plano de entrada</span>
+          <h2 id="pricing-title" className="section-title mt-3">
+            Um ponto de partida claro para digitalizar o controle de jornada.
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+          <p className="section-copy mx-auto mt-4 max-w-2xl">
             Preço de entrada acessível, demonstração consultiva e teste grátis de 14 dias para validar aderência antes da contratação.
           </p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="rounded-[2rem] border border-border bg-card p-8 shadow-sm md:p-10">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
-              <Zap className="h-4 w-4" />
-              Ideal para empresas iniciando a digitalização do ponto
+        <div className="grid overflow-hidden rounded-lg border border-border bg-card shadow-sm lg:grid-cols-[1.08fr_0.92fr]">
+          <div className="p-8 md:p-10">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-lg bg-primary/10 px-4 py-2 text-sm font-bold text-primary">
+              <Zap className="h-4 w-4" /> Ideal para começar sem complexidade
             </div>
 
-            <h3 className="text-2xl font-bold text-foreground md:text-3xl">Plano Completo</h3>
-            <p className="mt-3 max-w-xl text-muted-foreground">
+            <h3 className="text-2xl font-extrabold text-foreground md:text-3xl">Plano Completo</h3>
+            <p className="mt-3 max-w-xl leading-7 text-muted-foreground">
               Para empresas que precisam organizar jornada, ganhar visibilidade operacional e reduzir retrabalho no fechamento da folha.
             </p>
 
@@ -44,14 +43,14 @@ const Pricing = () => {
               <span className="pb-1 text-lg text-muted-foreground">/mês para até 5 funcionários</span>
             </div>
 
-            <p className="mt-3 inline-flex rounded-xl bg-muted px-4 py-2 text-sm font-medium text-foreground">
+            <p className="mt-3 inline-flex rounded-lg bg-muted px-4 py-2 text-sm font-bold text-foreground">
               + R$ 7,00 por funcionário adicional
             </p>
 
             <ul className="mt-8 grid gap-3 sm:grid-cols-2">
               {features.map((feature) => (
-                <li key={feature} className="flex items-start gap-3 text-sm text-foreground">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-secondary" />
+                <li key={feature} className="flex items-start gap-3 text-sm font-semibold text-foreground">
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                   <span>{feature}</span>
                 </li>
               ))}
@@ -59,61 +58,43 @@ const Pricing = () => {
           </div>
 
           <div
-            className={`relative overflow-hidden rounded-[2rem] bg-hero-gradient p-10 text-primary-foreground shadow-2xl ${
+            className={`relative bg-[#0b302d] p-8 text-white md:p-10 ${
               isVisible ? "animate-fade-in-up" : "opacity-0"
             }`}
           >
-            <div className="absolute right-0 top-0">
-              <div className="flex items-center gap-1.5 rounded-bl-xl bg-secondary px-4 py-2 text-xs font-bold uppercase tracking-wider text-secondary-foreground">
-                <Clock className="h-3.5 w-3.5" />
-                Teste grátis de 14 dias
-              </div>
+            <div className="mb-8 inline-flex items-center gap-2 rounded-lg bg-[#f47c36] px-4 py-2 text-xs font-extrabold uppercase text-white">
+              <Clock className="h-3.5 w-3.5" /> Teste grátis de 14 dias
             </div>
 
-            <div className="mb-8 pt-6">
-              <h3 className="text-2xl font-bold">Por que começar por este plano</h3>
-              <p className="mt-3 text-primary-foreground/82">
-                Um ponto de entrada claro para validar a operação sem adicionar complexidade logo no início.
-              </p>
-            </div>
+            <h3 className="text-2xl font-extrabold">Por que começar por este plano</h3>
+            <p className="mt-3 leading-7 text-white/72">
+              Um ponto de entrada objetivo para validar a operação antes de adicionar camadas mais avançadas.
+            </p>
 
-            <div className="space-y-4 rounded-2xl border border-white/10 bg-white/10 p-5">
-              <div className="flex items-start gap-3">
-                <CircleHelp className="mt-0.5 h-5 w-5 shrink-0 text-secondary" />
-                <p className="text-sm leading-6 text-primary-foreground/88">
-                  Valor inicial acessível para validar a operação.
-                </p>
-              </div>
-              <div className="flex items-start gap-3">
-                <CircleHelp className="mt-0.5 h-5 w-5 shrink-0 text-secondary" />
-                <p className="text-sm leading-6 text-primary-foreground/88">
-                  A cobrança acompanha o crescimento da equipe.
-                </p>
-              </div>
-              <div className="flex items-start gap-3">
-                <CircleHelp className="mt-0.5 h-5 w-5 shrink-0 text-secondary" />
-                <p className="text-sm leading-6 text-primary-foreground/88">
-                  A demonstração ajuda a avaliar o cenário antes do teste.
-                </p>
-              </div>
-              <div className="flex items-start gap-3">
-                <CircleHelp className="mt-0.5 h-5 w-5 shrink-0 text-secondary" />
-                <p className="text-sm leading-6 text-primary-foreground/88">
-                  O teste grátis de 14 dias permite validar a rotina com mais segurança.
-                </p>
-              </div>
+            <div className="mt-8 space-y-4 border-t border-white/10 pt-6">
+              {[
+                "Valor inicial acessível para validar a operação.",
+                "Cobrança acompanhá o crescimento da equipe.",
+                "Demonstração ajuda a avaliar o cenário antes do teste.",
+                "Teste grátis permite validar a rotina com mais segurança.",
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3">
+                  <CircleHelp className="mt-0.5 h-5 w-5 shrink-0 text-[#f59b58]" />
+                  <p className="text-sm leading-6 text-white/86">{item}</p>
+                </div>
+              ))}
             </div>
 
             <Button
               variant="hero"
-              className="mt-8 h-14 w-full rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/90"
+              className="mt-8 h-14 w-full rounded-lg bg-[#f47c36] text-white shadow-none hover:scale-100 hover:bg-[#df6928]"
               asChild
             >
               <a
                 href="#contato"
                 onClick={() => {
                   void trackCtaClick({
-                    cta_id: "pricing_cta_solicitar_demonstracao",
+                    cta_id: "pricing_cta_solicitar_demonstração",
                     cta_label: "Solicitar demonstração de preço",
                     placement: "pricing",
                     target: "#contato",

@@ -63,7 +63,7 @@ function createEvent(overrides: Partial<CrmLeadEvent> = {}): CrmLeadEvent {
 }
 
 describe("leadDetailSelectors", () => {
-  it("builds the detail view model without changing stage, owner and timeline derivations", () => {
+  it("builds the detail view model without chánging stage, owner and timeline derivations", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-04-14T12:30:00.000Z"));
 
@@ -81,7 +81,7 @@ describe("leadDetailSelectors", () => {
     });
 
     expect(viewModel.currentStage).toBe("em_contato");
-    expect(viewModel.currentOwnerLabel).toBe("Voce");
+    expect(viewModel.currentOwnerLabel).toBe("Você");
     expect(viewModel.selectedStageValue).toBe("em_contato");
     expect(viewModel.currentStageLabel).toBe("Em contato");
     expect(viewModel.taskSummary.openCount).toBe(1);
@@ -109,10 +109,10 @@ describe("leadDetailSelectors", () => {
     });
 
     expect(viewModel.currentStage).toBe("without_stage");
-    expect(viewModel.currentOwnerLabel).toBe("Sem responsavel");
+    expect(viewModel.currentOwnerLabel).toBe("Sem responsável");
     expect(viewModel.selectedStageValue).toBe("");
     expect(viewModel.currentStageLabel).toBe("Sem etapa");
-    expect(viewModel.currentStageDescription).toContain("nao foi classificado");
+    expect(viewModel.currentStageDescription).toContain("não foi classificado");
     expect(viewModel.nextTaskHelper).toContain("Crie uma tarefa");
     expect(viewModel.timelineItems).toHaveLength(0);
   });

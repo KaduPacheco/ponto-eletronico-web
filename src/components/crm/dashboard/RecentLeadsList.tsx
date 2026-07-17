@@ -50,7 +50,7 @@ const RecentLeadsList = ({ data, isLoading, errorMessage }: RecentLeadsListProps
                   <p className="truncate text-sm font-semibold text-foreground">{lead.name}</p>
                   <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
                     <Building2 className="h-3.5 w-3.5" />
-                    <span className="truncate">{lead.company || "Empresa nao informada"}</span>
+                    <span className="truncate">{lead.company || "Empresa não informada"}</span>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2.5 pt-1 text-xs text-muted-foreground">

@@ -46,7 +46,7 @@ describe("analyticsService - contrato e resiliencia", () => {
 
     const result = await trackAnalyticsEvent("cta_click", {
       metadata: {
-        cta_id: "hero_cta_comecar_teste",
+        cta_id: "hero_cta_começar_teste",
       },
     });
 
@@ -59,17 +59,17 @@ describe("analyticsService - contrato e resiliencia", () => {
     expect(options.method).toBe("POST");
     expect(options.headers).toMatchObject({
       "Content-Type": "application/json",
-      Prefer: "return=minimal",
+      Prefer: "return=mínimal",
     });
 
     const body = JSON.parse(String(options.body));
     expect(body.event_type).toBe("cta_click");
     expect(body.metadata).toEqual({
-      cta_id: "hero_cta_comecar_teste",
+      cta_id: "hero_cta_começar_teste",
     });
   });
 
-  it("nao quebra a operacao quando a API falha", async () => {
+  it("não quebra a operação quando a API falha", async () => {
     mockedFetch.mockResolvedValueOnce({
       ok: false,
       status: 404,

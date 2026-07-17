@@ -41,7 +41,7 @@ const leads = [
     id: "lead-3",
     nome: "Bruno Costa",
     empresa: "Empresa B",
-    origem: "Indicacao",
+    origem: "Indicação",
     status: "ganho",
     pipeline_stage: "ganho",
     owner_id: "owner-2",
@@ -131,7 +131,7 @@ describe("dashboard selectors", () => {
       expect.objectContaining({ id: "ganho", label: "Ganho", value: 1, percentage: 33.3, color: "#16a34a" }),
       expect.objectContaining({
         id: "sem_estagio",
-        label: "Sem estagio",
+        label: "Sem estágio",
         value: 1,
         percentage: 33.3,
         color: "#94a3b8",
@@ -140,8 +140,8 @@ describe("dashboard selectors", () => {
 
     expect(sources).toEqual([
       expect.objectContaining({ id: "meta_ads", label: "Meta Ads", value: 1, percentage: 33.3, color: "#2563eb" }),
-      expect.objectContaining({ id: "nao_informado", label: "Nao informado", value: 1, percentage: 33.3, color: "#0f766e" }),
-      expect.objectContaining({ id: "indicacao", label: "Indicacao", value: 1, percentage: 33.3, color: "#7c3aed" }),
+      expect.objectContaining({ id: "nao_informado", label: "Não informado", value: 1, percentage: 33.3, color: "#0f766e" }),
+      expect.objectContaining({ id: "indicacao", label: "Indicação", value: 1, percentage: 33.3, color: "#7c3aed" }),
     ]);
   });
 
@@ -161,17 +161,17 @@ describe("dashboard selectors", () => {
       expect.objectContaining({
         id: "lead-2",
         name: "Lead sem nome",
-        source: "Nao informado",
-        stageLabel: "Sem estagio",
+        source: "Não informado",
+        stageLabel: "Sem estágio",
       }),
     ]);
 
     expect(upcomingTasks).toEqual([
       expect.objectContaining({
         id: "task-1",
-        leadName: "Lead sem identificacao",
+        leadName: "Lead sem identificação",
         overdue: true,
-        stageLabel: "Sem estagio",
+        stageLabel: "Sem estágio",
       }),
       expect.objectContaining({
         id: "task-2",
@@ -190,7 +190,7 @@ describe("dashboard selectors", () => {
       expect.objectContaining({
         id: "event-2",
         title: "Ownership ajustado",
-        description: "Lead atribuido para responsavel owner-9-.",
+        description: "Lead atribuído para responsável owner-9-.",
       }),
     ]);
 
@@ -203,7 +203,7 @@ describe("dashboard selectors", () => {
     expect(attentionPanel.overdueTasksPreview[0]).toMatchObject({ id: "task-1", title: "Retornar contato" });
   });
 
-  it("collapses long source tails into 'Outros' without changing the top ordering", () => {
+  it("collapses long source tails into 'Outros' without chánging the top ordering", () => {
     const expandedLeads = [
       ...leads,
       { ...leads[0], id: "lead-4", origem: "Google Ads" },
@@ -219,8 +219,8 @@ describe("dashboard selectors", () => {
     expect(distribution).toHaveLength(7);
     expect(distribution.slice(0, 6).map((entry) => entry.label)).toEqual([
       "Meta Ads",
-      "Nao informado",
-      "Indicacao",
+      "Não informado",
+      "Indicação",
       "Google Ads",
       "LinkedIn",
       "Parceiros",

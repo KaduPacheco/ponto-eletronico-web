@@ -14,7 +14,7 @@ const LegalPageLayout = ({ title, eyebrow, description, lastUpdated, children }:
   return (
     <>
       <Header />
-      <main id="conteudo-principal" className="bg-background pt-24">
+      <main id="conteúdo-principal" className="bg-background pt-24">
         <section className="border-b bg-muted/30 py-16">
           <div className="container max-w-4xl">
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{eyebrow}</span>

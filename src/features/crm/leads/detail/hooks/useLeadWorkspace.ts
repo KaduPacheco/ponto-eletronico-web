@@ -78,7 +78,7 @@ export function useLeadWorkspace(leadId?: string) {
       toast({ title: "Nota adicionada" });
     },
     onError: (error) => {
-      reportLeadMutationError("Nao foi possivel salvar a nota.", error, leadId, toast);
+      reportLeadMutationError("Não foi possível salvar a nota.", error, leadId, toast);
     },
   });
 
@@ -99,7 +99,7 @@ export function useLeadWorkspace(leadId?: string) {
       toast({ title: "Follow-up agendado" });
     },
     onError: (error) => {
-      reportLeadMutationError("Nao foi possivel agendar o follow-up.", error, leadId, toast);
+      reportLeadMutationError("Não foi possível agendar o follow-up.", error, leadId, toast);
     },
   });
 
@@ -113,7 +113,7 @@ export function useLeadWorkspace(leadId?: string) {
       queryClient.invalidateQueries({ queryKey: CRM_QUERY_KEYS.leadsTaskOverview });
     },
     onError: (error) => {
-      reportLeadMutationError("Nao foi possivel atualizar a tarefa.", error, leadId, toast);
+      reportLeadMutationError("Não foi possível atualizar a tarefa.", error, leadId, toast);
     },
   });
 
@@ -129,7 +129,7 @@ export function useLeadWorkspace(leadId?: string) {
       toast({ title: "Etapa atualizada" });
     },
     onError: (error) => {
-      reportLeadMutationError("Nao foi possivel atualizar a etapa.", error, leadId, toast);
+      reportLeadMutationError("Não foi possível atualizar a etapa.", error, leadId, toast);
     },
   });
 
@@ -146,10 +146,10 @@ export function useLeadWorkspace(leadId?: string) {
       invalidateLeadWorkspace(queryClient, leadId);
       queryClient.invalidateQueries({ queryKey: CRM_QUERY_KEYS.leads });
       queryClient.invalidateQueries({ queryKey: CRM_QUERY_KEYS.ownerIds });
-      toast({ title: variables.nextOwnerId ? "Lead atribuido" : "Ownership removido" });
+      toast({ title: variables.nextOwnerId ? "Lead atribuído" : "Ownership removido" });
     },
     onError: (error) => {
-      reportLeadMutationError("Nao foi possivel atualizar o ownership.", error, leadId, toast);
+      reportLeadMutationError("Não foi possível atualizar o ownership.", error, leadId, toast);
     },
   });
 
@@ -175,11 +175,11 @@ export function useLeadWorkspace(leadId?: string) {
 
 function ensureLeadMutationPreconditions(leadId?: string, userId?: string) {
   if (!leadId) {
-    throw new Error("Lead nao informado para a operacao.");
+    throw new Error("Lead não informado para a operação.");
   }
 
   if (!userId) {
-    throw new Error("Sessao autenticada obrigatoria para esta operacao.");
+    throw new Error("Sessão autenticada obrigatória para esta operação.");
   }
 }
 
@@ -192,13 +192,13 @@ function ensureLeadPermission(permission: AuthPermission, allowed: boolean) {
 function getLeadPermissionMessage(permission: AuthPermission) {
   switch (permission) {
     case "crm:leads:write":
-      return "Voce nao possui permissao para editar etapa ou ownership deste lead.";
+      return "Você não possui permissão para editar etapa ou ownership deste lead.";
     case "crm:notes:write":
-      return "Voce nao possui permissao para salvar anotacoes neste lead.";
+      return "Você não possui permissão para salvar anotações neste lead.";
     case "crm:tasks:write":
-      return "Voce nao possui permissao para gerenciar tarefas deste lead.";
+      return "Você não possui permissão para gerenciar tarefas deste lead.";
     default:
-      return "Voce nao possui permissao para concluir esta operacao.";
+      return "Você não possui permissão para concluir esta operação.";
   }
 }
 

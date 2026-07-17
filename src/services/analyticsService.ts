@@ -67,7 +67,7 @@ export async function trackAnalyticsEvent(
   const supabaseEnv = tryGetSupabasePublicEnv();
 
   if (!supabaseEnv) {
-    console.warn(`[Analytics] Variaveis do Supabase ausentes. Evento '${eventType}' nao foi enviado.`);
+    console.warn(`[Analytics] Variaveis do Supabase ausentes. Evento '${eventType}' não foi enviado.`);
     return false;
   }
 
@@ -80,7 +80,7 @@ export async function trackAnalyticsEvent(
         "Content-Type": "application/json",
         apikey: supabaseEnv.anonKey,
         Authorization: `Bearer ${supabaseEnv.anonKey}`,
-        Prefer: "return=minimal",
+        Prefer: "return=mínimal",
       },
       body: JSON.stringify(payload),
     });

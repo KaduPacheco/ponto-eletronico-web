@@ -46,8 +46,8 @@ const AttentionPanel = ({ data, isLoading, errorMessage }: AttentionPanelProps) 
 
   return (
     <DashboardSection
-      title="Painel de atencao"
-      subtitle="Pontos que pedem acao imediata."
+      title="Painel de atenção"
+      subtitle="Pontos que pedem ação imediata."
       action={
         <Link
           to="/crm/leads"
@@ -62,12 +62,12 @@ const AttentionPanel = ({ data, isLoading, errorMessage }: AttentionPanelProps) 
         <SectionSkeleton rows={4} />
       ) : errorMessage ? (
         <SectionErrorState
-          title="Falha ao montar o painel de atencao"
+          title="Falha ao montar o painel de atenção"
           description={errorMessage}
         />
       ) : !data ? (
         <SectionEmptyState
-          title="Sem dados de atencao"
+          title="Sem dados de atenção"
           description="Quando o CRM tiver dados suficientes, os alertas operacionais aparecerao aqui."
         />
       ) : (
@@ -84,7 +84,7 @@ const AttentionPanel = ({ data, isLoading, errorMessage }: AttentionPanelProps) 
                     {totalOpenIssues}
                   </p>
                   <p className="max-w-2xl text-sm leading-5 text-slate-200/82">
-                    Ocorrencias abertas em {activeMetrics} frentes de atencao.
+                    Ocorrencias abertas em {activeMetrics} frentes de atenção.
                   </p>
                 </div>
               </div>
@@ -146,8 +146,8 @@ const AttentionPanel = ({ data, isLoading, errorMessage }: AttentionPanelProps) 
 
           {!hasAttentionItems ? (
             <SectionEmptyState
-              title="Operacao sob controle"
-              description="Nenhum alerta critico foi identificado nos dados visiveis para esta sessao."
+              title="Operação sob controle"
+              description="Nenhum alerta crítico foi identificado nos dados visíveis para esta sessão."
               icon={<UserRoundX className="h-5 w-5" />}
               className="min-h-[160px]"
             />

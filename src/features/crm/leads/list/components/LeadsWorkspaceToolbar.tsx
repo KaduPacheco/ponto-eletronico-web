@@ -75,25 +75,25 @@ const LeadsWorkspaceToolbar = ({
         <div className="space-y-3">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
             <ListFilter className="h-3.5 w-3.5" />
-            Operacao comercial
+            Operação comercial
           </div>
           <div>
             <h2 className="text-2xl font-semibold tracking-tight text-foreground">Pipeline e ownership dos leads</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Filtre por etapa e ownership, acompanhe pendencias e alterne entre lista e kanban sem sair da operacao.
+              Filtre por etapa e ownership, acompanhe pendências e alterne entre lista e kanban sem sair da operação.
             </p>
           </div>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2 xl:min-w-[420px] xl:grid-cols-3">
-          <StatCard label="Leads visiveis" value={String(visibleLeads)} helper={`${totalLeads} no total`} />
+          <StatCard label="Leads visíveis" value={String(visibleLeads)} helper={`${totalLeads} no total`} />
           <StatCard
             label="Com follow-up vencido"
             value={String(overdueLeads)}
-            helper="Exigem acao imediata"
+            helper="Exigem ação imediata"
             danger={overdueLeads > 0}
           />
-          <StatCard label="Sem responsavel" value={String(unassignedLeads)} helper="Ownership pendente" />
+          <StatCard label="Sem responsável" value={String(unassignedLeads)} helper="Ownership pendente" />
         </div>
       </div>
 
@@ -153,9 +153,9 @@ const LeadsWorkspaceToolbar = ({
               onChange={(event) => onOwnerFilterChange(event.target.value as LeadOwnerFilter)}
               className="h-10 w-full rounded-2xl border border-input bg-background px-3 text-sm text-foreground"
             >
-              <option value={LEAD_OWNER_FILTER_ALL}>Todos os responsaveis</option>
+              <option value={LEAD_OWNER_FILTER_ALL}>Todos os responsáveis</option>
               <option value={LEAD_OWNER_FILTER_MINE}>Sob minha responsabilidade</option>
-              <option value={LEAD_OWNER_FILTER_UNASSIGNED}>Sem responsavel</option>
+              <option value={LEAD_OWNER_FILTER_UNASSIGNED}>Sem responsável</option>
               {ownerOptions.map((owner) => (
                 <option key={owner.id} value={getOwnerFilterValueForId(owner.id)}>
                   {owner.selectLabel}
@@ -171,7 +171,7 @@ const LeadsWorkspaceToolbar = ({
               onChange={(event) => onPeriodFilterChange(event.target.value as LeadPeriodFilter)}
               className="h-10 w-full rounded-2xl border border-input bg-background px-3 text-sm text-foreground"
             >
-              <option value="all">Todo o historico</option>
+              <option value="all">Todo o histórico</option>
               <option value="today">Hoje</option>
               <option value="7d">Ultimos 7 dias</option>
               <option value="30d">Ultimos 30 dias</option>
@@ -184,7 +184,7 @@ const LeadsWorkspaceToolbar = ({
       <div className="mt-5 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <label className="space-y-2 text-sm sm:min-w-[220px]">
-            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Ordenacao</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Ordenação</span>
             <select
               value={sortOption}
               onChange={(event) => onSortOptionChange(event.target.value as LeadSortOption)}
@@ -200,9 +200,9 @@ const LeadsWorkspaceToolbar = ({
 
           <div className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Recorte atual</p>
-            <p className="mt-1 text-sm font-medium text-foreground">{visibleLeads} leads visiveis</p>
+            <p className="mt-1 text-sm font-medium text-foreground">{visibleLeads} leads visíveis</p>
             <p className="text-xs text-muted-foreground">
-              {hasActiveFilters ? "Busca e filtros aplicados na operacao." : "Nenhum filtro adicional ativo."}
+              {hasActiveFilters ? "Busca e filtros aplicados na operação." : "Nenhum filtro adicional ativo."}
             </p>
           </div>
 

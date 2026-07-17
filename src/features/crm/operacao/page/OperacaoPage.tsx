@@ -20,7 +20,7 @@ import {
 } from "@/features/crm/shared/components/DashboardSurface";
 import { Button } from "@/components/ui/Button";
 
-const OperacaoPage = () => {
+const OperaçãoPage = () => {
   const { hasPermission } = useAuth();
   const { leadsQuery, tasksQuery, leadMetrics, taskMetrics, pipelineData, sourceData, lastUpdatedAt } =
     useCrmDashboardData({
@@ -39,12 +39,12 @@ const OperacaoPage = () => {
           <div className="max-w-3xl space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-primary">
               <BriefcaseBusiness className="h-3.5 w-3.5" />
-              Operacao comercial
+              Operação comercial
             </div>
 
             <div className="space-y-4">
               <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-foreground lg:text-[2.7rem] lg:leading-[1.05]">
-                Operacao comercial
+                Operação comercial
               </h1>
               <p className="max-w-2xl text-sm leading-6 text-muted-foreground lg:text-[15px]">
                 Pipeline, origem comercial e carteira em uma leitura direta para o time comercial.
@@ -59,11 +59,11 @@ const OperacaoPage = () => {
                   Carteira operacional
                 </p>
                 <p className="text-base font-semibold tracking-tight text-foreground">
-                  {leadsQuery.isError || tasksQuery.isError ? "Leitura parcial da operacao" : "Visao estrutural da base"}
+                  {leadsQuery.isError || tasksQuery.isError ? "Leitura parcial da operação" : "Visão estrutural da base"}
                 </p>
                 <p className="text-xs leading-5 text-muted-foreground">
                   {lastUpdatedAt
-                    ? `Ultima atualizacao em ${formatDateTimePtBr(lastUpdatedAt)}`
+                    ? `Última atualização em ${formatDateTimePtBr(lastUpdatedAt)}`
                     : "Sincronizando base comercial"}
                 </p>
               </div>
@@ -155,7 +155,7 @@ const OperacaoPage = () => {
       </DashboardClusterShell>
 
       <DashboardClusterShell
-        eyebrow="Acesso rapido"
+        eyebrow="Acesso rápido"
         title="Workspace de leads"
         description="Acesso direto para triagem e acompanhamento."
         tone="subtle"
@@ -168,7 +168,7 @@ const OperacaoPage = () => {
               </p>
               <h2 className="text-xl font-semibold tracking-tight text-foreground">Leads e acompanhamento individual</h2>
               <p className="max-w-2xl text-sm leading-5 text-muted-foreground">
-                Continue a execucao comercial na base detalhada de leads.
+                Continue a execução comercial na base detalhada de leads.
               </p>
             </div>
 
@@ -191,4 +191,4 @@ function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : "Tente novamente em instantes.";
 }
 
-export default OperacaoPage;
+export default OperaçãoPage;

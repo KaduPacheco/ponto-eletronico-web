@@ -112,9 +112,9 @@ const LeadDetailPage = () => {
       <div className="mx-auto flex max-w-6xl flex-col gap-6 p-8">
         <div className="rounded-[28px] border border-destructive/20 bg-destructive/5 p-12 text-center shadow-sm">
           <AlertCircle className="mx-auto h-10 w-10 text-destructive" />
-          <p className="mt-4 text-lg font-semibold text-foreground">Nao foi possivel carregar o lead</p>
+          <p className="mt-4 text-lg font-semibold text-foreground">Não foi possível carregar o lead</p>
           <p className="mt-2 text-sm text-muted-foreground">
-            {leadQuery.isError ? (leadQuery.error as Error).message : "Lead nao encontrado."}
+            {leadQuery.isError ? (leadQuery.error as Error).message : "Lead não encontrado."}
           </p>
         </div>
       </div>

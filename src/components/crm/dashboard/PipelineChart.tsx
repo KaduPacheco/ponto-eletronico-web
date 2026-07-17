@@ -22,7 +22,7 @@ interface PipelineChartProps {
 const PipelineChart = ({ data, isLoading, errorMessage }: PipelineChartProps) => {
   return (
     <DashboardSection
-      title="Distribuicao por estagio"
+      title="Distribuição por estágio"
       subtitle="Estagios atuais da carteira."
     >
       {isLoading ? (
@@ -38,12 +38,12 @@ const PipelineChart = ({ data, isLoading, errorMessage }: PipelineChartProps) =>
         </div>
       ) : errorMessage ? (
         <SectionErrorState
-          title="Nao foi possivel montar o funil"
+          title="Não foi possível montar o funil"
           description={errorMessage}
         />
       ) : !data || data.length === 0 ? (
         <SectionEmptyState
-          title="Sem estagios para analisar"
+          title="Sem estágios para analisar"
           description="Assim que os leads entrarem no CRM, o panorama do pipeline aparecera aqui."
           icon={<ChartNoAxesColumn className="h-5 w-5" />}
         />

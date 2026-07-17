@@ -25,8 +25,8 @@ interface TrafficVsLeadsChartProps {
 const TrafficVsLeadsChart = ({ data, isLoading, errorMessage }: TrafficVsLeadsChartProps) => {
   return (
     <DashboardSection
-      title="Canais de aquisicao"
-      subtitle="Visitors e conversoes por canal."
+      title="Canais de aquisição"
+      subtitle="Visitors e conversões por canal."
     >
       {isLoading ? (
         <div className="grid gap-4 2xl:grid-cols-[minmax(0,1fr),280px]">
@@ -41,13 +41,13 @@ const TrafficVsLeadsChart = ({ data, isLoading, errorMessage }: TrafficVsLeadsCh
         </div>
       ) : errorMessage ? (
         <SectionErrorState
-          title="Nao foi possivel comparar trafego e leads"
+          title="Não foi possível comparar tráfego e leads"
           description={errorMessage}
         />
       ) : !data || data.length === 0 ? (
         <SectionEmptyState
-          title="Sem canais suficientes para comparacao"
-          description="Assim que houver trafego e conversoes reais por origem, este comparativo sera habilitado."
+          title="Sem canais suficientes para comparação"
+          description="Assim que houver tráfego e conversões reais por origem, este comparativo sera habilitado."
           icon={<GitCompareArrows className="h-5 w-5" />}
         />
       ) : (
@@ -124,7 +124,7 @@ function ChannelRow({ entry }: { entry: DashboardTrafficComparisonDatum }) {
         </span>
       </div>
       <div className="mt-2 flex flex-wrap gap-2 text-[10px] text-muted-foreground">
-        <span>{entry.visitorsShare}% do trafego</span>
+        <span>{entry.visitorsShare}% do tráfego</span>
         <span>{entry.leadsShare}% dos leads</span>
       </div>
     </div>

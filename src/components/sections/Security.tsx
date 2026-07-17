@@ -19,7 +19,7 @@ const pillars = [
     icon: DatabaseBackup,
     title: "Histórico e rastreabilidade",
     description:
-      "Registros, ajustes e dados relevantes podem ser acompanhados com mais contexto, o que fortalece rotinas de auditoria e conferência.",
+      "Registros, ajustes e dados relevantes podem ser acompanhádos com mais contexto, o que fortalece rotinas de auditoria e conferência.",
   },
 ] as const;
 
@@ -32,7 +32,7 @@ const Security = () => {
         <div className="mx-auto mb-16 max-w-3xl text-center">
           <span className="text-sm font-bold uppercase tracking-widest text-primary">Segurança e rastreabilidade</span>
           <h2 id="security-title" className="mt-3 text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
-            Mais confiança para operar um processo sensível todos os meses.
+            Mais confiança para operar um processo sensível todos os mêses.
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Em controle de jornada, percepção de qualidade também vem de segurança, clareza de processo e capacidade de conferência.

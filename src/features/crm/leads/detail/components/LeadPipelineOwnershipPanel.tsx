@@ -68,7 +68,7 @@ const LeadPipelineOwnershipPanel = ({
             <LeadOperationalSummaryCard
               label="Ownership vigente"
               value={currentOwnerLabel}
-              helper={lead.owner_id ? "Responsavel definido para conduzir o lead." : "Lead disponivel para distribuicao."}
+              helper={lead.owner_id ? "Responsável definido para conduzir o lead." : "Lead disponível para distribuição."}
               tone={lead.owner_id ? "neutral" : "danger"}
             />
           </div>
@@ -97,7 +97,7 @@ const LeadPipelineOwnershipPanel = ({
               ))}
             </select>
             <p className="text-sm text-muted-foreground">
-              {canEditLead ? currentStageDescription : "Sem permissao para alterar a etapa deste lead."}
+              {canEditLead ? currentStageDescription : "Sem permissão para alterar a etapa deste lead."}
             </p>
           </div>
 
@@ -109,7 +109,7 @@ const LeadPipelineOwnershipPanel = ({
               disabled={!canEditLead || ownerMutationPending}
               className="h-11 w-full rounded-2xl border border-input bg-background px-3 text-sm text-foreground"
             >
-              <option value="">Sem responsavel</option>
+              <option value="">Sem responsável</option>
               {ownerOptions.map((ownerOption) => (
                 <option key={ownerOption.id} value={ownerOption.id}>
                   {ownerOption.selectLabel}
@@ -120,13 +120,13 @@ const LeadPipelineOwnershipPanel = ({
               {canEditLead
                 ? lead.owner_id
                   ? `Responsavel atual: ${currentOwnerLabel}`
-                  : "Este lead ainda nao possui ownership definido."
-                : "Sem permissao para atualizar ownership deste lead."}
+                  : "Este lead ainda não possui ownership definido."
+                : "Sem permissão para atualizar ownership deste lead."}
             </p>
             {ownerIdsError ? (
               <p className="text-sm text-amber-700 dark:text-amber-300">
-                A lista de responsaveis esta operando em modo reduzido. Sem uma tabela publica de perfis no backend,
-                o CRM usa apenas owners ja vistos nos leads e o usuario autenticado atual.
+                A lista de responsáveis está operando em modo reduzido. Sem uma tabela pública de perfis no backend,
+                o CRM usa apenas owners já vistos nos leads e o usuário autenticado atual.
               </p>
             ) : null}
           </div>
@@ -134,7 +134,7 @@ const LeadPipelineOwnershipPanel = ({
 
         <div className="space-y-3">
           <LeadOperationalSummaryCard
-            label="Proxima acao"
+            label="Próxima ação"
             value={taskSummary.nextTask ? taskSummary.nextTask.title : "Sem follow-up aberto"}
             helper={nextTaskHelper}
             tone={taskSummary.overdueCount > 0 ? "danger" : "neutral"}

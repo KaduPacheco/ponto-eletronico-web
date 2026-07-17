@@ -55,7 +55,7 @@ function readRequiredPublicEnv(key: "VITE_SUPABASE_URL" | "VITE_SUPABASE_ANON_KE
     return value;
   }
 
-  const error = new Error(`[supabase] Variavel obrigatoria ausente: ${key}.`);
+  const error = new Error(`[supabase] Variavel obrigatória ausente: ${key}.`);
   cachedError = error;
   logAppEvent("supabase", "error", error.message);
   throw error;

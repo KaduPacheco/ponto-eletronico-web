@@ -19,7 +19,7 @@ interface LeadsKanbanBoardProps {
 const stageColumns: Array<{ key: PipelineStage | "without_stage"; title: string; helper: string }> = [
   { key: "novo", title: "Novo", helper: "Entrada e primeira abordagem" },
   { key: "em_contato", title: "Em contato", helper: "Conversas e follow-ups ativos" },
-  { key: "qualificado", title: "Qualificado", helper: "Fit confirmado e proxima etapa definida" },
+  { key: "qualificado", title: "Qualificado", helper: "Fit confirmado e próxima etapa definida" },
   { key: "ganho", title: "Ganho", helper: "Negocios convertidos" },
   { key: "perdido", title: "Perdido", helper: "Oportunidades encerradas" },
   { key: "without_stage", title: "Sem etapa", helper: "Leads que ainda precisam ser classificados" },
@@ -70,7 +70,7 @@ const LeadsKanbanBoard = ({ items, currentUserId, ownerLabelMap }: LeadsKanbanBo
                             {priority.label}
                           </p>
                           <p className="pt-2 font-semibold text-foreground">{lead.nome || "Lead sem nome"}</p>
-                          <p className="text-sm text-muted-foreground">{lead.empresa || "Empresa nao informada"}</p>
+                          <p className="text-sm text-muted-foreground">{lead.empresa || "Empresa não informada"}</p>
                         </div>
 
                         <div className="space-y-1 text-xs text-muted-foreground">
@@ -91,7 +91,7 @@ const LeadsKanbanBoard = ({ items, currentUserId, ownerLabelMap }: LeadsKanbanBo
                           >
                             <div className="inline-flex items-center gap-1 font-medium">
                               <CalendarClock className="h-3.5 w-3.5" />
-                              Proxima acao
+                              Próxima ação
                             </div>
                             <p className="mt-1">{taskSummary.nextTask.title}</p>
                             <p className="mt-1">Ate {formatTaskDueDate(taskSummary.nextTask.due_date)}</p>

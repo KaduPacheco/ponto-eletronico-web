@@ -1,7 +1,7 @@
 import { getSupabasePublicEnv } from "@/infra/supabase/env";
 import { getErrorMessage, logAppEvent } from "@/lib/appLogger";
 
-// Este script isola a logica de comunicacao com o Supabase sem dependencia de SDKs pesados.
+// Este script isola a lógica de comunicação com o Supabase sem dependencia de SDKs pesados.
 
 export interface LeadData {
   nome: string;
@@ -28,7 +28,7 @@ export async function submitLeadToSupabase(lead: LeadData): Promise<boolean> {
       "Content-Type": "application/json",
       apikey: supabaseEnv.anonKey,
       Authorization: `Bearer ${supabaseEnv.anonKey}`,
-      Prefer: "return=minimal",
+      Prefer: "return=mínimal",
     },
     body: JSON.stringify({
       ...lead,

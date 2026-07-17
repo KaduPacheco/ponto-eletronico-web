@@ -12,7 +12,7 @@ import { useAuth } from "../../features/crm/auth/hooks/useAuth";
 describe("ProtectedRoute - Seguranca de Rota", () => {
   const mockedUseAuth = vi.mocked(useAuth);
 
-  it("deve exibir o spinner quando estiver carregando a sessao", () => {
+  it("deve exibir o spinner quando estiver carregando a sessão", () => {
     mockedUseAuth.mockReturnValue(buildAuthMock({ loading: true }));
 
     render(
@@ -25,7 +25,7 @@ describe("ProtectedRoute - Seguranca de Rota", () => {
     expect(spinner).toBeInTheDocument();
   });
 
-  it("deve permitir acesso quando houver sessao ativa", () => {
+  it("deve permitir acesso quando houver sessão ativa", () => {
     mockedUseAuth.mockReturnValue(
       buildAuthMock({
         session: { user: { id: "user-1" } } as never,
@@ -45,7 +45,7 @@ describe("ProtectedRoute - Seguranca de Rota", () => {
     expect(getByText("Conteudo Privado")).toBeInTheDocument();
   });
 
-  it("deve redirecionar para login quando nao houver sessao", () => {
+  it("deve redirecionar para login quando não houver sessão", () => {
     mockedUseAuth.mockReturnValue(buildAuthMock());
 
     const { getByText, queryByText } = render(
@@ -54,16 +54,16 @@ describe("ProtectedRoute - Seguranca de Rota", () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/protected" element={<div>Conteudo Privado</div>} />
           </Route>
-          <Route path="/crm/login" element={<div>Pagina de Login</div>} />
+          <Route path="/crm/login" element={<div>Página de Login</div>} />
         </Routes>
       </MemoryRouter>,
     );
 
-    expect(getByText("Pagina de Login")).toBeInTheDocument();
+    expect(getByText("Página de Login")).toBeInTheDocument();
     expect(queryByText("Conteudo Privado")).not.toBeInTheDocument();
   });
 
-  it("deve redirecionar quando a rota exigir permissao ausente", () => {
+  it("deve redirecionar quando a rota exigir permissão ausente", () => {
     mockedUseAuth.mockReturnValue(
       buildAuthMock({
         session: { user: { id: "user-1" } } as never,
@@ -86,7 +86,7 @@ describe("ProtectedRoute - Seguranca de Rota", () => {
     expect(queryByText("Conteudo Privado")).not.toBeInTheDocument();
   });
 
-  it("deve usar o fallback mais seguro quando nao houver unauthorizedPath explicito", () => {
+  it("deve usar o fallback mais seguro quando não houver unauthorizedPath explicito", () => {
     mockedUseAuth.mockReturnValue(
       buildAuthMock({
         session: { user: { id: "user-1" } } as never,

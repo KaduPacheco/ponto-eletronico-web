@@ -10,7 +10,7 @@ const FinalCTA = () => {
       <div className="container relative z-10">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-3xl font-extrabold tracking-tight md:text-5xl">
-            Se a folha fecha no sufoco, vale ver como essa rotina pode ficar mais leve.
+            Se a folha fechá no sufoco, vale ver como essa rotina pode ficar mais leve.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-primary-foreground/82 md:text-xl">
             A próxima etapa é simples: entender o seu cenário, mostrar a plataforma e avaliar se ela faz sentido para a sua operação.
@@ -22,7 +22,7 @@ const FinalCTA = () => {
                 href="#contato"
                 onClick={() => {
                   void trackCtaClick({
-                    cta_id: "final_cta_solicitar_demonstracao",
+                    cta_id: "final_cta_solicitar_demonstração",
                     cta_label: "Solicitar demonstração final",
                     placement: "final_cta",
                     target: "#contato",

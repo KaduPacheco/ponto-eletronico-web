@@ -43,7 +43,7 @@ const ActivityFeed = ({ data, isLoading, errorMessage }: ActivityFeedProps) => {
       ) : !data || data.length === 0 ? (
         <SectionEmptyState
           title="Nenhuma atividade registrada"
-          description="Os eventos operacionais aparecerao aqui conforme o CRM for sendo utilizado."
+          description="Os eventos operacionais aparecerao aqui conforme o CRM for sendo útilizado."
           icon={<History className="h-5 w-5" />}
         />
       ) : (

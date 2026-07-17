@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { buildAuthAccess, hasPermission } from "../authAccess";
 
 describe("authAccess", () => {
-  it("retorna acesso anonimo quando nao ha usuario", () => {
+  it("retorna acesso anonimo quando não há usuário", () => {
     const access = buildAuthAccess(null);
 
     expect(access.role).toBe("anonymous");
@@ -10,7 +10,7 @@ describe("authAccess", () => {
     expect(hasPermission(access, "crm:access")).toBe(false);
   });
 
-  it("garante permissoes padrao para usuario autenticado", () => {
+  it("garante permissões padrao para usuário autenticado", () => {
     const access = buildAuthAccess({
       app_metadata: {},
       user_metadata: {},
@@ -22,7 +22,7 @@ describe("authAccess", () => {
     expect(hasPermission(access, "crm:dashboard:read")).toBe(true);
   });
 
-  it("respeita permissoes customizadas vindas do metadata", () => {
+  it("respeita permissões customizadas vindas do metadata", () => {
     const access = buildAuthAccess({
       app_metadata: {
         crm_role: "manager",

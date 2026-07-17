@@ -15,7 +15,7 @@ const LeadTimelinePanel = ({ timelineItems, loading }: LeadTimelinePanelProps) =
         <div>
           <h2 className="font-semibold text-foreground">Timeline de atividades</h2>
           <p className="text-sm text-muted-foreground">
-            Notas, agenda e mudancas de pipeline aparecem no mesmo historico.
+            Notas, agenda e mudancas de pipeline aparecem no mesmo histórico.
           </p>
         </div>
       </div>

@@ -17,7 +17,7 @@ const CrmBootstrapOutlet = () => {
       return;
     }
 
-    logAppEvent("crm", "error", "Bootstrap autenticado indisponivel por configuracao ausente");
+    logAppEvent("crm", "error", "Bootstrap autenticado indisponível por configuração ausente");
   }, [supabaseEnv]);
 
   if (!supabaseEnv) {
@@ -45,7 +45,7 @@ function CrmConfigFallback() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted px-6">
       <div className="max-w-lg rounded-2xl border border-border bg-card p-8 text-center shadow-sm">
-        <h1 className="text-2xl font-semibold text-foreground">CRM indisponivel no ambiente atual.</h1>
+        <h1 className="text-2xl font-semibold text-foreground">CRM indisponível no ambiente atual.</h1>
         <p className="mt-3 text-sm leading-6 text-muted-foreground">
           Defina <code>VITE_SUPABASE_URL</code> e <code>VITE_SUPABASE_ANON_KEY</code> para acessar as rotas autenticadas do
           CRM.

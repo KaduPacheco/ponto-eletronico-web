@@ -41,9 +41,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           return;
         }
 
-        const message = getErrorMessage(error, "Nao foi possivel restaurar a sessao.");
+        const message = getErrorMessage(error, "Não foi possível restáurar a sessão.");
 
-        logAppEvent("auth", "error", "Falha ao carregar sessao inicial", {
+        logAppEvent("auth", "error", "Falha ao carregar sessão inicial", {
           error: message,
         });
 
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, nextSession) => {
-      logAppEvent("auth", "info", "Mudanca de autenticacao recebida", {
+      logAppEvent("auth", "info", "Mudanca de autenticação recebida", {
         event,
         userId: nextSession?.user?.id ?? null,
       });
@@ -70,9 +70,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-      const message = getErrorMessage(error, "Nao foi possivel encerrar a sessao.");
+      const message = getErrorMessage(error, "Não foi possível encerrar a sessão.");
 
-      logAppEvent("auth", "error", "Falha ao encerrar sessao", {
+      logAppEvent("auth", "error", "Falha ao encerrar sessão", {
         error: message,
       });
 

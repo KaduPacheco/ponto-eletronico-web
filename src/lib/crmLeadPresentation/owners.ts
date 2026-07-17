@@ -19,8 +19,8 @@ export function buildOwnerOptions(ownerIds: Iterable<string | null | undefined>,
   if (currentUser?.id) {
     options.set(currentUser.id, {
       id: currentUser.id,
-      displayLabel: "Voce",
-      selectLabel: currentUserLabel ? `Voce (${currentUserLabel})` : "Voce",
+      displayLabel: "Você",
+      selectLabel: currentUserLabel ? `Você (${currentUserLabel})` : "Você",
     });
   }
 
@@ -59,7 +59,7 @@ export function getOwnerDisplayLabel(
   ownerLabelMap?: ReadonlyMap<string, string>,
 ) {
   if (!ownerId) {
-    return "Sem responsavel";
+    return "Sem responsável";
   }
 
   const knownOwnerLabel = ownerLabelMap?.get(ownerId);
@@ -69,7 +69,7 @@ export function getOwnerDisplayLabel(
   }
 
   if (currentUserId && ownerId === currentUserId) {
-    return "Voce";
+    return "Você";
   }
 
   return `Responsavel ${ownerId.slice(0, 8)}`;

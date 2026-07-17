@@ -25,7 +25,7 @@ interface AnalyticsFunnelChartProps {
 const AnalyticsFunnelChart = ({ data, isLoading, errorMessage }: AnalyticsFunnelChartProps) => {
   return (
     <DashboardSection
-      title="Funil de conversao"
+      title="Funil de conversão"
       subtitle="Visitors por etapa da jornada."
     >
       {isLoading ? (
@@ -41,13 +41,13 @@ const AnalyticsFunnelChart = ({ data, isLoading, errorMessage }: AnalyticsFunnel
         </div>
       ) : errorMessage ? (
         <SectionErrorState
-          title="Nao foi possivel montar o funil da landing"
+          title="Não foi possível montar o funil da landing"
           description={errorMessage}
         />
       ) : !data || data.every((entry) => entry.value === 0) ? (
         <SectionEmptyState
           title="Sem eventos suficientes para o funil"
-          description="Assim que a landing registrar page views e interacoes reais, o funil aparecera aqui."
+          description="Assim que a landing registrar page views e interações reais, o funil aparecera aqui."
           icon={<Filter className="h-5 w-5" />}
         />
       ) : (

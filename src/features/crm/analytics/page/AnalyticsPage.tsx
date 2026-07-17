@@ -58,7 +58,7 @@ const AnalyticsPage = () => {
                 Performance da landing
               </h1>
               <p className="max-w-2xl text-sm leading-6 text-muted-foreground lg:text-[15px]">
-                Visitors, cliques, conversoes e canais de aquisicao da landing nos ultimos {analyticsWindowDays} dias.
+                Visitors, cliques, conversões e canais de aquisição da landing nos ultimos {analyticsWindowDays} dias.
               </p>
             </div>
           </div>
@@ -70,11 +70,11 @@ const AnalyticsPage = () => {
                   Janela de analise
                 </p>
                 <p className="text-base font-semibold tracking-tight text-foreground">
-                  {analyticsQuery.isError ? "Dados analiticos com alerta" : `${analyticsWindowDays} dias monitorados`}
+                  {analyticsQuery.isError ? "Dados analíticos com alerta" : `${analyticsWindowDays} dias monitorados`}
                 </p>
                 <p className="text-xs leading-5 text-muted-foreground">
                   {lastUpdatedAt
-                    ? `Ultima atualizacao em ${formatDateTimePtBr(lastUpdatedAt)}`
+                    ? `Última atualização em ${formatDateTimePtBr(lastUpdatedAt)}`
                     : "Sincronizando eventos da landing"}
                 </p>
               </div>
@@ -103,15 +103,15 @@ const AnalyticsPage = () => {
       </section>
 
       <DashboardClusterShell
-        eyebrow="Aquisicao e conversao"
+        eyebrow="Aquisicao e conversão"
         title="KPIs de performance da landing"
-        description="Volume, interacao e conversao."
+        description="Volume, interação e conversão."
         tone="subtle"
       >
         <DashboardMetricRail
-          eyebrow="Resumo do periodo"
+          eyebrow="Resumo do período"
           title="Indicadores principais"
-          description="Visitors, cliques, conversoes e taxa."
+          description="Visitors, cliques, conversões e taxa."
         >
           <KpiCard
             metric={analyticsMetrics.find((metric) => metric.id === "landing_visitors")}
@@ -145,9 +145,9 @@ const AnalyticsPage = () => {
       </DashboardClusterShell>
 
       <DashboardClusterShell
-        eyebrow="Conversao por periodo"
-        title="Volume e taxa de conversao"
-        description="Serie temporal de visitors, conversoes e taxa."
+        eyebrow="Conversão por período"
+        title="Volume e taxa de conversão"
+        description="Serie temporal de visitors, conversões e taxa."
       >
         <AnalyticsTimelineChart
           data={analyticsSeriesData}
@@ -157,9 +157,9 @@ const AnalyticsPage = () => {
       </DashboardClusterShell>
 
       <DashboardClusterShell
-        eyebrow="Canais de aquisicao"
-        title="Trafego, leads e origem do trafego"
-        description="Comparativo entre canais e contribuicao para conversao."
+        eyebrow="Canais de aquisição"
+        title="Tráfego, leads e origem do tráfego"
+        description="Comparativo entre canais e contribuicao para conversão."
         tone="muted"
       >
         <div className="grid gap-6 2xl:grid-cols-2">
@@ -177,7 +177,7 @@ const AnalyticsPage = () => {
       </DashboardClusterShell>
 
       <DashboardClusterShell
-        eyebrow="Funil de conversao"
+        eyebrow="Funil de conversão"
         title="Etapas da landing"
         description="Visitors por etapa da jornada."
       >

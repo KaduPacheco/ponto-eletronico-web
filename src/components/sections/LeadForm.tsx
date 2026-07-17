@@ -200,23 +200,23 @@ const LeadForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   }
 
   return (
-    <section id="contato" className="bg-hero-gradient py-20" aria-labelledby="lead-form-title">
+    <section id="contato" className="bg-[#06211f] py-24 text-white" aria-labelledby="lead-form-title">
       <div className="container" ref={ref}>
-        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr]">
-          <div className={`text-primary-foreground ${isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
-            <h2 id="lead-form-title" className="mt-4 text-3xl font-extrabold md:text-4xl">
-              Solicite uma demonstração e veja se a plataforma faz sentido para a sua operação.
+        <div className="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+          <div className={`${isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
+            <span className="text-sm font-extrabold uppercase text-[#f59b58]" style={{ letterSpacing: ".14em" }}>Próximo passo</span>
+            <h2 id="lead-form-title" className="mt-4 max-w-xl text-3xl font-extrabold leading-tight md:text-4xl">
+              Solicite uma demonstração desenhada para a sua operação.
             </h2>
-            <p className="mt-5 max-w-xl text-lg leading-8 text-primary-foreground/84">
-              Preencha seus dados para nosso time entender o cenário da empresa, apresentar a solução e orientar o próximo passo
-              comercial com mais objetividade.
+            <p className="mt-5 max-w-xl text-lg leading-8 text-white/72">
+              Preencha os dados para nosso time entender o cenário, apresentar a solução e orientar o caminho comercial com mais objetividade.
             </p>
 
-            <div className="mt-8 space-y-3">
+            <div className="mt-8 grid gap-3 sm:max-w-xl">
               {trustPoints.map((item) => (
-                <div key={item} className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/10 px-4 py-4">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-secondary" />
-                  <p className="text-sm leading-6 text-primary-foreground/90">{item}</p>
+                <div key={item} className="flex items-start gap-3 rounded-lg border border-white/10 bg-white/7 px-4 py-4">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#73ead6]" />
+                  <p className="text-sm font-semibold leading-6 text-white/88">{item}</p>
                 </div>
               ))}
             </div>
@@ -225,7 +225,7 @@ const LeadForm = ({ onSuccess }: { onSuccess?: () => void }) => {
           <form
             onSubmit={handleSubmit}
             onFocusCapture={handleFormStart}
-            className={`rounded-[2rem] bg-card p-8 shadow-2xl md:p-10 ${isVisible ? "animate-fade-in-up" : "opacity-0"}`}
+            className={`rounded-lg bg-card p-8 text-foreground shadow-[0_28px_80px_rgba(0,0,0,.24)] md:p-10 ${isVisible ? "animate-fade-in-up" : "opacity-0"}`}
             style={{ animationDelay: "0.2s" }}
           >
             <input
@@ -240,143 +240,53 @@ const LeadForm = ({ onSuccess }: { onSuccess?: () => void }) => {
             />
 
             <div className="mb-6">
-              <h3 className="text-2xl font-bold text-foreground">Solicitar demonstração</h3>
+              <h3 className="text-2xl font-extrabold text-foreground">Solicitar demonstração</h3>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                Campos essenciais para nosso time preparar um contato comercial mais útil para a sua realidade.
+                Campos essenciais para preparar um contato comercial mais útil para a sua realidade.
               </p>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
               <div className="md:col-span-2">
-                <label htmlFor="name" className="mb-2 block text-sm font-medium text-foreground">
+                <label htmlFor="name" className="mb-2 block text-sm font-bold text-foreground">
                   Nome completo
                 </label>
-                <Input
-                  id="name"
-                  placeholder="Seu nome completo"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="h-12 rounded-xl"
-                  maxLength={100}
-                  autoComplete="name"
-                  aria-invalid={!!errors.name}
-                  aria-describedby={errors.name ? "name-error" : undefined}
-                />
-                {errors.name && (
-                  <p id="name-error" className="mt-1 text-xs text-destructive">
-                    {errors.name}
-                  </p>
-                )}
+                <Input id="name" placeholder="Seu nome completo" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-12 rounded-lg" maxLength={100} autoComplete="name" aria-invalid={!!errors.name} aria-describedby={errors.name ? "name-error" : undefined} />
+                {errors.name && <p id="name-error" className="mt-1 text-xs text-destructive">{errors.name}</p>}
               </div>
 
               <div>
-                <label htmlFor="whatsapp" className="mb-2 block text-sm font-medium text-foreground">
-                  WhatsApp
-                </label>
-                <Input
-                  id="whatsapp"
-                  type="tel"
-                  inputMode="tel"
-                  placeholder="(11) 99999-9999"
-                  value={form.whatsapp}
-                  onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
-                  className="h-12 rounded-xl"
-                  maxLength={20}
-                  autoComplete="tel"
-                  aria-invalid={!!errors.whatsapp}
-                  aria-describedby={errors.whatsapp ? "whatsapp-error" : undefined}
-                />
-                {errors.whatsapp && (
-                  <p id="whatsapp-error" className="mt-1 text-xs text-destructive">
-                    {errors.whatsapp}
-                  </p>
-                )}
+                <label htmlFor="whatsapp" className="mb-2 block text-sm font-bold text-foreground">WhatsApp</label>
+                <Input id="whatsapp" type="tel" inputMode="tel" placeholder="(11) 99999-9999" value={form.whatsapp} onChange={(e) => setForm({ ...form, whatsapp: e.target.value })} className="h-12 rounded-lg" maxLength={20} autoComplete="tel" aria-invalid={!!errors.whatsapp} aria-describedby={errors.whatsapp ? "whatsapp-error" : undefined} />
+                {errors.whatsapp && <p id="whatsapp-error" className="mt-1 text-xs text-destructive">{errors.whatsapp}</p>}
               </div>
 
               <div>
-                <label htmlFor="email" className="mb-2 block text-sm font-medium text-foreground">
-                  E-mail corporativo
-                </label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="voce@empresa.com.br"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="h-12 rounded-xl"
-                  maxLength={255}
-                  autoComplete="email"
-                  aria-invalid={!!errors.email}
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                />
-                {errors.email && (
-                  <p id="email-error" className="mt-1 text-xs text-destructive">
-                    {errors.email}
-                  </p>
-                )}
+                <label htmlFor="email" className="mb-2 block text-sm font-bold text-foreground">E-mail corporativo</label>
+                <Input id="email" type="email" placeholder="você@empresa.com.br" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="h-12 rounded-lg" maxLength={255} autoComplete="email" aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} />
+                {errors.email && <p id="email-error" className="mt-1 text-xs text-destructive">{errors.email}</p>}
               </div>
 
               <div>
-                <label htmlFor="empresa" className="mb-2 block text-sm font-medium text-foreground">
-                  Empresa
-                </label>
-                <Input
-                  id="empresa"
-                  placeholder="Nome da empresa"
-                  value={form.empresa}
-                  onChange={(e) => setForm({ ...form, empresa: e.target.value })}
-                  className="h-12 rounded-xl"
-                  maxLength={100}
-                  autoComplete="organization"
-                  aria-invalid={!!errors.empresa}
-                  aria-describedby={errors.empresa ? "empresa-error" : undefined}
-                />
-                {errors.empresa && (
-                  <p id="empresa-error" className="mt-1 text-xs text-destructive">
-                    {errors.empresa}
-                  </p>
-                )}
+                <label htmlFor="empresa" className="mb-2 block text-sm font-bold text-foreground">Empresa</label>
+                <Input id="empresa" placeholder="Nome da empresa" value={form.empresa} onChange={(e) => setForm({ ...form, empresa: e.target.value })} className="h-12 rounded-lg" maxLength={100} autoComplete="organization" aria-invalid={!!errors.empresa} aria-describedby={errors.empresa ? "empresa-error" : undefined} />
+                {errors.empresa && <p id="empresa-error" className="mt-1 text-xs text-destructive">{errors.empresa}</p>}
               </div>
 
               <div>
-                <label htmlFor="employees" className="mb-2 block text-sm font-medium text-foreground">
-                  Quantidade de funcionários
-                </label>
-                <Input
-                  id="employees"
-                  type="number"
-                  placeholder="Ex.: 25"
-                  value={form.employees}
-                  onChange={(e) => setForm({ ...form, employees: e.target.value })}
-                  className="h-12 rounded-xl"
-                  min="1"
-                  autoComplete="off"
-                  aria-invalid={!!errors.employees}
-                  aria-describedby={errors.employees ? "employees-error" : undefined}
-                />
-                {errors.employees && (
-                  <p id="employees-error" className="mt-1 text-xs text-destructive">
-                    {errors.employees}
-                  </p>
-                )}
+                <label htmlFor="employees" className="mb-2 block text-sm font-bold text-foreground">Quantidade de funcionários</label>
+                <Input id="employees" type="number" placeholder="Ex.: 25" value={form.employees} onChange={(e) => setForm({ ...form, employees: e.target.value })} className="h-12 rounded-lg" min="1" autoComplete="off" aria-invalid={!!errors.employees} aria-describedby={errors.employees ? "employees-error" : undefined} />
+                {errors.employees && <p id="employees-error" className="mt-1 text-xs text-destructive">{errors.employees}</p>}
               </div>
             </div>
 
-            <Button variant="cta" type="submit" className="mt-6 h-14 w-full rounded-xl text-lg" disabled={isSubmitting || submitted}>
+            <Button variant="cta" type="submit" className="mt-6 h-14 w-full rounded-lg text-lg shadow-none" disabled={isSubmitting || submitted}>
               <Send className={`mr-2 h-5 w-5 ${isSubmitting ? "animate-pulse" : ""}`} />
               {isSubmitting ? "Enviando..." : "Solicitar demonstração"}
             </Button>
 
             <p className="mt-4 text-center text-xs leading-6 text-muted-foreground">
-              Ao enviar, você concorda com nossos{" "}
-              <a href="/termos-de-uso" className="font-medium text-primary underline-offset-4 hover:underline">
-                Termos de Uso
-              </a>{" "}
-              e com a{" "}
-              <a href="/politica-de-privacidade" className="font-medium text-primary underline-offset-4 hover:underline">
-                Política de Privacidade
-              </a>
-              . Seus dados serão usados apenas para contato comercial e apresentação da plataforma.
+              Ao enviar, você concorda com nossos <a href="/termos-de-uso" className="font-bold text-primary underline-offset-4 hover:underline">Termos de Uso</a> e com a <a href="/politica-de-privacidade" className="font-bold text-primary underline-offset-4 hover:underline">Política de Privacidade</a>. Seus dados serão usados apenas para contato comercial e apresentação da plataforma.
             </p>
           </form>
         </div>

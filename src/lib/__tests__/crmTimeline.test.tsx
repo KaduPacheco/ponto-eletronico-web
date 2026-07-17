@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { buildLeadTimelineItems } from "../crmTimeline";
 
 describe("crmTimeline", () => {
-  it("mistura notas e eventos em ordem cronologica reversa", () => {
+  it("mistura notas e eventos em ordem cronológica reversa", () => {
     const items = buildLeadTimelineItems(
       [
         {

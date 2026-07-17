@@ -14,16 +14,16 @@ const LeadIdentityCard = ({ lead, currentOwnerLabel }: LeadIdentityCardProps) =>
         <div className="space-y-2">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Lead</p>
           <h2 className="text-2xl font-semibold tracking-tight text-foreground">{lead.nome}</h2>
-          <p className="text-sm text-muted-foreground">{lead.empresa || "Empresa nao informada"}</p>
+          <p className="text-sm text-muted-foreground">{lead.empresa || "Empresa não informada"}</p>
         </div>
         <LeadStageBadge lead={lead} />
       </div>
 
       <div className="grid gap-6 px-6 py-6 sm:grid-cols-2">
-        <LeadDetailField label="Contato" value={lead.whatsapp || "Nao informado"} />
-        <LeadDetailField label="E-mail" value={lead.email || "Nao informado"} />
-        <LeadDetailField label="Origem" value={lead.origem || "Nao informada"} />
-        <LeadDetailField label="Porte" value={lead.funcionarios ? `${lead.funcionarios} funcionarios` : "Nao informado"} />
+        <LeadDetailField label="Contato" value={lead.whatsapp || "Não informado"} />
+        <LeadDetailField label="E-mail" value={lead.email || "Não informado"} />
+        <LeadDetailField label="Origem" value={lead.origem || "Não informada"} />
+        <LeadDetailField label="Porte" value={lead.funcionarios ? `${lead.funcionarios} funcionários` : "Não informado"} />
         <LeadDetailField label="Criado em" value={new Date(lead.created_at).toLocaleString("pt-BR")} />
         <LeadDetailField label="Responsavel" value={currentOwnerLabel} />
       </div>

@@ -41,7 +41,7 @@ export function selectLeadDetailViewModel(params: {
   const selectedStageValue = currentStage === "without_stage" ? "" : currentStage;
   const currentStageLabel = currentStage === "without_stage" ? "Sem etapa" : getLeadStageOptionLabel(currentStage);
   const currentStageDescription = currentStage === "without_stage"
-    ? "Este lead ainda nao foi classificado no funil comercial."
+    ? "Este lead ainda não foi classificado no funil comercial."
     : PIPELINE_STAGE_OPTIONS.find((stage) => stage.value === currentStage)?.description ?? "";
 
   return {

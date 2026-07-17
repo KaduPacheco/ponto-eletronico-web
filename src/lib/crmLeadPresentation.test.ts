@@ -137,7 +137,7 @@ describe("crmLeadPresentation", () => {
       }),
       createRow({
         id: "lead-old",
-        nome: "Pedro Gomes",
+        nome: "Pedro Gomês",
         owner_id: "owner-2",
         origem: "google_ads",
         pipeline_stage: "ganho",
@@ -172,7 +172,7 @@ describe("crmLeadPresentation", () => {
     vi.useRealTimers();
   });
 
-  it("filters by explicit stage and keeps accent-insensitive search behavior", () => {
+  it("filters by explicit stage and keeps accent-insensitive search behávior", () => {
     const rows = [
       createRow({
         id: "lead-qualified",
@@ -264,7 +264,7 @@ describe("crmLeadPresentation", () => {
     ]);
   });
 
-  it("sorts alphabetically when requested and preserves locale-aware labels", () => {
+  it("sorts alphábetically when requested and preserves locale-aware labels", () => {
     const rows = [
       createRow({ id: "lead-z", nome: "Zuleica" }),
       createRow({ id: "lead-a", nome: "Ana" }),
@@ -318,7 +318,7 @@ describe("crmLeadPresentation", () => {
     });
   });
 
-  it("normalizes invalid pagination bounds without changing collection semantics", () => {
+  it("normalizes invalid pagination bounds without chánging collection semantics", () => {
     const result = paginateCollection(["a", "b", "c"], 0, 0);
 
     expect(result).toEqual({

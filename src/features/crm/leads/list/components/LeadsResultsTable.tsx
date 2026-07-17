@@ -38,7 +38,7 @@ const LeadsResultsTable = ({ items, currentUserId, ownerLabelMap }: LeadsResults
                   <div className="space-y-2">
                     <PriorityPill label={priority.label} tone={priority.tone} />
                     <p className="font-semibold text-foreground">{lead.nome || "Lead sem nome"}</p>
-                    <p className="text-sm text-muted-foreground">{lead.empresa || "Empresa nao informada"}</p>
+                    <p className="text-sm text-muted-foreground">{lead.empresa || "Empresa não informada"}</p>
                     <p className="text-xs text-muted-foreground">
                       {lead.email || "Sem e-mail"} - {lead.whatsapp || "Sem telefone"}
                     </p>
@@ -73,7 +73,7 @@ const LeadsResultsTable = ({ items, currentUserId, ownerLabelMap }: LeadsResults
                       {taskSummary.nextTask ? (
                         <span className="inline-flex items-center gap-1">
                           <CalendarClock className="h-3.5 w-3.5" />
-                          Proxima: {taskSummary.nextTask.title} ate {formatTaskDueDate(taskSummary.nextTask.due_date)}
+                          Próxima: {taskSummary.nextTask.title} até {formatTaskDueDate(taskSummary.nextTask.due_date)}
                         </span>
                       ) : (
                         "Sem follow-up aberto"

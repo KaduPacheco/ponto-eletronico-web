@@ -36,7 +36,7 @@ const LeadTasksPanel = ({
         <Calendar className="h-5 w-5 text-primary" />
         <div>
           <h2 className="font-semibold text-foreground">Follow-ups e tarefas</h2>
-          <p className="text-sm text-muted-foreground">Controle a agenda comercial e marque pendencias concluida.</p>
+          <p className="text-sm text-muted-foreground">Controle a agenda comercial e marque pendências concluída.</p>
         </div>
       </div>
 
@@ -98,7 +98,7 @@ const LeadTasksPanel = ({
           </Button>
         </form>
         {!canManageTasks ? (
-          <p className="text-sm text-muted-foreground">Sem permissao para criar ou concluir tarefas neste lead.</p>
+          <p className="text-sm text-muted-foreground">Sem permissão para criar ou concluir tarefas neste lead.</p>
         ) : null}
       </div>
     </section>

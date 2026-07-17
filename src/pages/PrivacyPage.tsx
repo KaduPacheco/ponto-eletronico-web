@@ -44,10 +44,10 @@ const PrivacyPage = () => {
       </section>
 
       <section className="space-y-4 rounded-3xl border bg-card p-8 shadow-sm">
-        <h2 className="text-2xl font-bold text-foreground">3. Compartilhamento e armazenamento</h2>
+        <h2 className="text-2xl font-bold text-foreground">3. Compartilhámento e armazenamento</h2>
         <p className="leading-7 text-muted-foreground">
           Os dados podem ser armazenados em serviços contratados para captação, organização e atendimento de leads, incluindo a
-          infraestrutura da aplicação e automações operacionais necessárias ao fluxo comercial. O compartilhamento ocorre apenas
+          infraestrutura da aplicação e automações operacionais necessárias ao fluxo comercial. O compartilhámento ocorre apenas
           dentro do necessário para viabilizar esse atendimento.
         </p>
       </section>

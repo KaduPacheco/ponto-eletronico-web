@@ -1,1 +1,1 @@
-export { default } from "@/features/crm/operacao/page/OperacaoPage";
+export { default } from "@/features/crm/operacao/page/OperaçãoPage";

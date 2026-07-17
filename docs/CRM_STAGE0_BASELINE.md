@@ -1,33 +1,33 @@
 # CRM Stage 0 Baseline
 
-Resumo tecnico criado antes de reorganizacoes maiores no frontend do CRM.
+Resumo tecnico criado antes de reorganizações maiores no frontend do CRM.
 
 ## Escopo atual do sistema
 
-- landing publica em `/`
+- landing pública em `/`
 - CRM autenticado em `/crm`
 - rotas ativas do CRM:
   - `/crm`
   - `/crm/analytics`
-  - `/crm/operacao`
+  - `/crm/operação`
   - `/crm/leads`
   - `/crm/leads/:id`
 
-## Fluxos criticos preservados
+## Fluxos críticos preservados
 
-- autenticacao e guard de acesso via `AuthProvider` e `ProtectedRoute`
-- leitura de permissao via `buildAuthAccess` e `hasPermission`
+- autenticação e guard de acesso via `AuthProvider` e `ProtectedRoute`
+- leitura de permissão via `buildAuthAccess` e `hasPermission`
 - captura de leads da landing via `leadService`
 - tracking analitico via `analyticsService`
-- leitura operacional e mutacoes do workspace de lead via `crmService` e `useLeadWorkspace`
-- agregacoes executivas do CRM via builders puros de `dashboard.selectors`
+- leitura operacional e mutações do workspace de lead via `crmService` e `useLeadWorkspace`
+- agregações executivas do CRM via builders puros de `dashboard.selectors`
 
 ## Regras puras com cobertura prioritaria
 
 - auth:
   - `buildAuthAccess`
   - `hasPermission`
-- apresentacao operacional de leads:
+- apresentação operacional de leads:
   - `getLeadStageValue`
   - `getLeadStageLabel`
   - `buildLeadTaskSummary`
@@ -59,14 +59,14 @@ Resumo tecnico criado antes de reorganizacoes maiores no frontend do CRM.
 - `src/types/dashboard.ts`
 - `src/tests/setup.ts`
 
-## Validacao minima esperada antes de etapas maiores
+## Validação mínima esperada antes de etapas maiores
 
 - `npm run build`
 - `npm run test`
 
 ## Limites desta etapa
 
-- sem alteracao de regra de negocio
-- sem reorganizacao de arquitetura
+- sem alteração de regra de negócio
+- sem reorganização de arquitetura
 - sem mudanca visual
-- sem alteracao de backend, schema, RLS ou integracao externa
+- sem alteração de backend, schema, RLS ou integração externa

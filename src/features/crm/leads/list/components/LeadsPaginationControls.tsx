@@ -33,13 +33,13 @@ const LeadsPaginationControls = ({
           Mostrando {startIndex + 1}-{endIndex} de {totalItems} leads
         </p>
         <p className="text-xs text-muted-foreground">
-          Pagina {currentPage} de {totalPages}
+          Página {currentPage} de {totalPages}
         </p>
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <label className="flex items-center gap-2 text-sm text-muted-foreground">
-          Itens por pagina
+          Itens por página
           <select
             value={pageSize}
             onChange={(event) => onPageSizeChange(Number(event.target.value) as 10 | 25 | 50)}

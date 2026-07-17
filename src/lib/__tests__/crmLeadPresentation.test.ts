@@ -81,8 +81,8 @@ describe("crmLeadPresentation", () => {
     expect(ownerOptions).toEqual([
       {
         id: "user-1",
-        displayLabel: "Voce",
-        selectLabel: "Voce (Ana Souza)",
+        displayLabel: "Você",
+        selectLabel: "Você (Ana Souza)",
       },
       {
         id: "owner-a",
@@ -96,7 +96,7 @@ describe("crmLeadPresentation", () => {
       },
     ]);
 
-    expect(buildOwnerLabelMap(ownerOptions).get("user-1")).toBe("Voce");
+    expect(buildOwnerLabelMap(ownerOptions).get("user-1")).toBe("Você");
   });
 
   it("matches mine, unassigned and specific owner filters", () => {
@@ -208,7 +208,7 @@ describe("crmLeadPresentation", () => {
           whatsapp: "21988887777",
           email: "bruno@empresa.com",
           empresa: "Empresa B",
-          origem: "indicacao",
+          origem: "indicação",
           status: "novo",
           pipeline_stage: "qualificado" as const,
           owner_id: "user-1",

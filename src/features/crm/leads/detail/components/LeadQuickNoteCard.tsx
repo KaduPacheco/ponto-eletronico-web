@@ -20,7 +20,7 @@ const LeadQuickNoteCard = ({
     <section className="rounded-[28px] border border-border/70 bg-card p-6 shadow-sm">
       <div className="flex items-center gap-2 text-primary">
         <Send className="h-4 w-4" />
-        <h2 className="font-semibold text-foreground">Anotacao rapida</h2>
+        <h2 className="font-semibold text-foreground">Anotação rápida</h2>
       </div>
       <form onSubmit={onSubmitNote} className="mt-4 space-y-3">
         <textarea
@@ -34,7 +34,7 @@ const LeadQuickNoteCard = ({
           Salvar nota
         </Button>
         {!canSaveNote ? (
-          <p className="text-sm text-muted-foreground">Sem permissao para registrar anotacoes neste lead.</p>
+          <p className="text-sm text-muted-foreground">Sem permissão para registrar anotações neste lead.</p>
         ) : null}
       </form>
     </section>

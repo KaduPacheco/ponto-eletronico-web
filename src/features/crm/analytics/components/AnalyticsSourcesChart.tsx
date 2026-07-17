@@ -16,7 +16,7 @@ interface AnalyticsSourcesChartProps {
 const AnalyticsSourcesChart = ({ data, isLoading, errorMessage }: AnalyticsSourcesChartProps) => {
   return (
     <DashboardSection
-      title="Origem do trafego"
+      title="Origem do tráfego"
       subtitle="UTMs e referrers da landing."
     >
       {isLoading ? (
@@ -32,12 +32,12 @@ const AnalyticsSourcesChart = ({ data, isLoading, errorMessage }: AnalyticsSourc
         </div>
       ) : errorMessage ? (
         <SectionErrorState
-          title="Nao foi possivel carregar a origem do trafego"
+          title="Não foi possível carregar a origem do tráfego"
           description={errorMessage}
         />
       ) : !data || data.length === 0 ? (
         <SectionEmptyState
-          title="Sem origem de trafego consolidada"
+          title="Sem origem de tráfego consolidada"
           description="Assim que a landing registrar page views com UTM ou referrer, os canais aparecerao aqui."
           icon={<Radar className="h-5 w-5" />}
         />

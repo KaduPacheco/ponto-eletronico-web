@@ -21,7 +21,7 @@ const benefits = [
   {
     icon: Users,
     title: "Mais clareza entre RH e lideranças",
-    description: "Unifique a leitura da jornada para reduzir ruído entre quem opera, aprova e fecha as informações.",
+    description: "Unifique a leitura da jornada para reduzir ruído entre quem opera, aprova e fechá as informações.",
   },
 ] as const;
 

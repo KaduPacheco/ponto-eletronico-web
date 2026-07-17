@@ -116,7 +116,7 @@ describe("LeadForm", () => {
     dateNowSpy.mockRestore();
   });
 
-  it("deve bloquear submit suspeito por tempo minimo sem avancar para sucesso", async () => {
+  it("deve bloquear submit suspeito por tempo mínimo sem avançar para sucesso", async () => {
     const onSuccess = vi.fn();
     const dateNowSpy = vi.spyOn(Date, "now");
     let now = 1_000;
@@ -149,7 +149,7 @@ describe("LeadForm", () => {
     dateNowSpy.mockRestore();
   });
 
-  it("deve exibir erro e nao avancar quando a persistencia falhar", async () => {
+  it("deve exibir erro e não avançar quando a persistência falhar", async () => {
     const onSuccess = vi.fn();
     const dateNowSpy = vi.spyOn(Date, "now");
     let now = 1_000;

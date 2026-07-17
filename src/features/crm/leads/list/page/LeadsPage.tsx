@@ -74,7 +74,7 @@ const LeadsPage = () => {
       <div className="mx-auto flex max-w-7xl flex-col gap-6 p-8">
         <div className="rounded-[28px] border border-destructive/20 bg-destructive/5 p-10 text-center shadow-sm">
           <AlertCircle className="mx-auto h-10 w-10 text-destructive" />
-          <p className="mt-4 text-lg font-semibold text-foreground">Nao foi possivel carregar os leads</p>
+          <p className="mt-4 text-lg font-semibold text-foreground">Não foi possível carregar os leads</p>
           <p className="mt-2 text-sm text-muted-foreground">{(leadsQuery.error as Error).message}</p>
           <Button className="mt-5" onClick={() => leadsQuery.refetch()}>
             <RefreshCcw className="mr-2 h-4 w-4" />
@@ -89,14 +89,14 @@ const LeadsPage = () => {
     <div className="mx-auto flex max-w-7xl flex-col gap-6 p-8">
       <header className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground">Gestao de leads</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">Gestão de leads</h1>
           <p className="mt-2 max-w-3xl text-sm leading-7 text-muted-foreground">
-            Trabalhe ownership, proxima acao e etapa comercial no mesmo fluxo. O objetivo aqui e deixar claro quem esta
+            Trabalhe ownership, próxima ação e etapa comercial no mesmo fluxo. O objetivo aqui e deixar claro quem está
             conduzindo cada lead e o que precisa acontecer a seguir.
           </p>
         </div>
         <div className="rounded-2xl border border-border/70 bg-card px-4 py-3 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Visao atual</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Visão atual</p>
           <div className="mt-2 flex items-center gap-2">
             <LeadStageBadge lead={{ pipeline_stage: null, status: "novo" }} className="text-[10px]" />
             <p className="text-sm text-muted-foreground">Pipeline pronto para operar em lista e kanban.</p>
@@ -131,7 +131,7 @@ const LeadsPage = () => {
 
       {tasksOverviewQuery.isError ? (
         <div className="rounded-[28px] border border-amber-500/20 bg-amber-500/5 px-5 py-4 text-sm text-amber-700 shadow-sm dark:text-amber-300">
-          A leitura de pendencias do lead falhou nesta sincronizacao. A listagem continua disponivel, mas os indicadores
+          A leitura de pendências do lead falhou nesta sincronização. A listagem continua disponível, mas os indicadores
           de follow-up podem estar incompletos.
         </div>
       ) : null}
@@ -140,7 +140,7 @@ const LeadsPage = () => {
         <div className="rounded-[28px] border border-dashed border-border bg-card px-6 py-16 text-center shadow-sm">
           <p className="text-lg font-semibold text-foreground">Nenhum lead encontrado neste recorte</p>
           <p className="mt-2 text-sm text-muted-foreground">
-            Ajuste busca, filtros ou periodo para voltar a ver a operacao.
+            Ajuste busca, filtros ou período para voltar a ver a operação.
           </p>
         </div>
       ) : listState.viewMode === "list" ? (

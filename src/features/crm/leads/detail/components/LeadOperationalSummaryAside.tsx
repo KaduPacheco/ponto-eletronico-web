@@ -18,13 +18,13 @@ const LeadOperationalSummaryAside = ({ lead, currentOwnerLabel }: LeadOperationa
         <LeadOperationalSummaryCard
           label="Ownership"
           value={currentOwnerLabel}
-          helper={lead.owner_id ? "Lead atribuido a uma pessoa responsavel." : "Ainda disponivel para distribuicao."}
+          helper={lead.owner_id ? "Lead atribuído a uma pessoa responsável." : "Ainda disponível para distribuição."}
           tone={lead.owner_id ? "neutral" : "danger"}
         />
         <LeadOperationalSummaryCard
           label="Ultima entrada"
           value={new Date(lead.created_at).toLocaleDateString("pt-BR")}
-          helper={lead.origem || "Origem nao informada"}
+          helper={lead.origem || "Origem não informada"}
           tone="neutral"
         />
       </div>

@@ -24,7 +24,7 @@ export function getLeadOperationalPriority(
   if (!row.lead.owner_id) {
     return {
       label: "Distribuir owner",
-      helper: "Lead ainda sem responsavel definido.",
+      helper: "Lead ainda sem responsável definido.",
       tone: "warning",
     };
   }
@@ -39,8 +39,8 @@ export function getLeadOperationalPriority(
 
   if (!row.taskSummary.nextTask && stageValue !== "ganho" && stageValue !== "perdido") {
     return {
-      label: "Definir proxima acao",
-      helper: "Nao ha follow-up aberto no momento.",
+      label: "Definir próxima ação",
+      helper: "Nao há follow-up aberto no momento.",
       tone: "warning",
     };
   }

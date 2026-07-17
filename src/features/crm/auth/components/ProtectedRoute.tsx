@@ -33,7 +33,7 @@ const ProtectedRoute = ({
   if (requiredPermission && !hasPermission(requiredPermission)) {
     const fallbackPath = unauthorizedPath ?? getDefaultAuthorizedCrmRoute(access);
 
-    logAppEvent("auth", "warn", "Acesso negado por permissao", {
+    logAppEvent("auth", "warn", "Acesso negado por permissão", {
       pathname: location.pathname,
       requiredPermission,
       userId: session.user.id,

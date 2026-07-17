@@ -132,7 +132,7 @@ describe("dashboardService analytics builders", () => {
     vi.useRealTimers();
   });
 
-  it("gera KPIs reais de visitors, CTA, conversao e taxa", () => {
+  it("gera KPIs reais de visitors, CTA, conversão e taxa", () => {
     const metrics = buildAnalyticsKpis(analyticsEvents);
 
     expect(metrics.find((metric) => metric.id === "landing_visitors")?.value).toBe(2);
@@ -156,7 +156,7 @@ describe("dashboardService analytics builders", () => {
     expect(funnel[4]?.percentage).toBe(50);
   });
 
-  it("consolida origem real de trafego por utm e acesso direto", () => {
+  it("consolida origem real de tráfego por utm e acesso direto", () => {
     const sources = buildAnalyticsSourceDistribution(analyticsEvents);
 
     expect(sources).toHaveLength(2);
@@ -172,11 +172,11 @@ describe("dashboardService analytics builders", () => {
     });
   });
 
-  it("gera serie por periodo com visitors, leads e taxa diaria", () => {
-    const series = buildAnalyticsSeries(analyticsEvents, 2);
+  it("gera série por período com visitors, leads e taxa diaria", () => {
+    const séries = buildAnalyticsSeries(analyticsEvents, 2);
 
-    expect(series).toHaveLength(2);
-    expect(series[1]).toMatchObject({
+    expect(séries).toHaveLength(2);
+    expect(séries[1]).toMatchObject({
       periodStart: "2026-04-12",
       visitors: 2,
       pageViews: 2,
@@ -186,7 +186,7 @@ describe("dashboardService analytics builders", () => {
     });
   });
 
-  it("compara trafego e leads por canal com base nos eventos reais", () => {
+  it("compara tráfego e leads por canal com base nos eventos reais", () => {
     const comparison = buildTrafficVsLeadsComparison(analyticsEvents);
 
     expect(comparison).toHaveLength(2);

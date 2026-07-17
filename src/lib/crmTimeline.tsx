@@ -62,7 +62,7 @@ function getEventTitle(event: CrmLeadEvent) {
     case "task_added":
       return "Follow-up agendado";
     case "task_completed":
-      return "Tarefa concluida";
+      return "Tarefa concluída";
     case "task_reopened":
       return "Tarefa reaberta";
     case "pipeline_change":
@@ -117,7 +117,7 @@ function getEventDescription(
       );
 
       if (!previousOwnerLabel && nextOwnerLabel) {
-        return `Lead atribuido para ${nextOwnerLabel}.`;
+        return `Lead atribuído para ${nextOwnerLabel}.`;
       }
 
       if (previousOwnerLabel && nextOwnerLabel) {
@@ -125,7 +125,7 @@ function getEventDescription(
       }
 
       if (previousOwnerLabel) {
-        return `${previousOwnerLabel} removido; lead voltou para fila sem responsavel.`;
+        return `${previousOwnerLabel} removido; lead voltou para fila sem responsável.`;
       }
 
       return "Ownership atualizado.";

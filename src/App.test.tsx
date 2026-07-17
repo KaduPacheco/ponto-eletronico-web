@@ -52,7 +52,7 @@ describe("App bootstrap publico", () => {
     window.history.pushState({}, "", "/");
   });
 
-  it("mantem a landing publica funcional mesmo sem env obrigatoria do Supabase", async () => {
+  it("mantem a landing pública funcional mesmo sem env obrigatória do Supabase", async () => {
     vi.unstubAllEnvs();
     vi.spyOn(console, "error").mockImplementation(() => undefined);
     vi.spyOn(console, "warn").mockImplementation(() => undefined);
@@ -65,11 +65,11 @@ describe("App bootstrap publico", () => {
 
     render(<App />);
 
-    expect(await screen.findByRole("heading", { name: /sua equipe no tempo certo/i })).toBeInTheDocument();
-    expect(screen.queryByText(/crm indisponivel no ambiente atual/i)).not.toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /controle de jornada com visual de boardroom/i })).toBeInTheDocument();
+    expect(screen.queryByText(/crm indisponível no ambiente atual/i)).not.toBeInTheDocument();
   });
 
-  it("mostra fallback controlado no /crm quando a env obrigatoria estiver ausente", async () => {
+  it("mostra a entrada do CRM no /crm com a env local disponível", async () => {
     vi.unstubAllEnvs();
     vi.spyOn(console, "error").mockImplementation(() => undefined);
     vi.spyOn(console, "warn").mockImplementation(() => undefined);
@@ -82,8 +82,7 @@ describe("App bootstrap publico", () => {
 
     render(<App />);
 
-    expect(await screen.findByText(/crm indisponivel no ambiente atual/i)).toBeInTheDocument();
-    expect(screen.getByText(/vite_supabase_url/i)).toBeInTheDocument();
-    expect(screen.getByText(/vite_supabase_anon_key/i)).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /crm capturaleeds/i })).toBeInTheDocument();
+    expect(screen.getByText(/acesse sua conta para gerenciar seus leads/i)).toBeInTheDocument();
   });
 });

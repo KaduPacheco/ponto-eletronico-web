@@ -29,13 +29,13 @@ const SourceChart = ({ data, isLoading, errorMessage }: SourceChartProps) => {
         </div>
       ) : errorMessage ? (
         <SectionErrorState
-          title="Nao foi possivel carregar as origens"
+          title="Não foi possível carregar as origens"
           description={errorMessage}
         />
       ) : !data || data.length === 0 ? (
         <SectionEmptyState
           title="Sem origens registradas"
-          description="Quando os leads comecarem a entrar, os canais de aquisicao aparecerao aqui."
+          description="Quando os leads começarem a entrar, os canais de aquisição aparecerao aqui."
           icon={<Compass className="h-5 w-5" />}
         />
       ) : (

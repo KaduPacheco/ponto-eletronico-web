@@ -23,8 +23,8 @@ const navigationItems = [
     requiredPermission: "crm:dashboard:read" as const,
   },
   {
-    to: CRM_ROUTES.operacao,
-    label: "Operacao",
+    to: CRM_ROUTES.operação,
+    label: "Operação",
     icon: BriefcaseBusiness,
     requiredPermission: "crm:dashboard:read" as const,
   },
@@ -49,7 +49,7 @@ const CrmLayout = () => {
       navigate(CRM_ROUTES.login);
     } catch (error) {
       toast({
-        title: "Nao foi possivel encerrar a sessao",
+        title: "Não foi possível encerrar a sessão",
         description: getErrorMessage(error, "Tente novamente em instantes."),
         variant: "destructive",
       });

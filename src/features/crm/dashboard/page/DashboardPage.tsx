@@ -60,10 +60,10 @@ const DashboardPage = () => {
 
             <div className="space-y-3">
               <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-foreground lg:text-[2.8rem] lg:leading-[1.05]">
-                Situacao atual do CRM
+                Situação atual do CRM
               </h1>
               <p className="max-w-2xl text-sm leading-6 text-muted-foreground lg:text-[15px]">
-                Visao geral para decidir rapido e seguir para analytics, operacao ou leads.
+                Visão geral para decidir rápido e seguir para analytics, operação ou leads.
               </p>
             </div>
 
@@ -86,7 +86,7 @@ const DashboardPage = () => {
             <div className="space-y-4">
               <div className="space-y-1.5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                  Situacao atual
+                  Situação atual
                 </p>
                 <p className="text-base font-semibold tracking-tight text-foreground">
                   {leadsQuery.isError || tasksQuery.isError || eventsQuery.isError
@@ -95,7 +95,7 @@ const DashboardPage = () => {
                 </p>
                 <p className="text-xs leading-5 text-muted-foreground">
                   {lastUpdatedAt
-                    ? `Ultima atualizacao em ${formatDateTimePtBr(lastUpdatedAt)}`
+                    ? `Última atualização em ${formatDateTimePtBr(lastUpdatedAt)}`
                     : "Sincronizando dados do CRM"}
                 </p>
               </div>
@@ -116,8 +116,8 @@ const DashboardPage = () => {
                   variant="outline"
                   className="h-auto w-full justify-between rounded-2xl border-border/70 px-4 py-3.5"
                 >
-                  <Link to={CRM_ROUTES.operacao}>
-                    Operacao
+                  <Link to={CRM_ROUTES.operação}>
+                    Operação
                     <BriefcaseBusiness className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -138,7 +138,7 @@ const DashboardPage = () => {
       </section>
 
       <DashboardClusterShell
-        eyebrow="Situacao atual"
+        eyebrow="Situação atual"
         title="KPIs principais"
         description="Base, entradas recentes e agenda operacional."
         tone="subtle"
@@ -146,7 +146,7 @@ const DashboardPage = () => {
         <DashboardMetricRail
           eyebrow="Resumo executivo"
           title="Base e prioridades"
-          description="Indicadores centrais da operacao."
+          description="Indicadores centrais da operação."
           columnsClassName="sm:grid-cols-2 xl:grid-cols-4"
         >
           <KpiCard
@@ -182,8 +182,8 @@ const DashboardPage = () => {
 
       <DashboardClusterShell
         eyebrow="Prioridades"
-        title="Painel de atencao"
-        description="Alertas e follow-ups que pedem acao imediata."
+        title="Painel de atenção"
+        description="Alertas e follow-ups que pedem ação imediata."
         tone="subtle"
       >
         <AttentionPanel
@@ -222,7 +222,7 @@ const DashboardPage = () => {
       <DashboardClusterShell
         eyebrow="Atividade"
         title="Contexto recente"
-        description="Eventos recentes da operacao."
+        description="Eventos recentes da operação."
         tone="subtle"
       >
         <ActivityFeed
