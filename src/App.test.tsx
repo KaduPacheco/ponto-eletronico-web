@@ -65,7 +65,7 @@ describe("App bootstrap publico", () => {
 
     render(<App />);
 
-    expect(await screen.findByRole("heading", { name: /controle de jornada à altura/i })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /controle de ponto sem retrabalho no fechamento/i })).toBeInTheDocument();
     expect(screen.queryByText(/crm indisponível no ambiente atual/i)).not.toBeInTheDocument();
   });
 

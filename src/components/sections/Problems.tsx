@@ -10,7 +10,7 @@ const problems = [
   },
   {
     icon: AlertCircle,
-    title: "Erros de jornada que viram custo",
+    title: "Erros no ponto que chegam ao fechamento",
     description:
       "Ajustes em cima da hora e registros mal acompanhádos aumentam risco de pagamentos indevidos e discussões futuras.",
   },
@@ -35,7 +35,7 @@ const Problems = () => {
               O problema não é só registrar o ponto. É confiar no fechamento.
             </h2>
             <p className="section-copy mt-5 max-w-xl">
-              Empresas que operam com controles frágeis pagam a conta em horas perdidas, decisões lentas e maior exposição em rotinas sensíveis do DP.
+              Empresas que operam com controles frágeis acumulam mais erros, atrasos e insegurança no fechamento da folha.
             </p>
           </div>
 

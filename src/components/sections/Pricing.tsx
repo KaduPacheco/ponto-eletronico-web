@@ -33,7 +33,7 @@ const Pricing = () => {
               <Zap className="h-4 w-4" /> Ideal para começar sem complexidade
             </div>
 
-            <h3 className="text-2xl font-extrabold text-foreground md:text-3xl">Plano Completo</h3>
+            <h3 className="text-2xl font-extrabold text-foreground md:text-3xl">Plano Jornada</h3>
             <p className="mt-3 max-w-xl leading-7 text-muted-foreground">
               Para empresas que precisam organizar jornada, ganhar visibilidade operacional e reduzir retrabalho no fechamento da folha.
             </p>
@@ -68,15 +68,14 @@ const Pricing = () => {
 
             <h3 className="text-2xl font-extrabold">Por que começar por este plano</h3>
             <p className="mt-3 leading-7 text-white/72">
-              Um ponto de entrada objetivo para validar a operação antes de adicionar camadas mais avançadas.
+              Valide a rotina, o custo e a implantação antes de contratar.
             </p>
 
             <div className="mt-8 space-y-4 border-t border-white/10 pt-6">
               {[
-                "Valor inicial acessível para validar a operação.",
-                "Cobrança acompanhá o crescimento da equipe.",
-                "Demonstração ajuda a avaliar o cenário antes do teste.",
-                "Teste grátis permite validar a rotina com mais segurança.",
+                "Preço inicial claro para começar com previsibilidade.",
+                "Cobrança acompanha o crescimento da equipe.",
+                "Demonstração e teste reduzem risco antes da contratação.",
               ].map((item) => (
                 <div key={item} className="flex items-start gap-3">
                   <CircleHelp className="mt-0.5 h-5 w-5 shrink-0 text-[#f59b58]" />
@@ -86,8 +85,8 @@ const Pricing = () => {
             </div>
 
             <Button
-              variant="hero"
-              className="mt-8 h-14 w-full rounded-lg bg-[#f47c36] text-white shadow-none hover:scale-100 hover:bg-[#df6928]"
+              variant="default"
+              className="mt-8 h-14 w-full rounded-lg text-base font-extrabold shadow-none"
               asChild
             >
               <a
@@ -95,7 +94,7 @@ const Pricing = () => {
                 onClick={() => {
                   void trackCtaClick({
                     cta_id: "pricing_cta_solicitar_demonstração",
-                    cta_label: "Solicitar demonstração de preço",
+                    cta_label: "Solicitar demonstração",
                     placement: "pricing",
                     target: "#contato",
                   });

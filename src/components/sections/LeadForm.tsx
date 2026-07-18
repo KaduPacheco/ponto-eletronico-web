@@ -23,6 +23,23 @@ const trustPoints = [
   "Teste grátis de 14 dias",
 ] as const;
 
+function formatWhatsapp(value: string) {
+  const digits = value.replace(/\D/g, "").slice(0, 11);
+
+  if (digits.length <= 2) {
+    return digits;
+  }
+
+  if (digits.length <= 6) {
+    return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  }
+
+  if (digits.length <= 10) {
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  }
+
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+}
 function getSuspiciousSubmissionReason({
   botField,
   elapsedMs,
@@ -257,12 +274,12 @@ const LeadForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 
               <div>
                 <label htmlFor="whatsapp" className="mb-2 block text-sm font-bold text-foreground">WhatsApp</label>
-                <Input id="whatsapp" type="tel" inputMode="tel" placeholder="(11) 99999-9999" value={form.whatsapp} onChange={(e) => setForm({ ...form, whatsapp: e.target.value })} className="h-12 rounded-lg" maxLength={20} autoComplete="tel" aria-invalid={!!errors.whatsapp} aria-describedby={errors.whatsapp ? "whatsapp-error" : undefined} />
+                <Input id="whatsapp" type="tel" inputMode="tel" placeholder="(11) 99999-9999" value={form.whatsapp} onChange={(e) => setForm({ ...form, whatsapp: formatWhatsapp(e.target.value) })} className="h-12 rounded-lg" maxLength={15} autoComplete="tel" aria-invalid={!!errors.whatsapp} aria-describedby={errors.whatsapp ? "whatsapp-error" : undefined} />
                 {errors.whatsapp && <p id="whatsapp-error" className="mt-1 text-xs text-destructive">{errors.whatsapp}</p>}
               </div>
 
               <div>
-                <label htmlFor="email" className="mb-2 block text-sm font-bold text-foreground">E-mail corporativo</label>
+                <label htmlFor="email" className="mb-2 block text-sm font-bold text-foreground">E-mail</label>
                 <Input id="email" type="email" placeholder="você@empresa.com.br" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="h-12 rounded-lg" maxLength={255} autoComplete="email" aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} />
                 {errors.email && <p id="email-error" className="mt-1 text-xs text-destructive">{errors.email}</p>}
               </div>

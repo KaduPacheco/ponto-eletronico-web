@@ -1,25 +1,22 @@
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Building2, CheckCircle2, ClipboardCheck, ShieldCheck, UsersRound } from "lucide-react";
 
-const proofMetrics = [
+const demoHighlights = [
   {
-    value: "14 dias",
-    label: "para validar aderência antes da contratação",
-    source: "Fonte: regra comercial do teste grátis Jornada.",
+    title: "14 dias para testar a plataforma",
+    description: "Valide a aderência do Jornada antes da contratação.",
   },
   {
-    value: "3 áreas",
-    label: "conectadas no mesmo fluxo: RH, DP e liderança",
-    source: "Fonte: escopo operacional apresentado na plataforma.",
+    title: "RH, DP e liderança no mesmo fluxo",
+    description: "Acompanhe a rotina de jornada com as áreas envolvidas no processo.",
   },
   {
-    value: "1 painel",
-    label: "para acompanhar registros, pendências e ajustes",
-    source: "Fonte: captura real do produto exibida na landing.",
+    title: "Um painel para registros, pendências e ajustes",
+    description: "Veja a operação centralizada durante a demonstração.",
   },
 ] as const;
 
-const operatingSegments = ["Equipes presenciais", "Timês externos", "Rotinas híbridas"] as const;
+const operatingSegments = ["Equipes presenciais", "Times externos", "Rotinas híbridas"] as const;
 
 const TrustSection = () => {
   const { ref, isVisible } = useScrollAnimation();
@@ -29,12 +26,12 @@ const TrustSection = () => {
       <div className="container" ref={ref}>
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
           <div>
-            <span className="section-kicker">Prova operacional</span>
+            <span className="section-kicker">Conheça antes de contratar</span>
             <h2 id="trust-title" className="section-title mt-3 max-w-xl">
-              Menos promessa, mais critério concreto para avaliar a Jornada.
+              Veja o Jornada funcionando na rotina da sua empresa.
             </h2>
             <p className="section-copy mt-5 max-w-xl">
-              Sem logos ou depoimentos públicos verificáveis no momento, a página passa a mostrar evidências que o comprador consegue conferir durante a demonstração: escopo, prazo de teste e superfície real do produto.
+              Veja o Jornada funcionando em uma demonstração orientada à sua rotina. Depois, teste a plataforma por 14 dias com apoio na configuração inicial.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3" aria-label="Segmentos operacionais atendidos">
@@ -49,17 +46,16 @@ const TrustSection = () => {
 
           <div className="space-y-4">
             <div className="grid gap-4 md:grid-cols-3">
-              {proofMetrics.map((metric, index) => (
+              {demoHighlights.map((highlight, index) => (
                 <article
-                  key={metric.value}
+                  key={highlight.title}
                   className={`rounded-lg border border-border bg-card p-6 shadow-sm ${
                     isVisible ? "animate-fade-in-up" : "opacity-0"
                   }`}
                   style={{ animationDelay: `${index * 0.07}s` }}
                 >
-                  <strong className="block text-3xl font-extrabold text-primary">{metric.value}</strong>
-                  <p className="mt-3 text-sm font-bold leading-6 text-foreground">{metric.label}</p>
-                  <p className="mt-4 text-xs leading-5 text-muted-foreground">{metric.source}</p>
+                  <strong className="block text-lg font-extrabold leading-7 text-foreground">{highlight.title}</strong>
+                  <p className="mt-3 text-sm font-bold leading-6 text-muted-foreground">{highlight.description}</p>
                 </article>
               ))}
             </div>

@@ -64,7 +64,7 @@ describe("LeadForm", () => {
     await waitFor(() => {
       expect(submitLeadToSupabaseMock).toHaveBeenCalledWith({
         nome: "Maria Souza",
-        whatsapp: "11999999999",
+        whatsapp: "(11) 99999-9999",
         email: "maria@empresa.com.br",
         empresa: "Empresa Exemplo",
         funcionarios: 25,
@@ -79,6 +79,15 @@ describe("LeadForm", () => {
     expect(onSuccess).toHaveBeenCalledTimes(1);
 
     dateNowSpy.mockRestore();
+  });
+
+  it("deve aplicar máscara no WhatsApp ao preencher o campo", () => {
+    render(<LeadForm onSuccess={vi.fn()} />);
+
+    const whatsappInput = screen.getByLabelText(/whatsapp/i);
+    fireEvent.change(whatsappInput, { target: { value: "11999999999" } });
+
+    expect(whatsappInput).toHaveValue("(11) 99999-9999");
   });
 
   it("deve bloquear submit suspeito por honeypot sem mostrar sucesso falso", async () => {
@@ -191,7 +200,7 @@ function fillValidForm() {
   fireEvent.change(screen.getByLabelText(/whatsapp/i), {
     target: { value: "11999999999" },
   });
-  fireEvent.change(screen.getByLabelText(/e-mail corporativo/i), {
+  fireEvent.change(screen.getByLabelText(/e-mail/i), {
     target: { value: "maria@empresa.com.br" },
   });
   fireEvent.change(screen.getByLabelText(/empresa/i), {

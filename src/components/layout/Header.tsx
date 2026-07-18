@@ -30,7 +30,7 @@ const Header = ({ hideCTA = false }: HeaderProps) => {
         <nav className="hidden items-center gap-8 text-sm font-semibold text-white/70 md:flex" aria-label="Navegação principal">
           {navItems.map((item) => { const target = resolveTarget(item.hash); return <a key={item.id} href={target} className="transition hover:text-[#73ead6]" onClick={() => track(item.id, item.label, target)}>{item.label}</a>; })}
         </nav>
-        {!hideCTA ? <Button variant="cta" size="sm" className="h-10 rounded-lg px-5 text-sm shadow-none" asChild><a href={primaryTarget} onClick={() => track("header_cta_solicitar_demonstração", "Quero conhecer", primaryTarget)}>Quero conhecer <ArrowUpRight /></a></Button> : null}
+        {!hideCTA ? <Button variant="cta" size="sm" className="h-10 rounded-lg px-5 text-sm shadow-none" asChild><a href={primaryTarget} onClick={() => track("header_cta_solicitar_demonstração", "Solicitar demonstração", primaryTarget)}>Solicitar demonstração <ArrowUpRight /></a></Button> : null}
       </div>
     </header>
   );

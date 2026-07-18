@@ -39,7 +39,7 @@ const Solution = () => {
           </p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[0.94fr_1.06fr] lg:items-center">
+        <div className="grid gap-10 lg:grid-cols-[0.78fr_minmax(0,1.22fr)] lg:items-center">
           <div className="space-y-4">
             {productFlows.map((flow, index) => (
               <article
@@ -64,7 +64,7 @@ const Solution = () => {
           </div>
 
           <figure
-            className={`overflow-hidden rounded-lg border border-border bg-card shadow-2xl shadow-primary/10 ${
+            className={`rounded-lg border border-border bg-card shadow-2xl shadow-primary/10 ${
               isVisible ? "animate-fade-in-up" : "opacity-0"
             }`}
             style={{ animationDelay: "0.22s" }}
@@ -79,13 +79,39 @@ const Solution = () => {
                 Em acompanhamento
               </div>
             </div>
-            <img
-              src={productMockup}
-              alt="Captura do painel Jornada com indicadores e acompanhamento operacional"
-              width={1536}
-              height={1024}
-              className="w-full"
-            />
+            <div className="relative overflow-hidden bg-[#eef5f1] px-4 pb-7 pt-5 sm:px-6 sm:pb-10 sm:pt-7">
+              <div className="relative mx-auto max-w-[920px]">
+                <div className="overflow-hidden rounded-t-lg border border-[#183f39]/18 bg-[#133a35] p-2 shadow-[0_24px_70px_rgba(17,107,96,.20)] sm:p-3">
+                  <div className="mb-2 flex items-center gap-1.5 px-1">
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#ff8b66]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#ffd166]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#52d6bd]" />
+                  </div>
+                  <img
+                    src={productMockup}
+                    alt="Captura real do painel Jornada com indicadores e acompanhamento operacional"
+                    width={1586}
+                    height={992}
+                    className="h-auto w-full rounded-md object-contain"
+                  />
+                </div>
+                <div className="mx-auto h-3 w-[82%] rounded-b-[22px] bg-[#cfdad5] shadow-inner" />
+
+                <div className="absolute -bottom-5 right-0 hidden w-[26%] min-w-[120px] max-w-[190px] rounded-[1.65rem] border-[7px] border-[#122d2a] bg-[#122d2a] shadow-[0_18px_45px_rgba(0,0,0,.28)] sm:block">
+                  <div className="absolute left-1/2 top-1.5 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/20" />
+                  <div className="aspect-[9/16] overflow-hidden rounded-[1.15rem] bg-white">
+                    <img
+                      src={productMockup}
+                      alt=""
+                      width={1586}
+                      height={992}
+                      aria-hidden="true"
+                      className="h-full w-full object-cover object-left-top"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </figure>
         </div>
       </div>

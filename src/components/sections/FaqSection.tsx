@@ -5,32 +5,42 @@ const faqs = [
   {
     question: "Como os funcionários registram o ponto?",
     answer:
-      "O registro pode ser feito pelos canais suportados pela plataforma, conforme a rotina definida para a empresa. Na implantação, ajustamos o fluxo mais adequado para a operação.",
+      "Os funcionários podem registrar o ponto pelo próprio celular ou em um dispositivo fixo disponibilizado pela empresa, como tablet, computador ou telefone. Durante a implantação, definimos o formato mais adequado para a rotina da equipe.",
   },
   {
     question: "Funciona para equipe externa, presencial e home office?",
     answer:
-      "Sim. A plataforma acompanha diferentes rotinas de trabalho com gestão centralizada para RH, DP e lideranças.",
+      "Sim. O Jornada atende rotinas presenciais, externas e híbridas, mantendo os registros e ajustes em um painel central para RH, DP e liderança.",
   },
   {
-    question: "Como funciona o teste grátis?",
+    question: "O sistema usa localização no registro de ponto?",
     answer:
-      "O teste grátis de 14 dias valida a aderência da plataforma a rotina da empresa após o alinhamento inicial com o time comercial.",
-  },
-  {
-    question: "O sistema ajuda no fechamento da folha?",
-    answer:
-      "Sim. A plataforma organiza informações da jornada para reduzir retrabalho, facilitar conferências e apoiar o fechamento com mais clareza.",
+      "A localização pode ser considerada conforme o formato de registro definido para a empresa e as permissões do dispositivo. Na demonstração, avaliamos se esse recurso faz sentido para a rotina e a política interna.",
   },
   {
     question: "Preciso de relógio de ponto físico?",
     answer:
-      "Não necessariamente. A avaliação inicial considera a rotina da empresa para definir o fluxo mais adequado dentro do que a plataforma suporta hoje.",
+      "Não necessariamente. A empresa pode operar com celular ou dispositivo fixo, dependendo da rotina da equipe. A implantação ajuda a escolher o modelo mais simples e seguro para o dia a dia.",
   },
   {
-    question: "Como funciona a implantação?",
+    question: "Consigo liberar acesso para o contador?",
     answer:
-      "A implantação começa com alinhamento do cenário da empresa e apoio inicial para reduzir atrito no começo do uso.",
+      "Sim. A operação pode ser organizada para facilitar a conferência das informações por quem apoia o fechamento, incluindo contador ou responsável externo, conforme o acesso definido pela empresa.",
+  },
+  {
+    question: "Quais relatórios ajudam no fechamento?",
+    answer:
+      "A plataforma organiza registros de jornada, pendências, ajustes, horas extras e banco de horas para apoiar a conferência antes do fechamento da folha.",
+  },
+  {
+    question: "Como funciona o teste grátis?",
+    answer:
+      "O teste grátis de 14 dias começa após o alinhamento inicial, para validar a aderência da plataforma à rotina da empresa com apoio na configuração inicial.",
+  },
+  {
+    question: "O Jornada está adequado à Portaria 671?",
+    answer:
+      "O Jornada foi estruturado para apoiar rotinas de controle de jornada com rastreabilidade e organização dos registros. A adequação final depende do uso correto pela empresa, da configuração adotada e da orientação contábil ou jurídica aplicável ao seu caso.",
   },
 ] as const;
 
