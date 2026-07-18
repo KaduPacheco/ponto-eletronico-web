@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import { trackCtaClick } from "@/services/analyticsService";
-import { ArrowRight, Check, Clock, Sparkles } from "lucide-react";
+import { ArrowRight, Check, Clock } from "lucide-react";
 
 const track = (id: string, label: string, target: string) => void trackCtaClick({ cta_id: id, cta_label: label, placement: "hero", target });
 
@@ -13,9 +13,6 @@ const Hero = () => (
     <div className="container relative z-10">
       <div className="grid min-h-[620px] items-center gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(520px,1.08fr)]">
         <div className="max-w-[720px]">
-          <div className="mb-7 inline-flex items-center gap-2 rounded-lg border border-white/12 bg-white/8 px-4 py-2 text-sm font-bold text-[#9af4e4] shadow-2xl shadow-black/10 backdrop-blur">
-            <Sparkles className="h-4 w-4" /> Plataforma de ponto para operações exigentes
-          </div>
           <h1 className="max-w-[690px] text-5xl font-extrabold leading-[1.04] tracking-normal sm:text-6xl lg:text-[4rem]">
             Controle de ponto <span className="text-[#73ead6]">sem retrabalho</span> no fechamento.
           </h1>
