@@ -89,9 +89,9 @@ const Solution = () => {
                   </div>
                   <img
                     src={productMockup}
-                    alt="Captura real do painel Jornada com indicadores e acompanhamento operacional"
-                    width={1586}
-                    height={992}
+                    alt="Painel operacional da plataforma Jornada com indicadores mensais e acompanhamento de fechamento"
+                    width={1349}
+                    height={1166}
                     className="h-auto w-full rounded-md object-contain"
                   />
                 </div>
@@ -103,8 +103,8 @@ const Solution = () => {
                     <img
                       src={productMockup}
                       alt=""
-                      width={1586}
-                      height={992}
+                      width={1349}
+                      height={1166}
                       aria-hidden="true"
                       className="h-full w-full object-cover object-left-top"
                     />

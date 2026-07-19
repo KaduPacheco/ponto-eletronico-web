@@ -32,9 +32,9 @@ const Hero = () => (
             <div className="absolute inset-0 bg-[linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,0)_45%)]" />
             <img
               src="/images/hero-jornada.png"
-              alt="Mockup da plataforma Jornada em notebook e celular"
-              width={1536}
-              height={864}
+              alt="Painel da plataforma Jornada com visao geral, registros e aplicativo movel"
+              width={1672}
+              height={941}
               decoding="async"
               fetchPriority="high"
               className="relative z-10 h-auto w-full rounded-lg object-contain contrast-[1.08] saturate-[1.08]"
