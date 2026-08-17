@@ -21,7 +21,7 @@ describe("crmTimeline", () => {
           event_type: "pipeline_change",
           payload: {
             previous_stage: "novo",
-            next_stage: "qualificado",
+            next_stage: "contato",
           },
           created_at: "2026-04-12T11:00:00.000Z",
         },
@@ -34,7 +34,7 @@ describe("crmTimeline", () => {
     expect(items[0]).toMatchObject({
       id: "event-1",
       title: "Etapa comercial atualizada",
-      content: "Novo -> Qualificado",
+      content: "Novo -> Contato",
       tone: "primary",
     });
     expect(items[1]).toMatchObject({

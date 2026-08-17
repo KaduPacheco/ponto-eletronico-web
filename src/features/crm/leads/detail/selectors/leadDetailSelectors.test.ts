@@ -12,7 +12,7 @@ function createLead(overrides: Partial<CrmLead> = {}): CrmLead {
     funcionarios: 22,
     origem: "meta_ads",
     status: "novo",
-    pipeline_stage: "em_contato",
+    pipeline_stage: "contato",
     owner_id: "owner-1",
     lifetime_value: null,
     created_at: "2026-04-14T10:00:00.000Z",
@@ -55,7 +55,7 @@ function createEvent(overrides: Partial<CrmLeadEvent> = {}): CrmLeadEvent {
     event_type: "pipeline_change",
     payload: {
       previous_stage: "novo",
-      next_stage: "em_contato",
+      next_stage: "contato",
     },
     created_at: "2026-04-14T12:00:00.000Z",
     ...overrides,
@@ -83,10 +83,10 @@ describe("leadDetailSelectors", () => {
       },
     });
 
-    expect(viewModel.currentStage).toBe("em_contato");
+    expect(viewModel.currentStage).toBe("contato");
     expect(viewModel.currentOwnerLabel).toBe("Você");
-    expect(viewModel.selectedStageValue).toBe("em_contato");
-    expect(viewModel.currentStageLabel).toBe("Em contato");
+    expect(viewModel.selectedStageValue).toBe("contato");
+    expect(viewModel.currentStageLabel).toBe("Contato");
     expect(viewModel.taskSummary.openCount).toBe(1);
     expect(viewModel.ownerOptions).toHaveLength(2);
     expect(viewModel.timelineItems).toHaveLength(2);

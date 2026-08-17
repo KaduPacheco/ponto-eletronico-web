@@ -178,8 +178,11 @@ function getStageLabelFromPayload(value: string) {
 
   if (
     value === "novo"
-    || value === "em_contato"
-    || value === "qualificado"
+    || value === "contato"
+    || value === "diagnostico"
+    || value === "demonstracao"
+    || value === "proposta"
+    || value === "negociacao"
     || value === "ganho"
     || value === "perdido"
   ) {
