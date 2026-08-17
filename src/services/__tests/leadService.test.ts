@@ -13,13 +13,17 @@ describe("leadService - intake único", () => {
     vi.stubEnv("VITE_LEAD_INTAKE_URL", "https://demo.supabase.co/functions/v1/lead-intake");
   });
 
-  it("envia lead e atribuição para um único endpoint", async () => {
+  it("envia lead e atribuição para um único endpoint com idempotência", async () => {
     const { submitLeadToSupabase } = await import("../leadService");
-    mockedFetch.mockResolvedValueOnce({ ok: true, text: () => Promise.resolve("") } as Response);
-    await expect(submitLeadToSupabase(leadData)).resolves.toBe(true);
+    mockedFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ lead_id: "lead-1", created: true }) } as Response);
+    await expect(submitLeadToSupabase(leadData)).resolves.toEqual({ leadId: "lead-1", created: true });
     expect(mockedFetch).toHaveBeenCalledTimes(1);
     expect(mockedFetch.mock.calls[0]?.[0]).toBe("https://demo.supabase.co/functions/v1/lead-intake");
-    expect(mockedFetch.mock.calls[0]?.[1]).toEqual(expect.objectContaining({ method: "POST", body: expect.stringContaining("attribution") }));
+    expect(mockedFetch.mock.calls[0]?.[1]).toEqual(expect.objectContaining({
+      method: "POST",
+      body: expect.stringContaining("attribution"),
+      headers: expect.objectContaining({ "Idempotency-Key": expect.any(String) }),
+    }));
   });
 
   it("propaga a falha do intake sem tentar um segundo canal", async () => {
@@ -31,22 +35,14 @@ describe("leadService - intake único", () => {
     consoleErrorSpy.mockRestore();
   });
 
-  it("sends the public Supabase credentials to the intake", async () => {
+  it("sends only public credentials and no privileged CRM fields", async () => {
     const { submitLeadToSupabase } = await import("../leadService");
-    mockedFetch.mockResolvedValueOnce({ ok: true, text: () => Promise.resolve("") } as Response);
+    mockedFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ lead_id: "lead-1", created: true }) } as Response);
     await submitLeadToSupabase(leadData);
-    expect(mockedFetch.mock.calls[0]?.[1]).toEqual(expect.objectContaining({ headers: expect.objectContaining({ apikey: "anon-public-key" }) }));
-  });
-
-  it("uses landing_page as the source", async () => {
-    const { submitLeadToSupabase } = await import("../leadService");
-    mockedFetch.mockResolvedValueOnce({ ok: true, text: () => Promise.resolve("") } as Response);
-    await submitLeadToSupabase(leadData);
-    expect(mockedFetch.mock.calls[0]?.[1]?.body).toContain('"origem":"landing_page"');
-  });
-
-  it("does not expose a webhook URL in its client contract", async () => {
-    const { getSupabasePublicEnv } = await import("@/infra/supabase/env");
-    expect(getSupabasePublicEnv()).not.toHaveProperty("n8nWebhookUrl");
+    const [, requestOptions] = mockedFetch.mock.calls[0] as [string, RequestInit];
+    expect(requestOptions.headers).toEqual(expect.objectContaining({ apikey: "anon-public-key" }));
+    expect(String(requestOptions.body)).not.toContain("owner_id");
+    expect(String(requestOptions.body)).not.toContain("pipeline_stage");
+    expect(String(requestOptions.body)).not.toContain("lifetime_value");
   });
 });

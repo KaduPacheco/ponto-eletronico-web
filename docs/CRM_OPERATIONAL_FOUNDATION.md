@@ -1,17 +1,19 @@
 # Fundação operacional do CRM
 
-O CRM passa a operar com quatro regras explícitas:
+O P1 usa o funil `novo → contato → diagnostico → demonstracao → proposta → negociacao → ganho/perdido`.
 
-- cada responsável pertence ao diretório `crm_profiles`, criado automaticamente para novos usuários autenticados;
-- para mover um lead a `em_contato` ou `qualificado`, é obrigatório atribuir um responsável;
-- para qualificá-lo, é obrigatório existir uma próxima ação aberta;
-- tarefas atualizam automaticamente `next_action_at`, `next_action_type`, `last_interaction_at` e a situação de SLA do lead.
+- cada responsável deve estar provisionado em `crm_profiles` e `crm_user_roles`;
+- toda etapa aberta após `novo` exige responsável e próxima ação;
+- `perdido` exige `lost_reason`;
+- `ganho` exige `lifetime_value > 0`;
+- `closed_at` é preenchido automaticamente em ganho/perdido;
+- alterações comerciais e auditoria são gravadas pela mesma RPC transacional.
 
 ## Implantação
 
-1. Faça backup e valide o schema atual em um projeto Supabase de homologação.
-2. Para instalações legadas, execute `docs/sql/08_crm_operational_foundation.sql` após os scripts 01–04 e 07. Para novos ambientes, use exclusivamente a migração canônica em `supabase/migrations`.
-3. Para cada membro do time, configure `full_name`, `role` e `is_active` na tabela `crm_profiles` pelo SQL Editor até a tela administrativa existir.
-4. Faça o smoke test: atribuir responsável → criar follow-up → mover para `em_contato` → mover para `qualificado` → concluir a tarefa.
+1. Faça backup e valide o schema em um projeto Supabase de homologação.
+2. Execute `20260817120000_crm_p1_security_and_pipeline.sql` após a migração base.
+3. Provisione usuários pelo fluxo administrativo/SQL autorizado; não use INSERT anônimo.
+4. Faça o smoke test: atribuir responsável → criar follow-up → avançar pelo funil → testar ganho e perda.
 
-O prazo de SLA inicial é de 24 horas após a captura. Ele está centralizado na função `apply_lead_operational_rules`, portanto pode ser alterado sem modificar o frontend.
+As migrações devem ser aplicadas em ordem, em staging antes de produção, sem alterar segredos ou executar deploy automaticamente.

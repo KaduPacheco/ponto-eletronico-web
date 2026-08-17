@@ -12,12 +12,16 @@ export interface LeadData {
   funcionarios?: number;
 }
 
+export interface LeadIntakeResult {
+  leadId: string;
+  created: boolean;
+}
+
 function buildLeadPayload(lead: LeadData) {
   const analytics = getAnalyticsContext();
 
   return {
     ...lead,
-    origem: "landing_page",
     attribution: {
       visitor_id: analytics.visitorId,
       session_id: analytics.sessionId,
@@ -32,13 +36,13 @@ function buildLeadPayload(lead: LeadData) {
   };
 }
 
-export async function submitLeadToSupabase(lead: LeadData): Promise<boolean> {
+export async function submitLeadToSupabase(lead: LeadData): Promise<LeadIntakeResult> {
   const supabaseEnv = getSupabasePublicEnv();
   const payload = buildLeadPayload(lead);
+  const idempotencyKey = createIdempotencyKey();
 
   try {
-    await postLeadToIntake(supabaseEnv, payload);
-    return true;
+    return await postLeadToIntake(supabaseEnv, payload, idempotencyKey);
   } catch (error) {
     const intakeError = error instanceof Error ? error : new Error(getErrorMessage(error));
     logAppEvent("lead.intake", "error", "Falha ao enviar lead para o intake.", {
@@ -48,13 +52,18 @@ export async function submitLeadToSupabase(lead: LeadData): Promise<boolean> {
   }
 }
 
-async function postLeadToIntake(supabaseEnv: SupabasePublicEnv, payload: ReturnType<typeof buildLeadPayload>) {
+async function postLeadToIntake(
+  supabaseEnv: SupabasePublicEnv,
+  payload: ReturnType<typeof buildLeadPayload>,
+  idempotencyKey: string,
+): Promise<LeadIntakeResult> {
   const response = await fetch(supabaseEnv.intakeEndpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       apikey: supabaseEnv.anonKey,
       Authorization: `Bearer ${supabaseEnv.anonKey}`,
+      "Idempotency-Key": idempotencyKey,
     },
     body: JSON.stringify(payload),
   });
@@ -63,4 +72,13 @@ async function postLeadToIntake(supabaseEnv: SupabasePublicEnv, payload: ReturnT
     const errorText = await response.text();
     throw new Error(`Intake retornou status ${response.status}: ${errorText || "sem detalhes"}`);
   }
+
+  const body = (await response.json()) as { lead_id?: unknown; created?: unknown };
+  if (typeof body.lead_id !== "string") throw new Error("Intake retornou uma resposta inválida.");
+  return { leadId: body.lead_id, created: body.created === true };
+}
+
+function createIdempotencyKey() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") return crypto.randomUUID();
+  return `lead-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }

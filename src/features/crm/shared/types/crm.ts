@@ -1,4 +1,4 @@
-export type PipelineStage = "novo" | "em_contato" | "qualificado" | "perdido" | "ganho";
+export type PipelineStage = "novo" | "contato" | "diagnostico" | "demonstracao" | "proposta" | "negociacao" | "ganho" | "perdido" | "em_contato" | "qualificado";
 
 export interface CrmLeadEventPayload extends Record<string, unknown> {
   title?: string;
