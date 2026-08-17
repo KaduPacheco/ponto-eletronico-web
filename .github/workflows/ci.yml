@@ -12,6 +12,11 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    # Valores públicos fictícios: permitem testar e compilar o cliente sem
+    # depender de credenciais ou de um projeto Supabase real.
+    env:
+      VITE_SUPABASE_URL: https://ci.supabase.co
+      VITE_SUPABASE_ANON_KEY: ci-anon-key
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
