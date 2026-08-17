@@ -4,7 +4,9 @@
 
 A landing envia somente `nome`, `whatsapp`, `email`, `empresa`, `funcionarios` e `attribution` para `VITE_LEAD_INTAKE_URL`. O endpoint é a Edge Function `lead-intake`; o frontend não acessa `leads` nem conhece `service_role`.
 
-O servidor rejeita campos desconhecidos, normaliza dados, valida limites, aplica idempotência por `Idempotency-Key` e rate limit por fingerprint. O n8n é acionado somente após a transação de persistência, usando `N8N_LEAD_AUTOMATION_URL`, `N8N_LEAD_AUTOMATION_SECRET`, assinatura HMAC e timeout de cinco segundos. Falha no n8n não duplica nem remove o lead persistido.
+O servidor rejeita campos desconhecidos, normaliza dados, valida limites, aplica idempotência por `Idempotency-Key` e rate limit por fingerprint. A origem precisa ser exatamente `PUBLIC_SITE_ORIGIN`; origem ausente ou não autorizada falha sem wildcard. O n8n é acionado somente após a transação de persistência, usando `N8N_LEAD_AUTOMATION_URL`, `N8N_LEAD_AUTOMATION_SECRET`, assinatura HMAC sobre `timestamp.eventId.rawBody` e timeout de cinco segundos. O consumidor deve rejeitar timestamp expirado, repetir `eventId` e comparar a assinatura em tempo constante.
+
+O evento é gravado em `lead_outbox` na mesma transação do lead. Estados possíveis são `pending`, `delivered` e `failed`, com tentativas, `next_attempt_at` e erro sanitizado. O retry em staging deve selecionar eventos pendentes/vencidos, reenviar o mesmo `X-Lead-Event-Id` com backoff limitado e marcar sucesso sem criar nova mensagem.
 
 ## Atribuição
 
@@ -24,8 +26,9 @@ O `vercel.json` permite conexão com Supabase hospedado (`*.supabase.co`, `*.sup
 
 ## Homologação
 
-1. Aplicar `20260817120000_crm_p1_security_and_pipeline.sql` em staging.
+1. Aplicar `20260817120000_crm_p1_security_and_pipeline.sql` e `20260817130000_crm_p1_security_corrections.sql` em staging, nessa ordem; não reescrever migrações já aplicadas.
 2. Configurar as variáveis server-side da Edge Function; não usar prefixo `VITE_`.
 3. Testar submissão, replay da mesma chave, rate limit e indisponibilidade do n8n.
 4. Validar RLS com usuário anônimo, usuário autenticado não provisionado e cada papel CRM.
 5. Confirmar os headers no preview Vercel e executar a suíte E2E contra staging.
+6. Ativar o worker de outbox somente em staging, com limite de tentativas e sem cron/automação de produção nesta PR.

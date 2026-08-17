@@ -18,7 +18,6 @@ export type LeadStageFilter = "all" | PipelineStage | "without_stage";
 const STAGE_LABELS: Record<PipelineStage, string> = {
   novo: "Novo", contato: "Contato", diagnostico: "Diagnóstico", demonstracao: "Demonstração",
   proposta: "Proposta", negociacao: "Negociação", ganho: "Ganho", perdido: "Perdido",
-  em_contato: "Em contato", qualificado: "Qualificado",
 };
 
 const STAGE_BADGE_STYLES: Record<PipelineStage | "without_stage", string> = {
@@ -30,8 +29,6 @@ const STAGE_BADGE_STYLES: Record<PipelineStage | "without_stage", string> = {
   negociacao: "border-cyan-500/20 bg-cyan-500/10 text-cyan-700 dark:text-cyan-300",
   ganho: "border-secondary/20 bg-secondary/10 text-secondary",
   perdido: "border-destructive/20 bg-destructive/10 text-destructive",
-  em_contato: "border-sky-500/20 bg-sky-500/10 text-sky-700 dark:text-sky-300",
-  qualificado: "border-amber-500/20 bg-amber-500/10 text-amber-700 dark:text-amber-300",
   without_stage: "border-border bg-muted text-muted-foreground",
 };
 

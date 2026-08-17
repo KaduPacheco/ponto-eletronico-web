@@ -1,4 +1,4 @@
-export type PipelineStage = "novo" | "contato" | "diagnostico" | "demonstracao" | "proposta" | "negociacao" | "ganho" | "perdido" | "em_contato" | "qualificado";
+export type PipelineStage = "novo" | "contato" | "diagnostico" | "demonstracao" | "proposta" | "negociacao" | "ganho" | "perdido";
 
 export interface CrmLeadEventPayload extends Record<string, unknown> {
   title?: string;
@@ -40,7 +40,7 @@ export interface CrmOwnerProfile {
   id: string;
   full_name: string | null;
   email: string | null;
-  role: "admin" | "manager" | "agent";
+  role: "admin" | "manager";
   is_active: boolean;
 }
 

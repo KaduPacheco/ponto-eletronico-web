@@ -1,22 +1,15 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.103.0";
 
-const allowedOrigin = Deno.env.get("PUBLIC_SITE_ORIGIN") ?? "*";
-const corsHeaders = {
-  "Access-Control-Allow-Origin": allowedOrigin,
-  "Access-Control-Allow-Headers": "authorization, apikey, content-type, idempotency-key",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Vary": "Origin",
-};
 const allowedTopLevelKeys = new Set(["nome", "whatsapp", "email", "empresa", "funcionarios", "attribution"]);
 const allowedAttributionKeys = new Set([
   "visitor_id", "session_id", "page_url", "referrer", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term",
 ]);
 
 Deno.serve(async (request) => {
-  if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
-  if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
-
   try {
+    const corsHeaders = getCorsHeaders(request);
+    if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+    if (request.method !== "POST") return json({ error: "Method not allowed" }, 405, corsHeaders);
     const body = await request.json();
     const lead = validateLead(body);
     const attribution = validateAttribution(body.attribution);
@@ -50,19 +43,37 @@ Deno.serve(async (request) => {
     });
     if (error) {
       const status = error.message.includes("Rate limit") ? 429 : error.message.includes("Idempotency") ? 409 : 400;
-      return json({ error: status === 429 ? "Rate limit exceeded" : "Lead intake rejected" }, status);
+      return json({ error: status === 429 ? "Rate limit exceeded" : "Lead intake rejected" }, status, corsHeaders);
     }
 
     const result = data?.[0];
-    if (!result?.lead_id) return json({ error: "Lead intake failed" }, 500);
-    if (result.created) await notifyAutomation({ lead_id: result.lead_id, ...lead, attribution });
-    return json({ lead_id: result.lead_id, created: result.created }, result.created ? 201 : 200);
+    if (!result?.lead_id) return json({ error: "Lead intake failed" }, 500, corsHeaders);
+    if (result.created && result.event_id) await notifyAutomation(supabase, result.event_id);
+    return json({ lead_id: result.lead_id, created: result.created }, result.created ? 201 : 200, corsHeaders);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Invalid request";
     const status = message.startsWith("Invalid") || message.startsWith("Unknown") ? 400 : 500;
-    return json({ error: status === 400 ? message : "Unable to process lead intake" }, status);
+    return json({ error: status === 400 ? message : "Unable to process lead intake" }, status, safeCorsHeaders(request));
   }
 });
+
+function getCorsHeaders(request: Request) {
+  const configuredOrigin = requiredEnv("PUBLIC_SITE_ORIGIN");
+  const requestOrigin = request.headers.get("Origin")?.trim();
+  if (!requestOrigin || requestOrigin !== configuredOrigin) throw new Error("Origin not allowed");
+  return {
+    "Access-Control-Allow-Origin": configuredOrigin,
+    "Access-Control-Allow-Headers": "authorization, apikey, content-type, idempotency-key",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Vary": "Origin",
+  };
+}
+
+function safeCorsHeaders(request: Request) {
+  const origin = request.headers.get("Origin")?.trim();
+  const configured = Deno.env.get("PUBLIC_SITE_ORIGIN")?.trim();
+  return origin && configured && origin === configured ? { "Access-Control-Allow-Origin": configured, Vary: "Origin" } : { Vary: "Origin" };
+}
 
 function validateLead(value: unknown) {
   const body = asRecord(value);
@@ -157,31 +168,38 @@ async function fingerprint(value: string) {
   return [...new Uint8Array(hash)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
-async function notifyAutomation(payload: Record<string, unknown>) {
+async function notifyAutomation(supabase: ReturnType<typeof createClient>, eventId: string) {
   const url = Deno.env.get("N8N_LEAD_AUTOMATION_URL")?.trim();
   const secret = Deno.env.get("N8N_LEAD_AUTOMATION_SECRET")?.trim();
   if (!url || !secret) return;
-  const body = JSON.stringify(payload);
+  const { data: event } = await supabase.from("lead_outbox").select("event_id,payload,attempts").eq("event_id", eventId).eq("status", "pending").single();
+  if (!event) return;
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const body = JSON.stringify(event.payload);
+  const signingInput = `${timestamp}.${event.event_id}.${body}`;
   const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(body));
+  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(signingInput));
   const digest = [...new Uint8Array(signature)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 5000);
   try {
     const response = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json", "X-Lead-Signature": `sha256=${digest}` },
+      headers: { "Content-Type": "application/json", "X-Lead-Event-Id": event.event_id, "X-Lead-Timestamp": timestamp, "X-Lead-Signature": `sha256=${digest}` },
       body,
       signal: controller.signal,
     });
-    if (!response.ok) console.warn("Lead automation delivery failed", response.status);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    await supabase.from("lead_outbox").update({ status: "delivered", delivered_at: new Date().toISOString(), updated_at: new Date().toISOString() }).eq("event_id", event.event_id);
   } catch {
-    console.warn("Lead automation delivery failed");
+    const attempts = Number(event.attempts ?? 0) + 1;
+    const delaySeconds = Math.min(3600, 30 * (2 ** Math.min(attempts, 7)));
+    await supabase.from("lead_outbox").update({ status: "failed", attempts, next_attempt_at: new Date(Date.now() + delaySeconds * 1000).toISOString(), last_error: "automation delivery failed", updated_at: new Date().toISOString() }).eq("event_id", event.event_id);
   } finally {
     clearTimeout(timeout);
   }
 }
 
-function json(body: unknown, status: number) {
+function json(body: unknown, status: number, corsHeaders: Record<string, string>) {
   return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json", "Cache-Control": "no-store" } });
 }

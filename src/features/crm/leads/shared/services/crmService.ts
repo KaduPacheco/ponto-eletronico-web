@@ -14,7 +14,7 @@ export async function getCrmLeads(): Promise<CrmLead[]> {
 }
 
 export async function getCrmOwnerProfiles(): Promise<CrmOwnerProfile[]> {
-  const { data, error } = await supabase.from("crm_profiles").select("id,full_name,email,role,is_active").eq("is_active", true).order("full_name", { ascending: true });
+  const { data, error } = await supabase.rpc("get_crm_owner_profiles");
   if (error) throw new Error(`Falha ao buscar responsáveis do CRM: ${error.message}`);
   return (data ?? []) as CrmOwnerProfile[];
 }
@@ -84,6 +84,18 @@ export async function updateTaskStatus(taskId: string, completed: boolean) {
 export async function updateLeadPipelineStage(leadId: string, nextStage: PipelineStage) {
   const { data, error } = await supabase.rpc("update_lead_pipeline_stage", { p_lead_id: leadId, p_next_stage: nextStage });
   if (error) throw new Error(`Falha ao atualizar etapa do lead: ${error.message}`);
+  return data as CrmLead;
+}
+
+export async function closeLeadAsWon(leadId: string, lifetimeValue: number) {
+  const { data, error } = await supabase.rpc("close_lead_as_won", { p_lead_id: leadId, p_lifetime_value: lifetimeValue });
+  if (error) throw new Error(`Falha ao concluir lead como ganho: ${error.message}`);
+  return data as CrmLead;
+}
+
+export async function closeLeadAsLost(leadId: string, lostReason: string) {
+  const { data, error } = await supabase.rpc("close_lead_as_lost", { p_lead_id: leadId, p_lost_reason: lostReason });
+  if (error) throw new Error(`Falha ao concluir lead como perdido: ${error.message}`);
   return data as CrmLead;
 }
 
