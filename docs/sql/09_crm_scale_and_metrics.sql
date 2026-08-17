@@ -1,6 +1,6 @@
 -- ESCALA E MÉTRICAS DO CRM (ETAPA 3)
--- Execute após 00_crm_authorization.sql, 06_apply_authorization_hardening.sql
--- e 06_crm_operational_foundation.sql.
+-- Execute após 00_crm_authorization.sql, 07_apply_authorization_hardening.sql
+-- e 08_crm_operational_foundation.sql.
 
 BEGIN;
 

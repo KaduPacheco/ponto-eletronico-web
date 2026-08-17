@@ -20,8 +20,7 @@ class MockIntersectionObserver implements IntersectionObserver {
 function restoreDefaultPublicEnv() {
   vi.stubEnv("VITE_SUPABASE_URL", "https://demo.supabase.co");
   vi.stubEnv("VITE_SUPABASE_ANON_KEY", "anon-public-key");
-  vi.stubEnv("VITE_SUPABASE_INTAKE_URL", "https://demo.supabase.co/rest/v1/leads");
-  vi.stubEnv("VITE_N8N_WEBHOOK_URL", "https://n8n.example.com/webhook");
+  vi.stubEnv("VITE_LEAD_INTAKE_URL", "https://demo.supabase.co/functions/v1/lead-intake");
 }
 
 function installIntersectionObserverMock() {
@@ -71,6 +70,7 @@ describe("App bootstrap publico", () => {
 
   it("mostra a entrada do CRM no /crm com a env local disponível", async () => {
     vi.unstubAllEnvs();
+    restoreDefaultPublicEnv();
     vi.spyOn(console, "error").mockImplementation(() => undefined);
     vi.spyOn(console, "warn").mockImplementation(() => undefined);
     vi.spyOn(console, "info").mockImplementation(() => undefined);

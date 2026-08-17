@@ -9,8 +9,7 @@ describe("supabase env helper", () => {
   it("normaliza as envs públicas e monta os endpoints derivados", async () => {
     vi.stubEnv("VITE_SUPABASE_URL", " https://demo.supabase.co ");
     vi.stubEnv("VITE_SUPABASE_ANON_KEY", " anon-public-key ");
-    vi.stubEnv("VITE_SUPABASE_INTAKE_URL", " https://api.example.com/intake ");
-    vi.stubEnv("VITE_N8N_WEBHOOK_URL", " https://n8n.example.com/webhook ");
+    vi.stubEnv("VITE_LEAD_INTAKE_URL", " https://api.example.com/intake ");
 
     const { getSupabasePublicEnv, hasSupabasePublicEnv } = await import("./env");
 
@@ -20,7 +19,6 @@ describe("supabase env helper", () => {
       anonKey: "anon-public-key",
       analyticsEndpoint: "https://demo.supabase.co/rest/v1/analytics_events",
       intakeEndpoint: "https://api.example.com/intake",
-      n8nWebhookUrl: "https://n8n.example.com/webhook",
     });
   });
 

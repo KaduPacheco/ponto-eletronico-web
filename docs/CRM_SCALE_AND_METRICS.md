@@ -1,6 +1,6 @@
 # Escala e métricas do CRM
 
-A migração `07_crm_scale_and_metrics.sql` desloca duas operações caras do navegador para o PostgreSQL:
+A migração legada `09_crm_scale_and_metrics.sql` desloca duas operações caras do navegador para o PostgreSQL. Em novos ambientes, aplique a migração canônica em `supabase/migrations` primeiro.
 
 - `get_crm_leads_page`: pagina e filtra a carteira, calculando próximo follow-up e atrasos por lead;
 - `get_crm_analytics_summary`: devolve KPIs, funil e série diária agregados, sem expor eventos brutos.

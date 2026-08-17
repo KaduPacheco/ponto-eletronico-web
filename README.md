@@ -69,7 +69,10 @@ O formulário utiliza `src/services/leadService.ts` para enviar dados para a tab
 
 ### n8n
 
-Se `VITE_N8N_WEBHOOK_URL` estiver configurada, o lead também é encaminhado para o webhook. Falhas nessa etapa não interrompem o envio principal.
+O formulário usa somente `VITE_LEAD_INTAKE_URL`, apontando para a Edge Function
+`lead-intake`. Automações (como n8n) são disparadas no servidor depois da
+gravação e sua URL fica em segredo de ambiente, nunca em `VITE_*`. Consulte
+`docs/PRODUCTION_HARDENING.md` antes de configurar produção.
 
 ## Deploy
 

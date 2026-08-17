@@ -17,6 +17,7 @@ jobs:
     env:
       VITE_SUPABASE_URL: https://ci.supabase.co
       VITE_SUPABASE_ANON_KEY: ci-anon-key
+      VITE_LEAD_INTAKE_URL: https://ci.supabase.co/functions/v1/lead-intake
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

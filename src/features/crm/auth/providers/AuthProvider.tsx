@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/infra/supabase/client";
-import { buildAuthAccess, hasPermission } from "@/features/crm/auth/lib/authAccess";
+import { buildAuthAccess, hasPermission, type AuthRole } from "@/features/crm/auth/lib/authAccess";
 import { AuthContext } from "@/features/crm/auth/types/auth-context";
 import { getErrorMessage, logAppEvent } from "@/lib/appLogger";
 
@@ -10,13 +10,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [accessRole, setAccessRole] = useState<AuthRole>("anonymous");
 
-  const access = useMemo(() => buildAuthAccess(user), [user]);
+  const access = useMemo(() => buildAuthAccess(accessRole), [accessRole]);
 
   useEffect(() => {
     let isMounted = true;
 
-    const syncSessionState = (nextSession: Session | null) => {
+    const syncSessionState = async (nextSession: Session | null) => {
       if (!isMounted) {
         return;
       }
@@ -24,6 +25,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(nextSession);
       setUser(nextSession?.user ?? null);
       setAuthError(null);
+
+      if (!nextSession) {
+        setAccessRole("anonymous");
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      const { data, error } = await supabase.rpc("get_my_crm_access");
+      if (!isMounted) return;
+      if (error) {
+        logAppEvent("auth", "warn", "Falha ao consultar acesso CRM; acesso negado por padrão.", { error: error.message });
+        setAccessRole("authenticated");
+      } else {
+        const role = Array.isArray(data) ? data[0]?.role : null;
+        setAccessRole(role === "admin" || role === "manager" ? role : "authenticated");
+      }
       setLoading(false);
     };
 
@@ -34,7 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           throw error;
         }
 
-        syncSessionState(data.session);
+        return syncSessionState(data.session);
       })
       .catch((error) => {
         if (!isMounted) {
@@ -57,7 +75,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         userId: nextSession?.user?.id ?? null,
       });
 
-      syncSessionState(nextSession);
+      void syncSessionState(nextSession);
     });
 
     return () => {

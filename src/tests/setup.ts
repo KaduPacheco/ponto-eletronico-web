@@ -8,5 +8,4 @@ global.fetch = vi.fn();
 // durante a inicialização, sem depender de credenciais reais.
 vi.stubEnv('VITE_SUPABASE_URL', 'https://demo.supabase.co');
 vi.stubEnv('VITE_SUPABASE_ANON_KEY', 'anon-public-key');
-vi.stubEnv('VITE_SUPABASE_INTAKE_URL', 'https://demo.supabase.co/rest/v1/leads');
-vi.stubEnv('VITE_N8N_WEBHOOK_URL', 'https://n8n.example.com/webhook');
+vi.stubEnv('VITE_LEAD_INTAKE_URL', 'https://demo.supabase.co/functions/v1/lead-intake');

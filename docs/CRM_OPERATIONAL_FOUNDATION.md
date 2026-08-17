@@ -10,7 +10,7 @@ O CRM passa a operar com quatro regras explícitas:
 ## Implantação
 
 1. Faça backup e valide o schema atual em um projeto Supabase de homologação.
-2. Execute `docs/sql/06_crm_operational_foundation.sql` após os scripts 01–04.
+2. Para instalações legadas, execute `docs/sql/08_crm_operational_foundation.sql` após os scripts 01–04 e 07. Para novos ambientes, use exclusivamente a migração canônica em `supabase/migrations`.
 3. Para cada membro do time, configure `full_name`, `role` e `is_active` na tabela `crm_profiles` pelo SQL Editor até a tela administrativa existir.
 4. Faça o smoke test: atribuir responsável → criar follow-up → mover para `em_contato` → mover para `qualificado` → concluir a tarefa.
 
