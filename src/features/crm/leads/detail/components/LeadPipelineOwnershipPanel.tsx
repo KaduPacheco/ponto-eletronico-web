@@ -11,7 +11,7 @@ interface LeadPipelineOwnershipPanelProps {
   currentOwnerLabel: string;
   selectedStageValue: PipelineStage | "";
   ownerOptions: CrmOwnerOption[];
-  ownerIdsError: boolean;
+  ownerProfilesError: boolean;
   taskSummary: {
     openCount: number;
     overdueCount: number;
@@ -34,7 +34,7 @@ const LeadPipelineOwnershipPanel = ({
   currentOwnerLabel,
   selectedStageValue,
   ownerOptions,
-  ownerIdsError,
+  ownerProfilesError,
   taskSummary,
   nextTaskHelper,
   openTasksHelper,
@@ -123,7 +123,7 @@ const LeadPipelineOwnershipPanel = ({
                   : "Este lead ainda não possui ownership definido."
                 : "Sem permissão para atualizar ownership deste lead."}
             </p>
-            {ownerIdsError ? (
+            {ownerProfilesError ? (
               <p className="text-sm text-amber-700 dark:text-amber-300">
                 A lista de responsáveis está operando em modo reduzido. Sem uma tabela pública de perfis no backend,
                 o CRM usa apenas owners já vistos nos leads e o usuário autenticado atual.

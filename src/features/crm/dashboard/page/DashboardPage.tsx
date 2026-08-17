@@ -116,7 +116,7 @@ const DashboardPage = () => {
                   variant="outline"
                   className="h-auto w-full justify-between rounded-2xl border-border/70 px-4 py-3.5"
                 >
-                  <Link to={CRM_ROUTES.operação}>
+                  <Link to={CRM_ROUTES.operacao}>
                     Operação
                     <BriefcaseBusiness className="h-4 w-4" />
                   </Link>

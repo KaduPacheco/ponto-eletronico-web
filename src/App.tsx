@@ -18,8 +18,8 @@ const LoginPage = lazy(() => import("./features/crm/auth/page/LoginPage"));
 const DashboardPage = lazy(() => import("./features/crm/dashboard/page/DashboardPage"));
 const AnalyticsPage = lazy(() => import("./features/crm/analytics/page/AnalyticsPage"));
 const OperacaoPage = lazy(() => import("./features/crm/operacao/page/OperacaoPage"));
-const LeadsPage = lazy(() => import("./pages/crm/LeadsPage"));
-const LeadDetailPage = lazy(() => import("./pages/crm/LeadDetailPage"));
+const LeadsPage = lazy(() => import("./features/crm/leads/list/page/LeadsPage"));
+const LeadDetailPage = lazy(() => import("./features/crm/leads/detail/page/LeadDetailPage"));
 
 const App = () => {
   return (

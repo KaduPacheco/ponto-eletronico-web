@@ -1,5 +1,5 @@
 import type { User } from "@supabase/supabase-js";
-import { CrmOwnerOption } from "@/types/crm";
+import { CrmOwnerOption, CrmOwnerProfile } from "@/types/crm";
 
 export const LEAD_OWNER_FILTER_ALL = "all";
 export const LEAD_OWNER_FILTER_MINE = "mine";
@@ -45,6 +45,40 @@ export function buildOwnerOptions(ownerIds: Iterable<string | null | undefined>,
       return 1;
     }
 
+    return left.selectLabel.localeCompare(right.selectLabel, "pt-BR");
+  });
+}
+
+export function buildOwnerOptionsFromProfiles(
+  profiles: Iterable<CrmOwnerProfile>,
+  currentUser?: Pick<User, "id" | "email" | "user_metadata"> | null,
+) {
+  const options = new Map<string, CrmOwnerOption>();
+
+  for (const profile of profiles) {
+    if (!profile.is_active) continue;
+
+    const identity = profile.full_name?.trim() || profile.email?.trim() || `Responsável ${profile.id.slice(0, 8)}`;
+    const isCurrentUser = profile.id === currentUser?.id;
+    options.set(profile.id, {
+      id: profile.id,
+      displayLabel: isCurrentUser ? "Você" : identity,
+      selectLabel: isCurrentUser ? `Você (${identity})` : identity,
+    });
+  }
+
+  if (currentUser?.id && !options.has(currentUser.id)) {
+    const currentUserLabel = getCurrentUserIdentityLabel(currentUser);
+    options.set(currentUser.id, {
+      id: currentUser.id,
+      displayLabel: "Você",
+      selectLabel: currentUserLabel ? `Você (${currentUserLabel})` : "Você",
+    });
+  }
+
+  return Array.from(options.values()).sort((left, right) => {
+    if (left.id === currentUser?.id) return -1;
+    if (right.id === currentUser?.id) return 1;
     return left.selectLabel.localeCompare(right.selectLabel, "pt-BR");
   });
 }

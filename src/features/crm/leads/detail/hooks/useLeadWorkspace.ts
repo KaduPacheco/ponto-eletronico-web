@@ -5,7 +5,7 @@ import {
   createLeadNote,
   createLeadTask,
   getCrmLeadById,
-  getCrmOwnerIds,
+  getCrmOwnerProfiles,
   getLeadEvents,
   getLeadNotes,
   getLeadTasks,
@@ -43,9 +43,9 @@ export function useLeadWorkspace(leadId?: string) {
     enabled: Boolean(leadId),
   });
 
-  const ownerIdsQuery = useQuery({
-    queryKey: CRM_QUERY_KEYS.ownerIds,
-    queryFn: getCrmOwnerIds,
+  const ownerProfilesQuery = useQuery({
+    queryKey: CRM_QUERY_KEYS.ownerProfiles,
+    queryFn: getCrmOwnerProfiles,
     enabled: Boolean(leadId),
   });
 
@@ -145,7 +145,7 @@ export function useLeadWorkspace(leadId?: string) {
     onSuccess: (_, variables) => {
       invalidateLeadWorkspace(queryClient, leadId);
       queryClient.invalidateQueries({ queryKey: CRM_QUERY_KEYS.leads });
-      queryClient.invalidateQueries({ queryKey: CRM_QUERY_KEYS.ownerIds });
+      queryClient.invalidateQueries({ queryKey: CRM_QUERY_KEYS.ownerProfiles });
       toast({ title: variables.nextOwnerId ? "Lead atribuído" : "Ownership removido" });
     },
     onError: (error) => {
@@ -161,7 +161,7 @@ export function useLeadWorkspace(leadId?: string) {
       canManageTasks,
     },
     leadQuery,
-    ownerIdsQuery,
+    ownerProfilesQuery,
     notesQuery,
     eventsQuery,
     tasksQuery,

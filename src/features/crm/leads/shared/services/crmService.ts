@@ -7,6 +7,7 @@ import type {
   CrmLeadNote,
   CrmLeadTask,
   CrmLeadTaskOverview,
+  CrmOwnerProfile,
   PipelineStage,
 } from "@/features/crm/shared/types/crm";
 
@@ -40,23 +41,18 @@ export async function getCrmLeads(): Promise<CrmLead[]> {
   return (data ?? []) as CrmLead[];
 }
 
-export async function getCrmOwnerIds(): Promise<string[]> {
+export async function getCrmOwnerProfiles(): Promise<CrmOwnerProfile[]> {
   const { data, error } = await supabase
-    .from("leads")
-    .select("owner_id")
-    .not("owner_id", "is", null);
+    .from("crm_profiles")
+    .select("id,full_name,email,role,is_active")
+    .eq("is_active", true)
+    .order("full_name", { ascending: true });
 
   if (error) {
-    throw new Error(`Falha ao buscar owners do CRM: ${error.message}`);
+    throw new Error(`Falha ao buscar responsáveis do CRM: ${error.message}`);
   }
 
-  return Array.from(
-    new Set(
-      (data ?? [])
-        .map((record) => record.owner_id)
-        .filter((ownerId): ownerId is string => typeof ownerId === "string" && ownerId.trim().length > 0),
-    ),
-  );
+  return (data ?? []) as CrmOwnerProfile[];
 }
 
 export async function getCrmLeadById(id: string): Promise<CrmLead> {

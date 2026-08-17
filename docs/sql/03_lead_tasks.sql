@@ -17,11 +17,13 @@ CREATE TABLE IF NOT EXISTS lead_tasks (
 ALTER TABLE lead_tasks ENABLE ROW LEVEL SECURITY;
 
 -- 3. PERMISSÃO CRM: Apenas usuários autenticados podem gerenciar tarefas
-CREATE POLICY "Authenticated users can manage lead tasks" 
-ON lead_tasks ALL 
-TO authenticated 
-USING (true) 
-WITH CHECK (true);
+DROP POLICY IF EXISTS "Authenticated users can manage lead tasks" ON lead_tasks;
+DROP POLICY IF EXISTS "CRM operators can manage lead tasks" ON lead_tasks;
+CREATE POLICY "CRM operators can manage lead tasks"
+ON lead_tasks FOR ALL
+TO authenticated
+USING (public.has_crm_role(ARRAY['manager', 'admin']))
+WITH CHECK (public.has_crm_role(ARRAY['manager', 'admin']));
 
 -- 4. Index para performance em listagem por lead e filtro de vencimento
 CREATE INDEX IF NOT EXISTS idx_lead_tasks_lead_id ON lead_tasks(lead_id);

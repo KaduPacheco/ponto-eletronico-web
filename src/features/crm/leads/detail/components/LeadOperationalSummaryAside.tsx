@@ -5,9 +5,11 @@ import type { CrmLead } from "@/types/crm";
 interface LeadOperationalSummaryAsideProps {
   lead: CrmLead;
   currentOwnerLabel: string;
+  slaHelper?: string;
+  slaTone?: "neutral" | "danger";
 }
 
-const LeadOperationalSummaryAside = ({ lead, currentOwnerLabel }: LeadOperationalSummaryAsideProps) => {
+const LeadOperationalSummaryAside = ({ lead, currentOwnerLabel, slaHelper, slaTone = "neutral" }: LeadOperationalSummaryAsideProps) => {
   return (
     <section className="rounded-[28px] border border-border/70 bg-card p-6 shadow-sm">
       <div className="flex items-center gap-2 text-foreground">
@@ -26,6 +28,12 @@ const LeadOperationalSummaryAside = ({ lead, currentOwnerLabel }: LeadOperationa
           value={new Date(lead.created_at).toLocaleDateString("pt-BR")}
           helper={lead.origem || "Origem não informada"}
           tone="neutral"
+        />
+        <LeadOperationalSummaryCard
+          label="SLA comercial"
+          value={slaTone === "danger" ? "Atenção necessária" : "Em acompanhamento"}
+          helper={slaHelper ?? "SLA será definido ao entrar na operação comercial."}
+          tone={slaTone}
         />
       </div>
     </section>

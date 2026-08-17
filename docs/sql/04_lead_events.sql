@@ -14,16 +14,20 @@ CREATE TABLE IF NOT EXISTS lead_events (
 ALTER TABLE lead_events ENABLE ROW LEVEL SECURITY;
 
 -- 3. PERMISSÃO CRM: Apenas usuários autenticados podem ver o histórico
-CREATE POLICY "Authenticated users can view lead events" 
+DROP POLICY IF EXISTS "Authenticated users can view lead events" ON lead_events;
+DROP POLICY IF EXISTS "CRM operators can view lead events" ON lead_events;
+CREATE POLICY "CRM operators can view lead events"
 ON lead_events FOR SELECT
-TO authenticated 
-USING (true);
+TO authenticated
+USING (public.has_crm_role(ARRAY['manager', 'admin']));
 
 -- 4. PERMISSÃO CRM: Apenas usuários autenticados podem registrar eventos
-CREATE POLICY "Authenticated users can insert lead events" 
+DROP POLICY IF EXISTS "Authenticated users can insert lead events" ON lead_events;
+DROP POLICY IF EXISTS "CRM operators can insert lead events" ON lead_events;
+CREATE POLICY "CRM operators can insert lead events"
 ON lead_events FOR INSERT
-TO authenticated 
-WITH CHECK (true);
+TO authenticated
+WITH CHECK (public.has_crm_role(ARRAY['manager', 'admin']));
 
 -- 5. Index para performance em ordenação cronológica por lead
 CREATE INDEX IF NOT EXISTS idx_lead_events_lead_id ON lead_events(lead_id);

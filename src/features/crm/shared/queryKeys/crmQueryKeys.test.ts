@@ -6,7 +6,7 @@ describe("CRM_QUERY_KEYS", () => {
     expect(CRM_QUERY_KEYS.leads).toEqual(["crm-leads"]);
     expect(CRM_QUERY_KEYS.leadsTaskOverview).toEqual(["crm-leads-task-overview"]);
     expect(CRM_QUERY_KEYS.lead("lead-1")).toEqual(["crm-lead", "lead-1"]);
-    expect(CRM_QUERY_KEYS.ownerIds).toEqual(["crm-owner-ids"]);
+    expect(CRM_QUERY_KEYS.ownerProfiles).toEqual(["crm-owner-profiles"]);
     expect(CRM_QUERY_KEYS.leadNotes("lead-1")).toEqual(["crm-lead-notes", "lead-1"]);
     expect(CRM_QUERY_KEYS.leadEvents("lead-1")).toEqual(["crm-lead-events", "lead-1"]);
     expect(CRM_QUERY_KEYS.leadTasks("lead-1")).toEqual(["crm-lead-tasks", "lead-1"]);

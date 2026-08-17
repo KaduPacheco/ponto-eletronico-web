@@ -28,6 +28,20 @@ export interface CrmLead {
   created_at: string;
   updated_at: string;
   last_interaction_at: string | null;
+  next_action_at?: string | null;
+  next_action_type?: string | null;
+  sla_due_at?: string | null;
+  closed_at?: string | null;
+  lost_reason?: string | null;
+  duplicate_of?: string | null;
+}
+
+export interface CrmOwnerProfile {
+  id: string;
+  full_name: string | null;
+  email: string | null;
+  role: "admin" | "manager" | "agent";
+  is_active: boolean;
 }
 
 export interface CrmLeadEvent {

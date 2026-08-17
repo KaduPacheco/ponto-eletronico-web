@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   buildOwnerOptions,
+  buildOwnerOptionsFromProfiles,
   buildSourceOptions,
   getLeadSourceFilterValue,
   getOwnerFilterValueForId,
@@ -58,5 +59,21 @@ describe("crmLeadPresentation modules", () => {
     expect(matchesSourceFilter(" Meta_Ads ", getLeadSourceFilterValue("meta_ads"))).toBe(true);
     expect(matchesSourceFilter("", "without_source")).toBe(true);
     expect(matchesSourceFilter("indicação", getLeadSourceFilterValue("meta_ads"))).toBe(false);
+  });
+
+  it("builds owner labels from the active commercial directory", () => {
+    const options = buildOwnerOptionsFromProfiles(
+      [
+        { id: "user-2", full_name: "Bruno Lima", email: "bruno@empresa.com", role: "agent", is_active: true },
+        { id: "user-1", full_name: "Ana Souza", email: "ana@empresa.com", role: "manager", is_active: true },
+        { id: "user-3", full_name: "Inativo", email: "inativo@empresa.com", role: "agent", is_active: false },
+      ],
+      { id: "user-1", email: "ana@empresa.com", user_metadata: {} } as never,
+    );
+
+    expect(options).toEqual([
+      { id: "user-1", displayLabel: "Você", selectLabel: "Você (Ana Souza)" },
+      { id: "user-2", displayLabel: "Bruno Lima", selectLabel: "Bruno Lima" },
+    ]);
   });
 });

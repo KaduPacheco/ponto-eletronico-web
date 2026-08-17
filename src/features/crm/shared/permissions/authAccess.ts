@@ -13,37 +13,20 @@ const ALL_AUTH_PERMISSIONS: AuthPermission[] = [
   "crm:tasks:write",
 ];
 
-const DEFAULT_AUTHENTICATED_PERMISSIONS: AuthPermission[] = [...ALL_AUTH_PERMISSIONS];
-
 export function buildAuthAccess(user: User | null): AuthAccess {
   if (!user) {
-    return {
-      role: "anonymous",
-      permissions: [],
-    };
+    return { role: "anonymous", permissions: [] };
   }
 
-  const resolvedRole = resolveAuthRole(user);
-  const customPermissions = readPermissionsFromMetadata(user);
+  const role = resolveAuthRole(user);
 
-  if (resolvedRole === "admin") {
-    return {
-      role: resolvedRole,
-      permissions: [...ALL_AUTH_PERMISSIONS],
-    };
+  // This is only a UI affordance. Database RLS is authoritative.
+  // app_metadata is set by trusted server-side administration, unlike user_metadata.
+  if (role === "admin" || role === "manager") {
+    return { role, permissions: [...ALL_AUTH_PERMISSIONS] };
   }
 
-  if (customPermissions.length > 0) {
-    return {
-      role: resolvedRole,
-      permissions: uniquePermissions(["crm:access", ...customPermissions]),
-    };
-  }
-
-  return {
-    role: resolvedRole,
-    permissions: [...DEFAULT_AUTHENTICATED_PERMISSIONS],
-  };
+  return { role, permissions: [] };
 }
 
 export function hasPermission(access: AuthAccess, permission: AuthPermission) {
@@ -51,51 +34,19 @@ export function hasPermission(access: AuthAccess, permission: AuthPermission) {
 }
 
 export function getDefaultAuthorizedCrmRoute(access: AuthAccess) {
-  if (hasPermission(access, "crm:dashboard:read")) {
-    return CRM_ROUTES.root;
-  }
-
-  if (hasPermission(access, "crm:leads:read")) {
-    return CRM_ROUTES.leads;
-  }
-
+  if (hasPermission(access, "crm:dashboard:read")) return CRM_ROUTES.root;
+  if (hasPermission(access, "crm:leads:read")) return CRM_ROUTES.leads;
   return CRM_ROUTES.login;
 }
 
 function resolveAuthRole(user: User): AuthRole {
-  const candidates = [
-    user.app_metadata?.crm_role,
-    user.user_metadata?.crm_role,
-    user.app_metadata?.role,
-  ];
+  const candidates = [user.app_metadata?.crm_role, user.app_metadata?.role];
 
   for (const candidate of candidates) {
-    if (
-      candidate === "admin"
-      || candidate === "manager"
-      || candidate === "authenticated"
-    ) {
+    if (candidate === "admin" || candidate === "manager" || candidate === "authenticated") {
       return candidate;
     }
   }
 
   return "authenticated";
-}
-
-function readPermissionsFromMetadata(user: User) {
-  const rawPermissions = user.app_metadata?.crm_permissions ?? user.user_metadata?.crm_permissions;
-
-  if (!Array.isArray(rawPermissions)) {
-    return [];
-  }
-
-  return rawPermissions.filter(isAuthPermission);
-}
-
-function isAuthPermission(value: unknown): value is AuthPermission {
-  return typeof value === "string" && ALL_AUTH_PERMISSIONS.includes(value as AuthPermission);
-}
-
-function uniquePermissions(permissions: AuthPermission[]) {
-  return Array.from(new Set(permissions));
 }

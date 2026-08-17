@@ -21,7 +21,7 @@ const LeadDetailPage = () => {
   const {
     permissions,
     leadQuery,
-    ownerIdsQuery,
+    ownerProfilesQuery,
     notesQuery,
     eventsQuery,
     tasksQuery,
@@ -38,12 +38,12 @@ const LeadDetailPage = () => {
     () => selectLeadDetailViewModel({
       lead,
       tasks: tasksQuery.data,
-      ownerIds: ownerIdsQuery.data,
+      ownerProfiles: ownerProfilesQuery.data,
       notes: notesQuery.data,
       events: eventsQuery.data,
       currentUser: user,
     }),
-    [eventsQuery.data, lead, notesQuery.data, ownerIdsQuery.data, tasksQuery.data, user],
+    [eventsQuery.data, lead, notesQuery.data, ownerProfilesQuery.data, tasksQuery.data, user],
   );
 
   const handleAddNote = (event: React.FormEvent<HTMLFormElement>) => {
@@ -137,7 +137,7 @@ const LeadDetailPage = () => {
             currentOwnerLabel={viewModel.currentOwnerLabel}
             selectedStageValue={viewModel.selectedStageValue}
             ownerOptions={viewModel.ownerOptions}
-            ownerIdsError={ownerIdsQuery.isError}
+            ownerProfilesError={ownerProfilesQuery.isError}
             taskSummary={viewModel.taskSummary}
             nextTaskHelper={viewModel.nextTaskHelper}
             openTasksHelper={viewModel.openTasksHelper}
@@ -175,7 +175,12 @@ const LeadDetailPage = () => {
             onNewNoteChange={drafts.setNewNote}
             onSubmitNote={handleAddNote}
           />
-          <LeadOperationalSummaryAside lead={lead} currentOwnerLabel={viewModel.currentOwnerLabel} />
+          <LeadOperationalSummaryAside
+            lead={lead}
+            currentOwnerLabel={viewModel.currentOwnerLabel}
+            slaHelper={viewModel.slaHelper}
+            slaTone={viewModel.slaTone}
+          />
         </aside>
       </div>
     </div>
