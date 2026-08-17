@@ -1,7 +1,7 @@
 import type { User } from "@supabase/supabase-js";
-import type { CrmLead, CrmLeadEvent, CrmLeadNote, CrmLeadTask, CrmOwnerOption, PipelineStage } from "@/types/crm";
+import type { CrmLead, CrmLeadEvent, CrmLeadNote, CrmLeadTask, CrmOwnerOption, CrmOwnerProfile, PipelineStage } from "@/types/crm";
 import { buildLeadTimelineItems } from "@/lib/crmTimeline";
-import { buildOwnerLabelMap, buildOwnerOptions, getOwnerDisplayLabel } from "@/lib/crmLeadPresentation/owners";
+import { buildOwnerLabelMap, buildOwnerOptionsFromProfiles, getOwnerDisplayLabel } from "@/lib/crmLeadPresentation/owners";
 import {
   PIPELINE_STAGE_OPTIONS,
   getLeadStageOptionLabel,
@@ -21,19 +21,21 @@ export interface LeadDetailViewModel {
   currentStageDescription: string;
   nextTaskHelper: string;
   openTasksHelper: string;
+  slaHelper: string;
+  slaTone: "neutral" | "danger";
 }
 
 export function selectLeadDetailViewModel(params: {
   lead: CrmLead | null | undefined;
   tasks: CrmLeadTask[] | undefined;
-  ownerIds: string[] | undefined;
+  ownerProfiles: CrmOwnerProfile[] | undefined;
   notes: CrmLeadNote[] | undefined;
   events: CrmLeadEvent[] | undefined;
   currentUser: Pick<User, "id" | "email" | "user_metadata"> | null | undefined;
 }): LeadDetailViewModel {
-  const { lead, tasks, ownerIds, notes, events, currentUser } = params;
+  const { lead, tasks, ownerProfiles, notes, events, currentUser } = params;
   const taskSummary = buildLeadTaskSummary(tasks ?? []);
-  const ownerOptions = buildOwnerOptions(ownerIds ?? [], currentUser);
+  const ownerOptions = buildOwnerOptionsFromProfiles(ownerProfiles ?? [], currentUser);
   const ownerLabelMap = buildOwnerLabelMap(ownerOptions);
   const timelineItems = buildLeadTimelineItems(notes ?? [], events ?? [], ownerLabelMap, currentUser?.id);
   const currentStage = getLeadStageValue(lead ?? { pipeline_stage: null, status: "novo" });
@@ -58,5 +60,18 @@ export function selectLeadDetailViewModel(params: {
       ? `Ate ${formatTaskDueDate(taskSummary.nextTask.due_date)}`
       : "Crie uma tarefa para definir o proximo passo.",
     openTasksHelper: `${taskSummary.overdueCount} vencidas`,
+    slaHelper: getSlaHelper(lead?.sla_due_at),
+    slaTone: isSlaOverdue(lead?.sla_due_at) ? "danger" : "neutral",
   };
+}
+
+function isSlaOverdue(slaDueAt?: string | null) {
+  return Boolean(slaDueAt && new Date(slaDueAt).getTime() < Date.now());
+}
+
+function getSlaHelper(slaDueAt?: string | null) {
+  if (!slaDueAt) return "SLA será definido ao entrar na operação comercial.";
+  return isSlaOverdue(slaDueAt)
+    ? `SLA vencido em ${formatTaskDueDate(slaDueAt)}`
+    : `SLA até ${formatTaskDueDate(slaDueAt)}`;
 }

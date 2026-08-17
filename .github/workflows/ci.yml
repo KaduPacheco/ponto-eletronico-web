@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Valores públicos fictícios: permitem testar e compilar o cliente sem
+    # depender de credenciais ou de um projeto Supabase real.
+    env:
+      VITE_SUPABASE_URL: https://ci.supabase.co
+      VITE_SUPABASE_ANON_KEY: ci-anon-key
+      VITE_LEAD_INTAKE_URL: https://ci.supabase.co/functions/v1/lead-intake
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build

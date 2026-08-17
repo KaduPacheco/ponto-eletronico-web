@@ -15,7 +15,7 @@ export const CRM_QUERY_KEYS = {
   leads: createStaticKey(["crm-leads"] as const),
   leadsTaskOverview: createStaticKey(["crm-leads-task-overview"] as const),
   lead,
-  ownerIds: createStaticKey(["crm-owner-ids"] as const),
+  ownerProfiles: createStaticKey(["crm-owner-profiles"] as const),
   leadNotes,
   leadEvents,
   leadTasks,

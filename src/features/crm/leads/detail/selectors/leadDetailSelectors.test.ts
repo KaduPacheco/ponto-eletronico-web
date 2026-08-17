@@ -70,7 +70,10 @@ describe("leadDetailSelectors", () => {
     const viewModel = selectLeadDetailViewModel({
       lead: createLead(),
       tasks: [createTask()],
-      ownerIds: ["owner-1", "owner-2"],
+      ownerProfiles: [
+        { id: "owner-1", full_name: "Ana Souza", email: "ana@empresa.com", role: "agent", is_active: true },
+        { id: "owner-2", full_name: "Bruno Lima", email: "bruno@empresa.com", role: "agent", is_active: true },
+      ],
       notes: [createNote()],
       events: [createEvent()],
       currentUser: {
@@ -102,7 +105,7 @@ describe("leadDetailSelectors", () => {
         origem: "",
       }),
       tasks: [],
-      ownerIds: [],
+      ownerProfiles: [],
       notes: [],
       events: [],
       currentUser: null,

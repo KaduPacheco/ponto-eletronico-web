@@ -23,7 +23,7 @@ const navigationItems = [
     requiredPermission: "crm:dashboard:read" as const,
   },
   {
-    to: CRM_ROUTES.operação,
+    to: CRM_ROUTES.operacao,
     label: "Operação",
     icon: BriefcaseBusiness,
     requiredPermission: "crm:dashboard:read" as const,

@@ -31,3 +31,6 @@ dist-ssr
 
 # Vercel local linkage
 .vercel
+
+# Supabase local metadata
+supabase/.temp/

@@ -15,15 +15,17 @@ DROP POLICY IF EXISTS "Public leads are viewable by everyone" ON leads;
 CREATE POLICY "Enable insert for anonymous users" 
 ON leads FOR INSERT 
 TO anon 
-WITH CHECK (true);
+WITH CHECK (origem = 'landing_page' AND status = 'novo');
 
 -- 4. PERMISSÃO CRM: Permitir acesso total apenas para usuários autenticados (Admin)
 -- Futuramente, os usuários do CRM deverão estar logados para ver os leads.
-CREATE POLICY "Enable all access for authenticated users only" 
-ON leads ALL 
-TO authenticated 
-USING (true)
-WITH CHECK (true);
+DROP POLICY IF EXISTS "Enable all access for authenticated users only" ON leads;
+DROP POLICY IF EXISTS "CRM operators can manage leads" ON leads;
+CREATE POLICY "CRM operators can manage leads"
+ON leads FOR ALL
+TO authenticated
+USING (public.has_crm_role(ARRAY['manager', 'admin']))
+WITH CHECK (public.has_crm_role(ARRAY['manager', 'admin']));
 
 -- 5. ESTABILIDADE DE SCHEMA: Garantir retrocompatibilidade
 -- Garante que colunas críticas tenham defaults, permitindo que o formulário antigo

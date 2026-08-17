@@ -5,7 +5,6 @@ export interface SupabasePublicEnv {
   anonKey: string;
   analyticsEndpoint: string;
   intakeEndpoint: string;
-  n8nWebhookUrl: string | null;
 }
 
 let cachedEnv: SupabasePublicEnv | null = null;
@@ -34,21 +33,19 @@ export function getSupabasePublicEnv(): SupabasePublicEnv {
 
   const url = readRequiredPublicEnv("VITE_SUPABASE_URL");
   const anonKey = readRequiredPublicEnv("VITE_SUPABASE_ANON_KEY");
-  const intakeOverride = readOptionalPublicEnv("VITE_SUPABASE_INTAKE_URL");
-  const n8nWebhookUrl = readOptionalPublicEnv("VITE_N8N_WEBHOOK_URL");
+  const intakeEndpoint = readRequiredPublicEnv("VITE_LEAD_INTAKE_URL");
 
   cachedEnv = {
     url,
     anonKey,
     analyticsEndpoint: `${url}/rest/v1/analytics_events`,
-    intakeEndpoint: intakeOverride ?? `${url}/rest/v1/leads`,
-    n8nWebhookUrl,
+    intakeEndpoint,
   };
 
   return cachedEnv;
 }
 
-function readRequiredPublicEnv(key: "VITE_SUPABASE_URL" | "VITE_SUPABASE_ANON_KEY") {
+function readRequiredPublicEnv(key: "VITE_SUPABASE_URL" | "VITE_SUPABASE_ANON_KEY" | "VITE_LEAD_INTAKE_URL") {
   const value = readOptionalPublicEnv(key);
 
   if (value) {
@@ -62,7 +59,7 @@ function readRequiredPublicEnv(key: "VITE_SUPABASE_URL" | "VITE_SUPABASE_ANON_KE
 }
 
 function readOptionalPublicEnv(
-  key: "VITE_SUPABASE_URL" | "VITE_SUPABASE_ANON_KEY" | "VITE_SUPABASE_INTAKE_URL" | "VITE_N8N_WEBHOOK_URL",
+  key: "VITE_SUPABASE_URL" | "VITE_SUPABASE_ANON_KEY" | "VITE_LEAD_INTAKE_URL",
 ) {
   const value = import.meta.env[key];
 

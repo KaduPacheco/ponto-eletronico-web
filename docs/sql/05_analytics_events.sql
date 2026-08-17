@@ -49,10 +49,10 @@ WITH CHECK (true);
 
 -- 5. PERMISSAO CRM: usuarios autenticados podem consultar analytics
 DROP POLICY IF EXISTS "Authenticated users can view analytics events" ON analytics_events;
-CREATE POLICY "Authenticated users can view analytics events"
+CREATE POLICY "CRM operators can view analytics events"
 ON analytics_events FOR SELECT
 TO authenticated
-USING (true);
+USING (public.has_crm_role(ARRAY['manager', 'admin']));
 
 -- 6. Indexes para funil, visitors e analise temporal
 CREATE INDEX IF NOT EXISTS idx_analytics_events_event_type ON analytics_events(event_type);

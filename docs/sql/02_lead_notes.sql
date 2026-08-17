@@ -16,11 +16,13 @@ ALTER TABLE lead_notes ENABLE ROW LEVEL SECURITY;
 
 -- 3. PERMISSÃO CRM: Apenas usuários autenticados podem gerenciar notas
 -- Diferente da tabela 'leads' que permite insert anônimo, 'notes' é 100% privada.
-CREATE POLICY "Authenticated users can manage lead notes" 
-ON lead_notes ALL 
-TO authenticated 
-USING (true) 
-WITH CHECK (true);
+DROP POLICY IF EXISTS "Authenticated users can manage lead notes" ON lead_notes;
+DROP POLICY IF EXISTS "CRM operators can manage lead notes" ON lead_notes;
+CREATE POLICY "CRM operators can manage lead notes"
+ON lead_notes FOR ALL
+TO authenticated
+USING (public.has_crm_role(ARRAY['manager', 'admin']))
+WITH CHECK (public.has_crm_role(ARRAY['manager', 'admin']));
 
 -- 4. Criar index para performance em buscas por lead
 CREATE INDEX IF NOT EXISTS idx_lead_notes_lead_id ON lead_notes(lead_id);
