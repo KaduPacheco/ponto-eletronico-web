@@ -6,6 +6,11 @@ describe("analyticsService - contrato e resiliencia", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.unstubAllEnvs();
+    vi.stubEnv("VITE_SUPABASE_URL", "https://demo.supabase.co");
+    vi.stubEnv("VITE_SUPABASE_ANON_KEY", "anon-public-key");
+    vi.stubEnv("VITE_LEAD_INTAKE_URL", "https://demo.supabase.co/functions/v1/lead-intake");
+    vi.stubEnv("VITE_ANALYTICS_INTAKE_URL", "https://demo.supabase.co/functions/v1/analytics-intake");
     window.localStorage.clear();
     window.sessionStorage.clear();
     window.history.replaceState({}, "", "/?utm_source=google&utm_medium=cpc&utm_campaign=crm&utm_content=hero&utm_term=ponto");
@@ -38,7 +43,7 @@ describe("analyticsService - contrato e resiliencia", () => {
     });
   });
 
-  it("posta o evento no endpoint do Supabase", async () => {
+  it("posta o evento no intake server-side de analytics", async () => {
     mockedFetch.mockResolvedValueOnce({
       ok: true,
       text: () => Promise.resolve(""),
@@ -55,11 +60,11 @@ describe("analyticsService - contrato e resiliencia", () => {
 
     const [url, options] = mockedFetch.mock.calls[0] as [string, RequestInit];
 
-    expect(url).toContain("/rest/v1/analytics_events");
+    expect(url).toContain("/functions/v1/analytics-intake");
     expect(options.method).toBe("POST");
     expect(options.headers).toMatchObject({
       "Content-Type": "application/json",
-      Prefer: "return=mínimal",
+      apikey: "anon-public-key",
     });
 
     const body = JSON.parse(String(options.body));

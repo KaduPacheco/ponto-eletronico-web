@@ -1,34 +1,84 @@
-# P1 — segurança e operação comercial
+# P1 - seguranca e operacao comercial
 
-## Intake
+## Intake de leads
 
-A landing envia somente `nome`, `whatsapp`, `email`, `empresa`, `funcionarios` e `attribution` para `VITE_LEAD_INTAKE_URL`. O endpoint é a Edge Function `lead-intake`; o frontend não acessa `leads` nem conhece `service_role`.
+A landing envia somente `nome`, `whatsapp`, `email`, `empresa`, `funcionarios` e `attribution` para `VITE_LEAD_INTAKE_URL`. O endpoint e a Edge Function `lead-intake`; o frontend nao acessa `leads`, `lead_outbox` nem conhece `service_role`, pepper, token interno ou segredo HMAC.
 
-O servidor rejeita campos desconhecidos, normaliza dados, valida limites, aplica idempotência por `Idempotency-Key` e rate limit por fingerprint. A origem precisa ser exatamente `PUBLIC_SITE_ORIGIN`; origem ausente ou não autorizada falha sem wildcard. O n8n é acionado somente após a transação de persistência, usando `N8N_LEAD_AUTOMATION_URL`, `N8N_LEAD_AUTOMATION_SECRET`, assinatura HMAC sobre `timestamp.eventId.rawBody` e timeout de cinco segundos. O consumidor deve rejeitar timestamp expirado, repetir `eventId` e comparar a assinatura em tempo constante.
+`lead-intake` aceita apenas `POST` com `application/json`, valida `Content-Length` e tambem le o corpo com limite real de 32 KB antes de chamar `JSON.parse`. Payload acima do limite retorna `413`. Origem CORS ausente ou proibida retorna `403`.
 
-O evento é gravado em `lead_outbox` na mesma transação do lead. Estados possíveis são `pending`, `delivered` e `failed`, com tentativas, `next_attempt_at` e erro sanitizado. O retry em staging deve selecionar eventos pendentes/vencidos, reenviar o mesmo `X-Lead-Event-Id` com backoff limitado e marcar sucesso sem criar nova mensagem.
+O servidor rejeita campos desconhecidos, normaliza dados, aplica idempotencia por `Idempotency-Key` e calcula buckets de rate limit separados para IP e telefone. O IP vem do `x-forwarded-for` recebido na Edge Function; a premissa operacional e que esse header seja definido pela plataforma Supabase/Vercel na borda e nao encaminhado cru de um proxy nao confiavel. O IP e o telefone sao armazenados apenas como hash com `INTAKE_RATE_LIMIT_PEPPER` server-side.
 
-## Atribuição
+A repeticao idempotente e resolvida antes do rate limit, portanto replay legitimo da mesma chave nao consome novo bucket. O rate limit retorna `429` com `Retry-After`.
 
-`lead_attribution` relaciona visitor, sessão, UTMs, referrer e página de conversão ao lead. O evento de conversão recebe `lead_id` em `analytics_events`; nenhum campo de contato é enviado para analytics.
+## Outbox e n8n
 
-## Pipeline
+O lead e o evento `lead.created` entram na mesma transacao via `create_lead_intake`. A entrega imediata do intake e o worker usam o mesmo modulo `supabase/functions/_shared/lead-automation.ts`, que assina `timestamp.eventId.rawBody` com HMAC SHA-256 e preserva o `event_id` em todos os retries.
 
-O funil P1 é `novo → contato → diagnostico → demonstracao → proposta → negociacao → ganho/perdido`. A migração converte `em_contato` para `contato` e `qualificado` para `diagnostico` sem apagar dados. Avanços, ganho e perda são validados em RPC transacional no Postgres.
+Estados da outbox: `pending`, `processing`, `delivered`, `failed` e `dead_letter`. O worker `lead-outbox-worker`:
 
-## Segurança de banco
+- exige `Authorization: Bearer $LEAD_OUTBOX_WORKER_TOKEN`;
+- chama `claim_lead_outbox_batch` com `FOR UPDATE SKIP LOCKED`;
+- processa lote limitado por `LEAD_OUTBOX_BATCH_SIZE`;
+- usa timeout de rede por `LEAD_OUTBOX_DELIVERY_TIMEOUT_MS`;
+- marca sucesso com `mark_lead_outbox_delivered`;
+- marca falha com backoff exponencial, jitter e maximo `LEAD_OUTBOX_MAX_ATTEMPTS`;
+- minimiza payload ao mover para `dead_letter`.
 
-Leads não têm INSERT anônimo. Usuários CRM precisam existir em `crm_user_roles` e em um `crm_profiles` ativo. As RPCs fixam `search_path`, restringem grants a `authenticated` e gravam alteração e auditoria na mesma transação.
+Agendamento seguro em staging, exemplo:
 
-## CSP por ambiente
+```bash
+curl -X POST "$SUPABASE_URL/functions/v1/lead-outbox-worker" \
+  -H "Authorization: Bearer $LEAD_OUTBOX_WORKER_TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{}'
+```
 
-O `vercel.json` permite conexão com Supabase hospedado (`*.supabase.co`, `*.supabase.in`) e WebSocket Supabase. Se um ambiente usar domínio customizado de API, ele deve ser adicionado ao `connect-src` antes da homologação. O domínio do intake é coberto pelo host Supabase ou deve ser incluído explicitamente.
+Configure o agendador externo de staging para executar esse comando em intervalo curto, por exemplo a cada minuto. Nao configure cron de producao nesta PR. Se o agendador externo nao estiver disponivel, a infraestrutura versionada existe, mas retry automatico nao deve ser declarado homologado.
 
-## Homologação
+## Analytics
 
-1. Aplicar `20260817120000_crm_p1_security_and_pipeline.sql` e `20260817130000_crm_p1_security_corrections.sql` em staging, nessa ordem; não reescrever migrações já aplicadas.
-2. Configurar as variáveis server-side da Edge Function; não usar prefixo `VITE_`.
-3. Testar submissão, replay da mesma chave, rate limit e indisponibilidade do n8n.
-4. Validar RLS com usuário anônimo, usuário autenticado não provisionado e cada papel CRM.
-5. Confirmar os headers no preview Vercel e executar a suíte E2E contra staging.
-6. Ativar o worker de outbox somente em staging, com limite de tentativas e sem cron/automação de produção nesta PR.
+O frontend envia analytics somente para `VITE_ANALYTICS_INTAKE_URL` (`analytics-intake`). Inserts anonimos diretos em `analytics_events` sao revogados. A Edge Function aceita apenas eventos conhecidos, metadata por allowlist, tamanho limitado e sem PII obvia como email ou telefone.
+
+Eventos preservados para o funil comercial:
+
+- `page_view`
+- `cta_click`
+- `lead_form_start`
+- `lead_form_submit_attempt`
+- `lead_form_submit_success`
+- `lead_form_submit_error`
+
+## Auditoria e LGPD
+
+`lead_events.previous_state` e `next_state` nao devem duplicar linha completa de `leads`. A funcao `lead_audit_state` mantem apenas campos operacionais necessarios: etapa, status, responsavel, valor, motivo, proxima acao e datas de fechamento/acao.
+
+Outbox entregue pode ser removida pela rotina `cleanup_lead_outbox_retention`. A janela minima protegida na RPC e 7 dias para `delivered` e 30 dias para `dead_letter`; a configuracao recomendada e 30 dias para entregues e 90 dias para dead letters. A rotina nunca apaga `pending` ou `failed`; dead letters antigas sao minimizadas para investigacao sem payload pessoal completo.
+
+## Banco e RLS
+
+Leads, tarefas, eventos, perfis e analytics nao aceitam mutacao direta de `anon`. Usuarios CRM precisam existir em `crm_user_roles` e `crm_profiles.is_active = true`. RPCs usam `SECURITY DEFINER` com `search_path = public, pg_temp` e grants restritos.
+
+Antes de aplicar em staging, rode o preflight:
+
+```sql
+select count(*) as agent_roles_to_remove
+from public.crm_user_roles
+where role = 'agent';
+```
+
+Depois aplique as migracoes em ordem, incluindo `20260818110000_crm_p1_secure_automation_retention_analytics.sql`.
+
+## Variaveis server-side
+
+- `PUBLIC_SITE_ORIGIN`
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `INTAKE_RATE_LIMIT_PEPPER`
+- `N8N_LEAD_AUTOMATION_URL`
+- `N8N_LEAD_AUTOMATION_SECRET`
+- `LEAD_OUTBOX_WORKER_TOKEN`
+- `LEAD_OUTBOX_BATCH_SIZE`
+- `LEAD_OUTBOX_MAX_ATTEMPTS`
+- `LEAD_OUTBOX_DELIVERY_TIMEOUT_MS`
+
+Nenhuma dessas variaveis deve receber prefixo `VITE_`, exceto URLs publicas de chamada do frontend: `VITE_LEAD_INTAKE_URL` e `VITE_ANALYTICS_INTAKE_URL`.

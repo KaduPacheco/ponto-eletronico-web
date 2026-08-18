@@ -83,7 +83,6 @@ export async function trackAnalyticsEvent(
         "Content-Type": "application/json",
         apikey: supabaseEnv.anonKey,
         Authorization: `Bearer ${supabaseEnv.anonKey}`,
-        Prefer: "return=mínimal",
       },
       body: JSON.stringify(payload),
     });

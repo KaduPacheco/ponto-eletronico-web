@@ -17,7 +17,7 @@ describe("supabase env helper", () => {
     expect(getSupabasePublicEnv()).toEqual({
       url: "https://demo.supabase.co",
       anonKey: "anon-public-key",
-      analyticsEndpoint: "https://demo.supabase.co/rest/v1/analytics_events",
+      analyticsEndpoint: "https://demo.supabase.co/functions/v1/analytics-intake",
       intakeEndpoint: "https://api.example.com/intake",
     });
   });
