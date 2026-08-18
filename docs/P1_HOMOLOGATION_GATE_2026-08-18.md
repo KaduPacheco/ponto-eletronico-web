@@ -22,6 +22,21 @@ P2 was not implemented or started.
 - `git diff --check`: PASS
 - Applicable `AGENTS.md`: none in repository scope. The only file found was under `node_modules/recharts`.
 
+## Resumption Preflight - New Staging Target
+
+- Timestamp: 2026-08-18, resumed after commit `dd13cfe`.
+- Requested target: organization and project names redacted in public report.
+- `git status --short --branch`: clean against `origin/feat/crm-p1-secure-intake`.
+- `git branch --show-current`: `feat/crm-p1-secure-intake`.
+- `git log -5 --oneline`: current head is `dd13cfe`.
+- `git fetch --all --prune`: PASS.
+- Upstream: `origin/feat/crm-p1-secure-intake`.
+- PR #17: open, draft, head `dd13cfe`.
+- Local Supabase link: still points to the previous project and must not be used for mutations.
+- Supabase MCP: scoped to a single project and does not expose a project selector or organization/project listing.
+- Supabase CLI via `npx`: available for read-only discovery; listed accessible projects did not include the requested new staging organization/project.
+- Decision: BLOCKED before any mutation because the requested staging project could not be objectively selected or proven from available access.
+
 ## Remote Supabase Observed
 
 - Project URL: redacted in public report
@@ -99,4 +114,4 @@ Security/performance advisors were read before any schema change. Notable securi
 
 P1 BLOQUEADO
 
-Required action to proceed: isolate the staging Supabase target from public ingress before running the gate. Acceptable options are a clean Supabase staging branch/project not referenced by public production traffic, or a temporary staging-only frontend/preview whose allowed origin and public envs point to that isolated target. Only then apply P1 migrations, deploy P1 Edge Functions, configure staging-only secrets, activate the worker schedule, and execute the remote E2E matrix.
+Required action to proceed: connect the Supabase integration or CLI session to the authorized staging organization/project so it appears in project discovery by name. Do not reuse the previous linked project. After objective selection is possible, verify no public traffic, then apply P1 migrations, deploy P1 Edge Functions, configure staging-only secrets, activate the worker schedule, and execute the remote E2E matrix.
