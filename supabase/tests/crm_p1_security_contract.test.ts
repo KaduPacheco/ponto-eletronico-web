@@ -7,6 +7,16 @@ const migration = readFileSync(
   "utf8",
 );
 
+const grantHardeningMigration = readFileSync(
+  resolve(process.cwd(), "supabase/migrations/20260818190326_crm_p1_lock_down_exposed_privileges.sql"),
+  "utf8",
+);
+
+const runtimeFixMigration = readFileSync(
+  resolve(process.cwd(), "supabase/migrations/20260818191130_crm_p1_fix_intake_event_id_generation.sql"),
+  "utf8",
+);
+
 describe("P1 security migration contract", () => {
   it("claims outbox rows with SKIP LOCKED and supports dead letters", () => {
     expect(migration).toContain("FOR UPDATE SKIP LOCKED");
@@ -31,5 +41,17 @@ describe("P1 security migration contract", () => {
   it("keeps pending and failed outbox records out of cleanup deletion", () => {
     expect(migration).toContain("WHERE status = 'delivered'");
     expect(migration).not.toContain("DELETE FROM public.lead_outbox\n  WHERE status IN ('pending', 'failed')");
+  });
+
+  it("removes anonymous execution from exposed security definer RPCs", () => {
+    expect(grantHardeningMigration).toContain("REVOKE ALL ON FUNCTION public.has_crm_role(text[]) FROM PUBLIC, anon, authenticated");
+    expect(grantHardeningMigration).toContain("REVOKE ALL ON FUNCTION public.create_lead_intake");
+    expect(grantHardeningMigration).toContain("GRANT EXECUTE ON FUNCTION public.create_lead_intake");
+    expect(grantHardeningMigration).toContain("TO service_role");
+  });
+
+  it("does not depend on gen_random_bytes visibility for intake event ids", () => {
+    expect(runtimeFixMigration).toContain("replace(gen_random_uuid()::text, '-', '')");
+    expect(runtimeFixMigration).not.toContain("gen_random_bytes(");
   });
 });

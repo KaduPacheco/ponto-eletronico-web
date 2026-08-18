@@ -93,6 +93,81 @@ P2 was not implemented or started.
 - Bundle secret scan: PASS for server-side secrets. The broad scan only matched React's bundled `__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED`; the focused scan found no `sb_secret_`, `service_role`, service-role env names, pepper, HMAC/n8n server secrets, worker token, JWT secret, or Postgres URL in `dist`.
 - Decision: BLOCKED before remote mutation. The local empty-database gate is now validated, but the remote P1 gate cannot continue until the Supabase CLI session has privileges to access the linked staging project's login role and produce a dry-run plan.
 
+## Resumption - Manual Migration Apply Confirmed, Remote P1 Continued
+
+- Timestamp: 2026-08-18 16:11 -03:00.
+- Starting commit: `3805bd2`.
+- Branch: `feat/crm-p1-secure-intake`.
+- Manual operator evidence accepted for `CaptacaoLeeds Staging`:
+  - `npx supabase db push --dry-run --password ...`: PASS.
+  - Exactly four migrations were reviewed before apply.
+  - `npx supabase db push --password ...`: completed.
+  - `npx supabase migration list --linked`: PASS.
+  - Local and Remote columns matched for `20260817100000`, `20260817120000`, `20260817130000`, and `20260818110000`.
+  - The database password was removed from the session after use.
+- The four manually applied migrations were not reapplied, repaired, reset, or history-edited.
+- Supabase connector migration history: PASS. The four expected migration versions were present.
+- Remote schema: PASS for P1 tables. `leads`, CRM role/profile tables, notes/tasks/events, analytics, attribution, intake requests, outbox, and rate-limit tables exist with RLS enabled.
+- Remote outbox shape: PASS. `lead_outbox` includes `pending`, `processing`, `delivered`, `failed`, and `dead_letter`, claim metadata, dead-letter metadata, payload redaction metadata, and retry timestamps.
+- Initial security advisor check: BLOCKED. Public `EXECUTE` grants were still present on multiple `SECURITY DEFINER` RPCs.
+- Corrective migration `20260818190326_crm_p1_lock_down_exposed_privileges.sql`: APPLIED via Supabase connector. It is forward-only and hardens table/RPC grants without editing prior migration history.
+- Post-correction RPC grants: PASS for anon. `anon` no longer has `EXECUTE` on CRM/admin, intake, analytics, outbox, or retention RPCs checked.
+- Remaining security advisor warnings for `authenticated` SECURITY DEFINER RPCs: REVIEWED. These are the role-guarded CRM RPCs intentionally callable by signed-in users; each checks `has_crm_role(...)` internally or returns current-user access.
+- Runtime SQL test found `create_lead_intake` failed in staging because `gen_random_bytes` was not visible under the function `search_path`.
+- Corrective migration `20260818191130_crm_p1_fix_intake_event_id_generation.sql`: APPLIED via Supabase connector. It replaces the event id generation with `replace(gen_random_uuid()::text, '-', '')` and preserves service-role-only execution.
+- Local empty-database validation after both corrective migrations: PASS. `npx supabase db reset` applied all six local migrations from empty.
+- Edge Functions deployed to staging only:
+  - `lead-intake`, version 1, active, `verify_jwt=false`.
+  - `analytics-intake`, version 1, active, `verify_jwt=false`.
+  - `lead-outbox-worker`, version 1, active, `verify_jwt=false`.
+- `verify_jwt=false` rationale: `lead-intake` and `analytics-intake` are public browser endpoints with explicit CORS, content-type, payload validation, rate limiting, and server-side service-role RPCs; `lead-outbox-worker` uses a dedicated bearer token and must not require a Supabase JWT.
+- Required Edge Function secrets discovered from code:
+  - `PUBLIC_SITE_ORIGIN`: allowed browser origin for CORS.
+  - `SUPABASE_URL`: project API URL used by Edge Functions.
+  - `SUPABASE_SERVICE_ROLE_KEY`: server-side database/RPC access for Edge Functions.
+  - `INTAKE_RATE_LIMIT_PEPPER`: server-side pepper for IP/phone/body rate buckets.
+  - `N8N_LEAD_AUTOMATION_URL`: staging-only n8n receiver endpoint.
+  - `N8N_LEAD_AUTOMATION_SECRET`: HMAC signing secret shared with staging n8n receiver.
+  - `LEAD_OUTBOX_WORKER_TOKEN`: bearer token for manual/scheduled worker invocation.
+  - Optional worker tuning: `LEAD_OUTBOX_BATCH_SIZE`, `LEAD_OUTBOX_MAX_ATTEMPTS`, `LEAD_OUTBOX_DELIVERY_TIMEOUT_MS`.
+- Secret inspection/configuration: BLOCKED. The available connector has no secret-management tool, and `npx supabase secrets list` failed with `403 LegacySecretsListUnexpectedStatusError`. No secret values were requested, extracted, printed, or persisted.
+- Low-frequency REST security smokes:
+  - Direct anon insert into `leads`: PASS, denied with `42501`.
+  - Direct anon insert into `analytics_events`: PASS, denied with `42501`.
+  - Anon RPC call to `has_crm_role`: PASS, denied with `42501`.
+  - Anon RPC call to `create_lead_intake`: PASS, denied with `42501`.
+  - Worker invocation without token: PASS, returned `403 Forbidden`.
+- Edge Function CORS smoke:
+  - `lead-intake` forbidden-origin preflight: BLOCKED, returned `500` instead of `403`, consistent with missing `PUBLIC_SITE_ORIGIN`.
+  - `analytics-intake` forbidden-origin preflight: BLOCKED, returned `500` instead of `403`, consistent with missing `PUBLIC_SITE_ORIGIN`.
+- Remote transactional RPC smoke with synthetic data: PASS.
+  - Created a synthetic lead and outbox event through `create_lead_intake`.
+  - Same idempotency key and same fingerprint replayed as `created=false` with the same lead/event.
+  - Same idempotency key with a different fingerprint was rejected.
+  - Outbox event claim succeeded.
+  - Failure path with `p_max_attempts=1` produced `dead_letter` and redacted payload.
+- Remote rate-limit smoke with synthetic data: PASS. Three synthetic leads were created for one phone bucket and the fourth attempt was blocked.
+- Automatic worker evidence: BLOCKED. `pg_cron` is not installed and no `cron.job` table exists. No other authorized tool exposed a scheduled Edge Function configuration, so there is no evidence of a real automatic worker.
+- n8n/HMAC/expiration/replay: BLOCKED. No configured staging n8n endpoint/secret could be verified, and no real HMAC receiver test can be run until `N8N_LEAD_AUTOMATION_URL` and `N8N_LEAD_AUTOMATION_SECRET` are configured in staging.
+- No WhatsApp, email, or other external communication channel was invoked.
+- No old Supabase project, Vercel Production, public app, P2 scope, merge, or non-Supabase Docker resource was changed.
+- Local validation after corrective migrations:
+  - `npx supabase db reset`: PASS with all six migrations.
+  - `npm run lint`: PASS.
+  - `npm test -- --run`: PASS, 22 test files and 87 tests.
+  - `npx tsc --noEmit`: PASS.
+  - `npm run build`: PASS.
+  - `git diff --check`: PASS, with only Git LF-to-CRLF working-copy warnings.
+  - Focused bundle secret scan: PASS.
+
+Manual secret action required outside chat, with staging-only values:
+
+```bash
+npx supabase secrets set PUBLIC_SITE_ORIGIN=<staging public origin> INTAKE_RATE_LIMIT_PEPPER=<random pepper> N8N_LEAD_AUTOMATION_URL=<staging n8n receiver URL> N8N_LEAD_AUTOMATION_SECRET=<shared HMAC secret> LEAD_OUTBOX_WORKER_TOKEN=<random worker bearer token> LEAD_OUTBOX_BATCH_SIZE=10 LEAD_OUTBOX_MAX_ATTEMPTS=8 LEAD_OUTBOX_DELIVERY_TIMEOUT_MS=5000
+```
+
+`SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` must also be present for the Edge Functions. If they are not automatically provided in this project, set them manually through the same staging-only secret channel without exposing values in chat or commits.
+
 ## Remote Supabase Observed
 
 - Project URL: redacted in public report
@@ -170,4 +245,4 @@ Security/performance advisors were read before any schema change. Notable securi
 
 P1 BLOQUEADO
 
-Required action to proceed: grant the active Supabase CLI session sufficient access to `CaptacaoLeeds Staging` ref `sxfpjiejppprumwuotvc` so `npx supabase migration list --linked` and `npx supabase db push --dry-run` can initialize the login role without `403`. After objective selection and dry-run are possible, apply P1 migrations only to the new staging project, deploy P1 Edge Functions, configure staging-only secrets, activate the worker schedule, and execute the remote E2E matrix.
+Required action to proceed: configure the required staging Edge Function secrets, configure/verify a real automatic worker schedule, and provide redacted evidence or access for the staging n8n HMAC receiver so CORS, intake E2E, worker delivery, HMAC validity, expiration, and replay can be verified end-to-end.
