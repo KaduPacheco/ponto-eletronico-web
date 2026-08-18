@@ -14,6 +14,16 @@ export function getStageLabelFromKey(stageKey: string) {
   switch (stageKey) {
     case "novo":
       return "Novo";
+    case "contato":
+      return "Contato";
+    case "diagnostico":
+      return "Diagnóstico";
+    case "demonstracao":
+      return "Demonstração";
+    case "proposta":
+      return "Proposta";
+    case "negociacao":
+      return "Negociação";
     case "em_contato":
       return "Em contato";
     case "qualificado":

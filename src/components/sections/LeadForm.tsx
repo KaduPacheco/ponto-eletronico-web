@@ -160,7 +160,7 @@ const LeadForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     setIsSubmitting(true);
 
     try {
-      await submitLeadToSupabase({
+      const intakeResult = await submitLeadToSupabase({
         nome: result.data.name,
         whatsapp: result.data.whatsapp,
         email: result.data.email || undefined,
@@ -173,6 +173,7 @@ const LeadForm = ({ onSuccess }: { onSuccess?: () => void }) => {
         section_id: SECTION_ID,
         elapsed_ms: elapsedMs,
         source: "landing_page",
+        lead_id: typeof intakeResult === "object" && intakeResult ? intakeResult.leadId : undefined,
       });
 
       if (onSuccess) {

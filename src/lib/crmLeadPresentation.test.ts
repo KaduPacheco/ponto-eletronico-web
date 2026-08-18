@@ -68,15 +68,15 @@ const defaultFilters: LeadListFilters = {
 
 describe("crmLeadPresentation", () => {
   it("resolves the lead stage from pipeline_stage or status", () => {
-    expect(getLeadStageValue(createLead({ pipeline_stage: "qualificado", status: "novo" }))).toBe("qualificado");
-    expect(getLeadStageValue(createLead({ pipeline_stage: null, status: " EM_CONTATO " }))).toBe("em_contato");
+    expect(getLeadStageValue(createLead({ pipeline_stage: "diagnostico", status: "novo" }))).toBe("diagnostico");
+    expect(getLeadStageValue(createLead({ pipeline_stage: null, status: " CONTATO " }))).toBe("contato");
     expect(getLeadStageValue(createLead({ pipeline_stage: null, status: "desconhecido" }))).toBe("without_stage");
   });
 
   it("returns the current stage label or the fallback label", () => {
     expect(getLeadStageLabel(createLead({ pipeline_stage: "ganho" }))).toBe("Ganho");
     expect(getLeadStageLabel(createLead({ pipeline_stage: null, status: "" }))).toBe("Sem etapa");
-    expect(getLeadStageLabel(createLead({ pipeline_stage: null, status: " em_contato " }))).toBe("Em contato");
+    expect(getLeadStageLabel(createLead({ pipeline_stage: null, status: " contato " }))).toBe("Contato");
   });
 
   it("summarizes open, overdue and next tasks without counting completed tasks", () => {
@@ -177,7 +177,7 @@ describe("crmLeadPresentation", () => {
       createRow({
         id: "lead-qualified",
         nome: "Joao Qualificado",
-        pipeline_stage: "qualificado",
+        pipeline_stage: "diagnostico",
         status: "novo",
       }),
       createRow({
@@ -216,7 +216,7 @@ describe("crmLeadPresentation", () => {
           id: "overdue-lead",
           nome: "Lead urgente",
           owner_id: "owner-1",
-          pipeline_stage: "em_contato",
+          pipeline_stage: "contato",
           created_at: "2026-04-12T09:00:00.000Z",
         },
         [createTask({ id: "task-overdue", due_date: "2026-04-12T08:00:00.000Z" })],
@@ -286,7 +286,7 @@ describe("crmLeadPresentation", () => {
 
     const overduePriority = getLeadOperationalPriority(
       createRow(
-        { id: "lead-overdue", pipeline_stage: "em_contato" },
+        { id: "lead-overdue", pipeline_stage: "contato" },
         [createTask({ id: "task-overdue", due_date: "2026-04-12T09:00:00.000Z" })],
       ),
     );

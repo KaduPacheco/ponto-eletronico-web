@@ -64,9 +64,9 @@ describe("crmLeadPresentation modules", () => {
   it("builds owner labels from the active commercial directory", () => {
     const options = buildOwnerOptionsFromProfiles(
       [
-        { id: "user-2", full_name: "Bruno Lima", email: "bruno@empresa.com", role: "agent", is_active: true },
+        { id: "user-2", full_name: "Bruno Lima", email: "bruno@empresa.com", role: "manager", is_active: true },
         { id: "user-1", full_name: "Ana Souza", email: "ana@empresa.com", role: "manager", is_active: true },
-        { id: "user-3", full_name: "Inativo", email: "inativo@empresa.com", role: "agent", is_active: false },
+        { id: "user-3", full_name: "Inativo", email: "inativo@empresa.com", role: "manager", is_active: false },
       ],
       { id: "user-1", email: "ana@empresa.com", user_metadata: {} } as never,
     );

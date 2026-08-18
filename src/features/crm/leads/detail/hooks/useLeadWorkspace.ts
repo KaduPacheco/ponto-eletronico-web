@@ -4,6 +4,8 @@ import type { AuthPermission } from "@/features/crm/auth/lib/authAccess";
 import {
   createLeadNote,
   createLeadTask,
+  closeLeadAsLost,
+  closeLeadAsWon,
   getCrmLeadById,
   getCrmOwnerProfiles,
   getLeadEvents,
@@ -133,6 +135,26 @@ export function useLeadWorkspace(leadId?: string) {
     },
   });
 
+  const closeWonMutation = useMutation({
+    mutationFn: (lifetimeValue: number) => {
+      ensureLeadMutationPreconditions(leadId, user?.id);
+      ensureLeadPermission("crm:leads:write", canEditLead);
+      return closeLeadAsWon(leadId!, lifetimeValue);
+    },
+    onSuccess: () => { invalidateLeadWorkspace(queryClient, leadId); queryClient.invalidateQueries({ queryKey: CRM_QUERY_KEYS.leads }); toast({ title: "Lead ganho" }); },
+    onError: (error) => reportLeadMutationError("Não foi possível concluir o lead como ganho.", error, leadId, toast),
+  });
+
+  const closeLostMutation = useMutation({
+    mutationFn: (lostReason: string) => {
+      ensureLeadMutationPreconditions(leadId, user?.id);
+      ensureLeadPermission("crm:leads:write", canEditLead);
+      return closeLeadAsLost(leadId!, lostReason);
+    },
+    onSuccess: () => { invalidateLeadWorkspace(queryClient, leadId); queryClient.invalidateQueries({ queryKey: CRM_QUERY_KEYS.leads }); toast({ title: "Lead perdido" }); },
+    onError: (error) => reportLeadMutationError("Não foi possível concluir o lead como perdido.", error, leadId, toast),
+  });
+
   const ownerMutation = useMutation({
     mutationFn: (input: UpdateLeadOwnerInput) => {
       ensureLeadMutationPreconditions(leadId, user?.id);
@@ -169,6 +191,8 @@ export function useLeadWorkspace(leadId?: string) {
     taskMutation,
     toggleTaskMutation,
     stageMutation,
+    closeWonMutation,
+    closeLostMutation,
     ownerMutation,
   };
 }

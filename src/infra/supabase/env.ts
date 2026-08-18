@@ -34,11 +34,12 @@ export function getSupabasePublicEnv(): SupabasePublicEnv {
   const url = readRequiredPublicEnv("VITE_SUPABASE_URL");
   const anonKey = readRequiredPublicEnv("VITE_SUPABASE_ANON_KEY");
   const intakeEndpoint = readRequiredPublicEnv("VITE_LEAD_INTAKE_URL");
+  const analyticsEndpoint = readOptionalPublicEnv("VITE_ANALYTICS_INTAKE_URL") ?? `${url}/functions/v1/analytics-intake`;
 
   cachedEnv = {
     url,
     anonKey,
-    analyticsEndpoint: `${url}/rest/v1/analytics_events`,
+    analyticsEndpoint,
     intakeEndpoint,
   };
 
@@ -59,7 +60,7 @@ function readRequiredPublicEnv(key: "VITE_SUPABASE_URL" | "VITE_SUPABASE_ANON_KE
 }
 
 function readOptionalPublicEnv(
-  key: "VITE_SUPABASE_URL" | "VITE_SUPABASE_ANON_KEY" | "VITE_LEAD_INTAKE_URL",
+  key: "VITE_SUPABASE_URL" | "VITE_SUPABASE_ANON_KEY" | "VITE_LEAD_INTAKE_URL" | "VITE_ANALYTICS_INTAKE_URL",
 ) {
   const value = import.meta.env[key];
 

@@ -29,6 +29,8 @@ const LeadDetailPage = () => {
     taskMutation,
     toggleTaskMutation,
     stageMutation,
+    closeWonMutation,
+    closeLostMutation,
     ownerMutation,
   } = useLeadWorkspace(id);
 
@@ -79,6 +81,20 @@ const LeadDetailPage = () => {
   };
 
   const handleStageChange = (nextStage: PipelineStage) => {
+    if (nextStage === "ganho") {
+      const rawValue = window.prompt("Informe o valor vitalício do negócio:");
+      if (rawValue === null) return;
+      const lifetimeValue = Number(rawValue.replace(",", "."));
+      if (!Number.isFinite(lifetimeValue) || lifetimeValue <= 0) return;
+      closeWonMutation.mutate(lifetimeValue);
+      return;
+    }
+    if (nextStage === "perdido") {
+      const lostReason = window.prompt("Informe o motivo da perda:");
+      if (lostReason === null || !lostReason.trim()) return;
+      closeLostMutation.mutate(lostReason.trim());
+      return;
+    }
     stageMutation.mutate(nextStage);
   };
 
@@ -142,7 +158,7 @@ const LeadDetailPage = () => {
             nextTaskHelper={viewModel.nextTaskHelper}
             openTasksHelper={viewModel.openTasksHelper}
             canEditLead={permissions.canEditLead}
-            stageMutationPending={stageMutation.isPending}
+            stageMutationPending={stageMutation.isPending || closeWonMutation.isPending || closeLostMutation.isPending}
             ownerMutationPending={ownerMutation.isPending}
             onStageChange={handleStageChange}
             onOwnerChange={handleOwnerChange}

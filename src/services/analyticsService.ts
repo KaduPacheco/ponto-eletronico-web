@@ -28,10 +28,12 @@ export interface AnalyticsEventPayload {
   utm_content: string | null;
   utm_term: string | null;
   metadata: Record<string, unknown>;
+  lead_id?: string;
 }
 
 interface TrackAnalyticsOptions {
   metadata?: Record<string, unknown>;
+  leadId?: string;
   pagePath?: string;
   pageUrl?: string;
   referrer?: string | null;
@@ -57,6 +59,7 @@ export function buildAnalyticsPayload(
     utm_content: context.utm.content,
     utm_term: context.utm.term,
     metadata: options.metadata ?? {},
+    lead_id: options.leadId,
   };
 }
 
@@ -80,7 +83,6 @@ export async function trackAnalyticsEvent(
         "Content-Type": "application/json",
         apikey: supabaseEnv.anonKey,
         Authorization: `Bearer ${supabaseEnv.anonKey}`,
-        Prefer: "return=mínimal",
       },
       body: JSON.stringify(payload),
     });
@@ -115,7 +117,8 @@ export function trackLeadFormSubmitAttempt(metadata: Record<string, unknown> = {
 }
 
 export function trackLeadFormSubmitSuccess(metadata: Record<string, unknown> = {}) {
-  return trackAnalyticsEvent("lead_form_submit_success", { metadata });
+  const leadId = typeof metadata.lead_id === "string" ? metadata.lead_id : undefined;
+  return trackAnalyticsEvent("lead_form_submit_success", { metadata, leadId });
 }
 
 export function trackLeadFormSubmitError(metadata: Record<string, unknown> = {}) {

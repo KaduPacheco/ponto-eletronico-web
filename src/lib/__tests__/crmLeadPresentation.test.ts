@@ -18,7 +18,7 @@ import {
 
 describe("crmLeadPresentation", () => {
   it("normalizes the commercial stage using pipeline_stage first", () => {
-    expect(getLeadStageValue({ pipeline_stage: "qualificado", status: "novo" })).toBe("qualificado");
+    expect(getLeadStageValue({ pipeline_stage: "diagnostico", status: "novo" })).toBe("diagnostico");
     expect(getLeadStageValue({ pipeline_stage: null, status: "ganho" })).toBe("ganho");
     expect(getLeadStageValue({ pipeline_stage: null, status: "desconhecido" })).toBe("without_stage");
   });
@@ -210,7 +210,7 @@ describe("crmLeadPresentation", () => {
           empresa: "Empresa B",
           origem: "indicação",
           status: "novo",
-          pipeline_stage: "qualificado" as const,
+          pipeline_stage: "diagnostico" as const,
           owner_id: "user-1",
           lifetime_value: null,
           created_at: "2026-04-11T10:00:00.000Z",
