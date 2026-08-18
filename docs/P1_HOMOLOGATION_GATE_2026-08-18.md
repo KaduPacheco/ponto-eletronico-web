@@ -65,6 +65,34 @@ P2 was not implemented or started.
 - `Start-Service com.docker.service`: BLOCKED. Windows refused opening/starting `com.docker.service` from this session.
 - Decision: BLOCKED before remote mutation. The gate explicitly requires validating the full migration chain with a local empty database and executing `supabase db reset` locally before `db push`/deploy. Because the local Docker engine could not be started, no remote `db push`, Edge Function deploy, secret configuration, synthetic data setup, n8n validation, worker activation, or real remote E2E gate was performed in this run.
 
+## Resumption - Docker Recovered, Remote Role Blocked
+
+- Timestamp: 2026-08-18 15:27 -03:00.
+- Starting commit: `8d96660`.
+- Branch: `feat/crm-p1-secure-intake`.
+- `docker version`: PASS. Output included both `Client` and `Server`; Docker Desktop server engine reported `OS/Arch: linux/amd64`.
+- `docker info --format '{{.OSType}}'`: PASS, returned `linux`.
+- Local Supabase start: PASS after the CLI pulled the local images and started only this repository's Supabase stack.
+- `npx supabase db reset`: PASS. The local database was recreated from empty and applied all four migrations in order:
+  - `20260817100000_crm_base.sql`
+  - `20260817120000_crm_p1_security_and_pipeline.sql`
+  - `20260817130000_crm_p1_security_corrections.sql`
+  - `20260818110000_crm_p1_secure_automation_retention_analytics.sql`
+- `npm test -- --run`: PASS, 22 test files and 85 tests passed.
+- `npx vitest run supabase/tests/crm_p1_security_contract.test.ts`: PASS, 4/4 tests passed.
+- Local Supabase link file: PASS. `supabase/.temp/linked-project.json` points to `CaptacaoLeeds Staging`, ref `sxfpjiejppprumwuotvc`.
+- `npx supabase projects list`: BLOCKED for objective reconfirmation. The CLI session listed only other accessible projects and did not list `CaptacaoLeeds Staging`.
+- `npx supabase migration list --linked`: BLOCKED before listing migrations with `LegacyDbConfigLoginRoleStatusError`, `unexpected login role status 403`.
+- `npx supabase db push --dry-run`: BLOCKED before producing a migration plan with the same `403` login-role error.
+- No remote migration was applied, no Edge Function was deployed, no remote secrets were changed, and no old Supabase project was intentionally selected for mutation.
+- Lint note: after `supabase start`, the CLI generated ignored local metadata under `supabase/.temp` and `supabase/.branches`; ESLint ignore/gitignore were updated so local CLI artifacts are not linted or staged.
+- `npm run lint`: PASS after excluding Supabase CLI temporary metadata.
+- `npx tsc --noEmit`: PASS.
+- `npm run build`: PASS.
+- `git diff --check`: PASS, with only Git's LF-to-CRLF working-copy warning for `eslint.config.js`.
+- Bundle secret scan: PASS for server-side secrets. The broad scan only matched React's bundled `__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED`; the focused scan found no `sb_secret_`, `service_role`, service-role env names, pepper, HMAC/n8n server secrets, worker token, JWT secret, or Postgres URL in `dist`.
+- Decision: BLOCKED before remote mutation. The local empty-database gate is now validated, but the remote P1 gate cannot continue until the Supabase CLI session has privileges to access the linked staging project's login role and produce a dry-run plan.
+
 ## Remote Supabase Observed
 
 - Project URL: redacted in public report
@@ -142,4 +170,4 @@ Security/performance advisors were read before any schema change. Notable securi
 
 P1 BLOQUEADO
 
-Required action to proceed: connect the Supabase integration or CLI session to the authorized staging organization/project so it appears in project discovery by name. Do not reuse the previous linked project. After objective selection is possible, verify no public traffic, then apply P1 migrations, deploy P1 Edge Functions, configure staging-only secrets, activate the worker schedule, and execute the remote E2E matrix.
+Required action to proceed: grant the active Supabase CLI session sufficient access to `CaptacaoLeeds Staging` ref `sxfpjiejppprumwuotvc` so `npx supabase migration list --linked` and `npx supabase db push --dry-run` can initialize the login role without `403`. After objective selection and dry-run are possible, apply P1 migrations only to the new staging project, deploy P1 Edge Functions, configure staging-only secrets, activate the worker schedule, and execute the remote E2E matrix.
