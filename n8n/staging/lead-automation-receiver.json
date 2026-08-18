@@ -1,0 +1,85 @@
+{
+  "name": "P1 Staging Lead Automation Receiver",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "p1/staging/lead-automation-receiver",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "8f4c1fb0-5b77-4d2c-89fb-9c9a1f2c91a1",
+      "name": "POST lead event",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "p1-staging-lead-automation-receiver"
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\n\nconst WINDOW_SECONDS = 300;\nconst FUTURE_SKEW_SECONDS = 30;\nconst REPLAY_RETENTION_SECONDS = 7 * 24 * 60 * 60;\nconst MAX_REPLAY_RECORDS = 5000;\n\nfunction response(statusCode, body) {\n  return [{ json: { statusCode, body, headers: { 'Content-Type': 'application/json' } } }];\n}\n\nfunction getHeader(headers, name) {\n  const target = name.toLowerCase();\n  for (const [key, value] of Object.entries(headers || {})) {\n    if (key.toLowerCase() === target) return Array.isArray(value) ? String(value[0] ?? '') : String(value ?? '');\n  }\n  return '';\n}\n\nfunction timingSafeSignatureEqual(expected, actual) {\n  if (!/^sha256=[a-f0-9]{64}$/i.test(actual)) return false;\n  const expectedHex = expected.slice('sha256='.length);\n  const actualHex = actual.slice('sha256='.length);\n  const expectedBuffer = Buffer.from(expectedHex, 'hex');\n  const actualBuffer = Buffer.from(actualHex, 'hex');\n  return expectedBuffer.length === actualBuffer.length && crypto.timingSafeEqual(expectedBuffer, actualBuffer);\n}\n\nfunction pruneReplayStore(store, nowSeconds) {\n  const replay = store.replay || {};\n  const entries = Object.entries(replay)\n    .filter(([, value]) => nowSeconds - Number(value.seenAt || 0) <= REPLAY_RETENTION_SECONDS)\n    .sort((a, b) => Number(b[1].seenAt || 0) - Number(a[1].seenAt || 0));\n  store.replay = Object.fromEntries(entries.slice(0, MAX_REPLAY_RECORDS));\n}\n\nconst vars = typeof $vars === 'undefined' ? {} : $vars;\nconst env = typeof $env === 'undefined' ? {} : $env;\nconst secret = String(vars.N8N_LEAD_AUTOMATION_SECRET || env.N8N_LEAD_AUTOMATION_SECRET || '').trim();\nif (!secret) return response(500, { ok: false, error: 'receiver_not_configured' });\n\nconst item = $input.all()[0] || { json: {} };\nconst headers = item.json.headers || {};\nconst eventId = getHeader(headers, 'X-Lead-Event-Id').trim();\nconst timestamp = getHeader(headers, 'X-Lead-Timestamp').trim();\nconst signature = getHeader(headers, 'X-Lead-Signature').trim();\nconst rawBody = typeof item.json.rawBody === 'string' ? item.json.rawBody : '';\n\nif (!eventId || eventId.length > 128 || !timestamp || !signature || !rawBody) {\n  return response(400, { ok: false, error: 'invalid_request' });\n}\n\nif (!/^\\d{10}$/.test(timestamp)) return response(400, { ok: false, error: 'invalid_timestamp' });\nconst nowSeconds = Math.floor(Date.now() / 1000);\nconst timestampSeconds = Number(timestamp);\nif (nowSeconds - timestampSeconds > WINDOW_SECONDS) return response(401, { ok: false, error: 'timestamp_expired' });\nif (timestampSeconds - nowSeconds > FUTURE_SKEW_SECONDS) return response(401, { ok: false, error: 'timestamp_in_future' });\n\nconst signingInput = `${timestamp}.${eventId}.${rawBody}`;\nconst expected = 'sha256=' + crypto.createHmac('sha256', secret).update(signingInput, 'utf8').digest('hex');\nif (!timingSafeSignatureEqual(expected, signature)) return response(401, { ok: false, error: 'invalid_signature' });\n\nconst bodyHash = crypto.createHash('sha256').update(rawBody, 'utf8').digest('hex');\nconst store = $getWorkflowStaticData('global');\npruneReplayStore(store, nowSeconds);\nstore.replay = store.replay || {};\nconst previous = store.replay[eventId];\nif (previous && previous.bodyHash === bodyHash) {\n  return response(200, { ok: true, idempotent: true, event_id: eventId });\n}\nif (previous && previous.bodyHash !== bodyHash) {\n  return response(409, { ok: false, error: 'event_replay_payload_mismatch' });\n}\n\nstore.replay[eventId] = { bodyHash, seenAt: nowSeconds };\nreturn response(200, { ok: true, idempotent: false, event_id: eventId });"
+      },
+      "id": "ac1b0137-e50b-40fc-b625-f5933c8121fb",
+      "name": "Validate HMAC and replay",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [260, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.body }}",
+        "options": {
+          "responseCode": "={{ $json.statusCode }}",
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "a4ac9120-0309-43a0-a489-a54f9af93ef7",
+      "name": "Respond after validation",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [520, 0]
+    }
+  ],
+  "connections": {
+    "POST lead event": {
+      "main": [
+        [
+          {
+            "node": "Validate HMAC and replay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate HMAC and replay": {
+      "main": [
+        [
+          {
+            "node": "Respond after validation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {}
+}

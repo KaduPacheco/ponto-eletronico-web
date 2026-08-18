@@ -33,7 +33,13 @@ curl -X POST "$SUPABASE_URL/functions/v1/lead-outbox-worker" \
   --data '{}'
 ```
 
-Configure o agendador externo de staging para executar esse comando em intervalo curto, por exemplo a cada minuto. Nao configure cron de producao nesta PR. Se o agendador externo nao estiver disponivel, a infraestrutura versionada existe, mas retry automatico nao deve ser declarado homologado.
+O agendamento automatico de staging deve usar `pg_cron`, `pg_net` e Supabase Vault conforme:
+
+- `supabase/migrations/20260818193000_crm_p1_prepare_outbox_worker_cron.sql`
+- `supabase/snippets/activate_lead_outbox_worker_cron_staging.sql`
+- `docs/P1_STAGING_MANUAL_RUNBOOK.md`
+
+A migration estrutural nao agenda o job e nao dispara chamada externa durante `supabase db reset`. O script operacional so deve ser executado em staging depois que o Vault possuir `lead_outbox_worker_url` e `lead_outbox_worker_token`.
 
 ## Analytics
 
