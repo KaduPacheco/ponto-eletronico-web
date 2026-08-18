@@ -37,6 +37,34 @@ P2 was not implemented or started.
 - Supabase CLI via `npx`: available for read-only discovery; listed accessible projects did not include the requested new staging organization/project.
 - Decision: BLOCKED before any mutation because the requested staging project could not be objectively selected or proven from available access.
 
+## Resumption Preflight - Confirmed New Staging CLI Session
+
+- Timestamp: 2026-08-18 15:13:22 -03:00.
+- Starting commit: `6d6d6ed`.
+- Branch: `feat/crm-p1-secure-intake`.
+- Initial `git status --short --branch`: clean against `origin/feat/crm-p1-secure-intake`.
+- `npx supabase projects list`: PASS. The default CLI session listed exactly one project, `CaptacaoLeeds Staging`, ref `sxfpjiejppprumwuotvc`, linked `true`.
+- Local Supabase link: PASS. `supabase/.temp/linked-project.json` points to `CaptacaoLeeds Staging`, ref `sxfpjiejppprumwuotvc`.
+- `npx supabase migration list --linked`: PASS. Four local migrations were listed and every remote migration field was empty.
+- CLI ignored-file warning: RESOLVED. `supabase/migrations/crm_p1_security_contract.test.ts` was confirmed to be a Vitest TypeScript contract test and moved to `supabase/tests/crm_p1_security_contract.test.ts`; it was not converted to SQL.
+- Affected test: PASS. `npx vitest run supabase/tests/crm_p1_security_contract.test.ts` passed 4/4 tests.
+- Re-run `npx supabase migration list --linked`: PASS. The four SQL migrations were listed with an empty remote history and no ignored TypeScript test warning.
+
+## Public Traffic Preflight - Confirmed New Staging CLI Session
+
+- `npx supabase functions list --output json`: PASS. No Edge Functions are currently deployed.
+- `npx supabase db query "select count(*)::int as auth_users from auth.users;" --linked --output json`: PASS. `auth_users = 0`.
+- `npx supabase db query` against `pg_stat_user_tables`: PASS for app-specific traffic. There were no public application tables yet and no user/auth/storage object data; only Supabase-managed internal schema migration rows were present.
+- Decision: PASS for proceeding to local validation only. No public traffic or user data evidence was observed in the newly linked staging project.
+
+## Local Empty-Database Validation - Confirmed New Staging CLI Session
+
+- `npx supabase db reset`: BLOCKED before any local migration execution. Docker Desktop engine was unavailable: `failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine`.
+- `docker version`: BLOCKED. Docker client is installed, but the `desktop-linux` engine pipe is unavailable.
+- `Get-Service *docker*`: `com.docker.service` exists but is `Stopped`.
+- `Start-Service com.docker.service`: BLOCKED. Windows refused opening/starting `com.docker.service` from this session.
+- Decision: BLOCKED before remote mutation. The gate explicitly requires validating the full migration chain with a local empty database and executing `supabase db reset` locally before `db push`/deploy. Because the local Docker engine could not be started, no remote `db push`, Edge Function deploy, secret configuration, synthetic data setup, n8n validation, worker activation, or real remote E2E gate was performed in this run.
+
 ## Remote Supabase Observed
 
 - Project URL: redacted in public report
